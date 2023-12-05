@@ -1,3 +1,4 @@
+import { managmentAPI } from "./api/management";
 import { solveRule } from "./api/solver";
 import { DecisionRulesOptions } from "./defs/models";
 import { SolverOptions } from "./defs/models";
@@ -15,4 +16,6 @@ export default class DecisionRules {
 			throw new SolverErrorException(`Solver failed with status: ${e.response.status}`, e.response.data);
 		}
 	}
+
+	public management = managmentAPI;
 }

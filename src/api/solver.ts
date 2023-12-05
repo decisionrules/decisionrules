@@ -2,14 +2,14 @@ import { DecisionRulesOptions } from "../defs/models";
 import { HostEnum } from "../defs/enums";
 import { SolverOptions } from "../defs/models";
 import { AxiosHeaders } from "axios";
-import { doPostCall } from "../utils/httpClient";
+import { doCall } from "../utils/httpClient";
 
 export async function solveRule(options: DecisionRulesOptions, ruleId: string, input: any, version?: string, solverOptions?: SolverOptions): Promise<any> {
 	try {
 		const url = createUrl(options, ruleId, version);
 		const body = createBody(input, solverOptions);
 		const headers = createHeaders(options, solverOptions);
-		const response = await doPostCall(url, body, headers);
+		const response = await doCall(url, headers, "POST", body);
 		return response.data;
 	} catch (e:any) {
 		throw e;
