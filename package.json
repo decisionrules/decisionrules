@@ -1,0 +1,25 @@
+{
+  "name": "decisionrules",
+  "version": "0.0.1",
+  "description": "Simple connector for DecisionRules.io APIU",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decisionrules/decisionrules.git"
+  },
+  "keywords": [
+    "decisionrules",
+    "rule",
+    "engine",
+    "solver"
+  ],
+  "author": "DecisionRules.io",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/decisionrules/decisionrules/issues"
+  },
+  "homepage": "https://github.com/decisionrules/decisionrules#readme"
+}
