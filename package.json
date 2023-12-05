@@ -1,25 +1,45 @@
 {
-  "name": "decisionrules",
-  "version": "0.0.1",
-  "description": "Simple connector for DecisionRules.io APIU",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/decisionrules/decisionrules.git"
-  },
-  "keywords": [
-    "decisionrules",
-    "rule",
-    "engine",
-    "solver"
-  ],
-  "author": "DecisionRules.io",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/decisionrules/decisionrules/issues"
-  },
-  "homepage": "https://github.com/decisionrules/decisionrules#readme"
+	"name": "decisionrules",
+	"version": "0.0.1",
+	"description": "Simple connector for DecisionRules.io APIU",
+	"main": "dist/decisionrules.js",
+	"files": [
+		"LICENSE",
+		"README.md",
+		"dist/"
+	],
+	"scripts": {
+		"prepack": "npm run build",
+		"build": "npx tsc",
+		"test": "jest test"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/decisionrules/decisionrules.git"
+	},
+	"keywords": [
+		"decisionrules",
+		"rule",
+		"engine",
+		"solver"
+	],
+	"author": "DecisionRules.io",
+	"license": "Apache-2.0",
+	"bugs": {
+		"url": "https://github.com/decisionrules/decisionrules/issues"
+	},
+	"engines": {
+		"node": ">= 18.12.0"
+	},
+	"homepage": "https://github.com/decisionrules/decisionrules#readme",
+	"devDependencies": {
+		"@types/jest": "^29.5.10",
+		"@types/node": "^20.10.3",
+		"jest": "^29.7.0",
+		"ts-jest": "^29.1.1",
+		"typescript": "^5.3.2"
+	},
+	"dependencies": {
+		"axios": "^1.6.2"
+	}
 }
