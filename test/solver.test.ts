@@ -50,13 +50,13 @@ test("getbaseurl", () => {
 test("create body", () => {
 	const f = testPack.createBody(mockInput, undefined);
 	const expected = {data: mockInput}
-	expect(JSON.stringify(f)).toBe(JSON.stringify(expected));
+	expect(f).toEqual(expected);
 });
 
 test("create body", () => {
 	const f = testPack.createBody(mockInput, mockOpts);
 	const expected = {data: mockInput, options: mockOpts.cols};
-	expect(JSON.stringify(f)).toBe(JSON.stringify(expected));
+	expect(f).toEqual(expected);
 });
 
 test("getBaseUrl", () => {
