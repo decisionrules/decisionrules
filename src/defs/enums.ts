@@ -4,3 +4,12 @@ export enum HostEnum {
 	REGION_US = "region_us",
 	REGION_AU = "region_au"
 }
+
+export enum MngCategoryEnum {
+	RULE = "rule",
+	SPACE = "space",
+	TAGS = "tags",
+	FOLDER = "folder",
+	TOOLS = "tools",
+	RULE_FLOW = "rule-flow"
+}

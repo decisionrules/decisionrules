@@ -1,8 +1,8 @@
 import { DecisionRulesOptions } from "../defs/models";
-import { HostEnum } from "../defs/enums";
 import { SolverOptions } from "../defs/models";
 import { AxiosHeaders } from "axios";
 import { doCall } from "../utils/httpClient";
+import { getBaseURL } from "../utils/utils";
 
 export async function solveRule(options: DecisionRulesOptions, ruleId: string, input: any, version?: string, solverOptions?: SolverOptions): Promise<any> {
 	try {
@@ -36,28 +36,6 @@ function createUrl(options: DecisionRulesOptions, ruleId: string, version: strin
 	} catch (e) {
 		throw e;
 	}
-}
-
-function getBaseURL(host: HostEnum | string): string {
-	let baseUrl: string = "";
-	switch(host) {
-		case HostEnum.GLOBAL_CLOUD:
-			baseUrl = "https://api.decisionrules.io";
-			break;
-		case HostEnum.REGION_EU:
-			baseUrl = "https://eu.api.decisionrules.io";
-			break;
-		case HostEnum.REGION_US:
-			baseUrl = "https://us.api.decisionrules.io";
-			break;
-		case HostEnum.REGION_AU:
-			baseUrl = "https://au.api.decisionrules.io";
-			break;
-		default:
-			baseUrl = host;
-			break;
-	}
-	return baseUrl;
 }
 
 function createHeaders(options: DecisionRulesOptions, solverOptions: SolverOptions | undefined): AxiosHeaders {
