@@ -11,7 +11,7 @@ const mockOpts: SolverOptions = {
 	debug: true,
 	corrId: "1111",
 	audit: false,
-	auditTtl: 1,
+	auditTtl: "1",
 	strategy: "STANDARD"
 }
 
@@ -117,7 +117,7 @@ test("createHeaders", () => {
 		debug: true,
 		corrId: "1111",
 		audit: false,
-		auditTtl: 1
+		auditTtl: "1"
 	};
 	const f = testPack.createHeaders(opt, mockOpts);
 	const expected = JSON.stringify({

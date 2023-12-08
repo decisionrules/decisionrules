@@ -3,7 +3,9 @@ import { HostEnum } from "./enums";
 export type DecisionRulesOptions = {
 	solverKey?: string;
 	managementKey?: string;
+	businessIntKey?: string;
 	host: HostEnum | string;
+	bi_host?: HostEnum | string;
 }
 
 export type SolverOptions = {
@@ -15,5 +17,5 @@ export type SolverOptions = {
 	corrId?: string,
 	strategy?: string,
 	audit?: boolean,
-	auditTtl?: number
+	auditTtl?: string
 }
