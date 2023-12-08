@@ -1,5 +1,4 @@
-export class SolverErrorException extends Error {
-
+export class DecisionRulesErrorException extends Error {
 	public cause: any;
 
 	constructor(message: string, cause: any) {
