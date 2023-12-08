@@ -3,7 +3,6 @@ import { HostEnum } from "./enums";
 export type DecisionRulesOptions = {
 	solverKey?: string;
 	managementKey?: string;
-	businessIntKey?: string;
 	host: HostEnum | string;
 }
 
