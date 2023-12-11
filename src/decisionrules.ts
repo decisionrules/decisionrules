@@ -80,7 +80,7 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		updateTags: async (ruleId: string, tags: any ,version?: string) => {
+		updateTags: async (ruleId: string, tags: string[] ,version?: string) => {
 			try {
 				return await updateTagsAPI(this.options, ruleId, tags, version);
 			} catch (e: any) {
