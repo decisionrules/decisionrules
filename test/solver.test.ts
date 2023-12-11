@@ -1,6 +1,6 @@
 import { AxiosHeaders } from "axios";
 import {testPack} from "../src/api/solver"
-import { HostEnum } from "../src/defs/enums";
+import { HostEnum, SdkMode } from "../src/defs/enums";
 import { DecisionRulesOptions, SolverOptions } from "../src/defs/models";
 
 const mockOpts: SolverOptions = {
@@ -60,31 +60,31 @@ test("create body", () => {
 });
 
 test("getBaseUrl", () => {
-	const f = testPack.getBaseURL(HostEnum.GLOBAL_CLOUD);
+	const f = testPack.getBaseURL(HostEnum.GLOBAL_CLOUD, SdkMode.API);
 	const expected = "https://api.decisionrules.io";
 	expect(f).toBe(expected);
 });
 
 test("getbaseurl", () => {
-	const f = testPack.getBaseURL(HostEnum.REGION_EU);
+	const f = testPack.getBaseURL(HostEnum.REGION_EU, SdkMode.API);
 	const expected = "https://eu.api.decisionrules.io";
 	expect(f).toBe(expected);
 });
 
 test("getbaseurl", () => {
-	const f = testPack.getBaseURL(HostEnum.REGION_AU);
+	const f = testPack.getBaseURL(HostEnum.REGION_AU, SdkMode.API);
 	const expected = "https://au.api.decisionrules.io";
 	expect(f).toBe(expected);
 });
 
 test("getbaseurl", () => {
-	const f = testPack.getBaseURL(HostEnum.REGION_US);
+	const f = testPack.getBaseURL(HostEnum.REGION_US, SdkMode.API);
 	const expected = "https://us.api.decisionrules.io";
 	expect(f).toBe(expected);
 });
 
 test("getbaseurl", () => {
-	const f = testPack.getBaseURL("http://localhost");
+	const f = testPack.getBaseURL("http://localhost", SdkMode.API);
 	const expected = "http://localhost";
 	expect(f).toBe(expected);
 });
@@ -149,3 +149,5 @@ test("createHeaders", () => {
 	});
 	expect(JSON.stringify(f.toJSON())).toBe(expected);
 });
+
+

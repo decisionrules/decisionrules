@@ -137,12 +137,12 @@ test("getCategoryUrl", () => {
 });
 
 test("createHeaders", () => {
-	const f = testManagementSet.createHeaders(opt);
+	const f = testManagementSet.createHeaders(opt.managementKey);
 	expect(f).toBeInstanceOf(AxiosHeaders);
 });
 
 test("createHeaders", () => {
-	const f = testManagementSet.createHeaders(opt);
+	const f = testManagementSet.createHeaders(opt.managementKey);
 	expect(f.get("Authorization")).toBe("Bearer 456def");
 });
 

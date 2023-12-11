@@ -3,6 +3,9 @@ import { SolverOptions } from "../defs/models";
 import { AxiosHeaders } from "axios";
 import { doCall } from "../utils/httpClient";
 import { getBaseURL } from "../utils/utils";
+import { SdkMode } from "../defs/enums";
+
+const MODE = SdkMode.API;
 
 export async function solveRule(options: DecisionRulesOptions, ruleId: string, input: any, version?: string, solverOptions?: SolverOptions): Promise<any> {
 	try {
@@ -32,7 +35,7 @@ function createUrl(options: DecisionRulesOptions, ruleId: string, version: strin
 		url += version;	
 	}
 	try {
-		return new URL(url, getBaseURL(options.host));
+		return new URL(url, getBaseURL(options.host, MODE));
 	} catch (e) {
 		throw e;
 	}

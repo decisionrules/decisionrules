@@ -1,3 +1,4 @@
+import { deleteAuditLogsAPI, getAuditLogsAPI } from "./api/businessIntelligence";
 import { 
 	createRuleAPI, 
 	deleteRuleAPI, 
@@ -12,9 +13,9 @@ import {
 	updateRuleStatusAPI, 
 	updateTagsAPI } from "./api/management";
 import { solveRule } from "./api/solver";
-import { DecisionRulesOptions } from "./defs/models";
+import { DecisionRulesAuditOpt, DecisionRulesOptions } from "./defs/models";
 import { SolverOptions } from "./defs/models";
-import { DecisionRulesErrorException } from "./exceptions/DecisionRulesException";
+import { handleError } from "./utils/utils";
 
 export default class DecisionRules {
 	private readonly options: DecisionRulesOptions;
@@ -25,7 +26,7 @@ export default class DecisionRules {
 		try {
 			return await solveRule(this.options, ruleId, data, version, solverOptions);
 		} catch (e: any) {
-			throw new DecisionRulesErrorException(`Solver failed with status: ${e.response.status}`, e.response.data);
+			throw handleError(e);
 		}
 	}
 
@@ -34,92 +35,111 @@ export default class DecisionRules {
 			try {
 				return await getRuleAPI(this.options, ruleId, version);
 			} catch (e: any) {
-				throw new DecisionRulesErrorException(`Call ended with status:${e.response.status}`, e.response.data);
+				throw handleError(e);
 			}
 		},
 		updateRuleStatus: async (ruleId: string, status: string, version?: string) => {
 			try {
 				return await updateRuleStatusAPI(this.options, ruleId, status, version);
 			} catch (e: any) {
-				throw new DecisionRulesErrorException(`Call ended with status:${e.response.status}`, e.response.data);
+				throw handleError(e);
 			}
 		},
 		updateRule: async (ruleId: string, rule: any, version?: string) => {
 			try {
 				return await updateRuleAPI(this.options, ruleId, rule, version);
 			} catch (e: any) {
-				throw new DecisionRulesErrorException(`Call ended with status:${e.response.status}`, e.response.data);
+				throw handleError(e);
 			}
 		},
 		createRule: async (rule: any) => {
 			try {
 				return await createRuleAPI(this.options, rule);
 			} catch (e: any) {
-				throw new DecisionRulesErrorException(`Call ended with status:${e.response.status}`, e.response.data);
+				throw handleError(e);
 			}
 		},
 		deleteRule: async (ruleId: string, version?: string) => {
 			try {
 				return await deleteRuleAPI(this.options, ruleId, version);
 			} catch (e: any) {
-				throw new DecisionRulesErrorException(`Call ended with status:${e.response.status}`, e.response.data);
+				throw handleError(e);	
 			}
 		},
 		getRulesForSpace: async () => {
 			try {
 				return await getRulesForSpaceAPI(this.options);
 			} catch (e: any) {
-				throw new DecisionRulesErrorException(`Call ended with status:${e.response.status}`, e.response.data);
+				throw handleError(e);
 			}
 		},
 		getTags: async (tags: string[]) => {
 			try {
 				return await getTagsAPI(this.options, tags);
 			} catch (e: any) {
-				throw new DecisionRulesErrorException(`Call ended with status:${e.response.status}`, e.response.data);
+				throw handleError(e);
 			}
 		},
 		updateTags: async (ruleId: string, tags: any ,version?: string) => {
 			try {
 				return await updateTagsAPI(this.options, ruleId, tags, version);
 			} catch (e: any) {
-				throw new DecisionRulesErrorException(`Call ended with status:${e.response.status}`, e.response.data);
+				throw handleError(e);
 			}
 		},
 		deleteTags: async (ruleId: string, tags: string[], version?: string) => {
 			try {
 				return await deleteTagsAPI(this.options, ruleId, tags, version);
 			} catch (e: any) {
-				throw new DecisionRulesErrorException(`Call ended with status:${e.response.status}`, e.response.data);
+				throw handleError(e);
 			}
 		},
 		exportFolder: async (nodeId: string) => {
 			try {
 				return await exportFolderAPI(this.options, nodeId);
 			} catch (e: any) {
-				throw new DecisionRulesErrorException(`Call ended with status:${e.response.status}`, e.response.data);
+				throw handleError(e);
 			}
 		},
 		importFolder: async (targetNodeid: string) => {
 			try {
 				return await exportFolderAPI(this.options, targetNodeid);
 			} catch (e: any) {
-				throw new DecisionRulesErrorException(`Call ended with status:${e.response.status}`, e.response.data);
+				throw handleError(e);
 			}
 		},
 		findDuplicates: async (ruleId: string, version?: string) => {
 			try {
 				return await findDuplicatesAPI(this.options, ruleId, version);
 			} catch (e: any) {
-				throw new DecisionRulesErrorException(`Call ended with status:${e.response.status}`, e.response.data);
+				throw handleError(e);
 			}
 		},
 		findDependencies: async (ruleId: string, version?: string) => {
 			try {
 				return await findDependenciesAPI(this.options, ruleId, version);
 			} catch (e: any) {
-				throw new DecisionRulesErrorException(`Call ended with status:${e.response.status}`, e.response.data);
+				throw handleError(e);
+			}
+		}
+	};
+
+	public bi = {
+		getAuditLogs: async (auditLogsOpts: DecisionRulesAuditOpt) => {
+			try {
+				return await getAuditLogsAPI(this.options, auditLogsOpts);
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		deleteAuditLogs: async (auditLogsOpts: DecisionRulesAuditOpt) => {
+			try {
+				return await deleteAuditLogsAPI(this.options, auditLogsOpts);
+			} catch (e: any) {
+				throw handleError(e);	
 			}
 		}
 	};
 }
+
+

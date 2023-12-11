@@ -13,3 +13,8 @@ export enum MngCategoryEnum {
 	TOOLS = "tools",
 	RULE_FLOW = "rule-flow"
 }
+
+export enum SdkMode {
+	API = "API",
+	AUDIT = "AUDIT"
+}
