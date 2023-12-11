@@ -1,5 +1,5 @@
 {
-	"name": "decisionrules",
+	"name": "@decisionrules/decisionrules",
 	"version": "0.0.1",
 	"description": "Simple connector for DecisionRules.io APIU",
 	"main": "dist/decisionrules.js",
