@@ -1,5 +1,7 @@
 # DecisionRules
 
+![Jest CI](https://github.com/decisionrules/decisionrules/actions/workflows/main.yml/badge.svg)
+
 [Decisionrules.io](https://decisionrules.io) library that allows you to integrate DecisionRules Solver, Management and Business Intelligence API to you application as easily as possible.
 
 # Table of contents
