@@ -322,6 +322,21 @@ const result = await dr.management.findDependencies(ruleId, version);
 | ruleId   	| string   	| no           	|
 | version  	| string   	| yes          	|
 
+**DecisionRules.management.lockRule**
+
+Locks rule for editation. For input data refer to our docs.
+
+```javascript
+const result = await dr.management.lockRule(ruleId, data, version);
+// => Promise<any>
+```
+
+| **args** 	| **type** 	| **optional** 	|
+|----------	|----------	|--------------	|
+| ruleId   	| string   	| no           	|
+| data     	| any   	| no           	|
+| version  	| string   	| yes          	|
+
 # Business Intelligence API
 
 **DecisionRules.bi.getAuditLogs**
