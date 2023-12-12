@@ -54,7 +54,7 @@ const solverOpt = {
   auditTtl: "14"
 }
 
-const result = await dr.solve(ruleId, version, options);
+const result = await dr.solve(ruleId, version, solverOpt);
 ```
 
 **Management API example**
@@ -62,7 +62,7 @@ const result = await dr.solve(ruleId, version, options);
 Management API can be used through management object on DecisionRules class. All methods return a Promise
 
 ```javascript
-const rule = await dr.getRule(ruleId, version);
+const rule = await dr.management.getRule(ruleId, version);
 ```
 
 **Business Intelligence API exapmle**
@@ -97,7 +97,7 @@ Methods throws DecisionRulesErrorException if something went wrong down on API c
 **DecisionRules.solve**
 
 ```javascript
-solve(ruleId, version, options);
+const result = await dr.solve(ruleId, version, options);
 // => Promise<any>
 ```
 Arguments:
@@ -322,7 +322,7 @@ const result = await dr.management.findDependencies(ruleId, version);
 | ruleId   	| string   	| no           	|
 | version  	| string   	| yes          	|
 
-# Business intelligence API
+# Business Intelligence API
 
 **DecisionRules.bi.getAuditLogs**
 
@@ -345,7 +345,6 @@ This function allows you to delete audit logs from the database when you no long
 Not all atributes from DecisionRulesAuditOpt are valid for deleting audit logs. Please refer to our docs for more info.
 
 ```javascript
-
 const result = await dr.bi.deleteAuditLogs(auditLogsOpt);
 // => Promise<any>
 ```
