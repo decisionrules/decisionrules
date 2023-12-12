@@ -162,6 +162,17 @@ export async function findDependenciesAPI(options: DecisionRulesOptions, ruleId:
 	}
 }
 
+export async function lockRuleAPI(options: DecisionRulesOptions, ruleId: string, version?: string): Promise<any> {
+	try {
+		const headers = createHeaders(options.managementKey);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, ["lock", ruleId, version ?? ""]);
+		const response = await doCall(url, headers, "PATCH");
+		return response.data;
+	} catch (e:any) {
+		throw e;
+	}
+}
+
 export const testManagementSet = {
 	getCategoryUrl,
 	createHeaders

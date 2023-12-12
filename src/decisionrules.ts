@@ -9,6 +9,7 @@ import {
 	getRuleAPI, 
 	getRulesForSpaceAPI, 
 	getTagsAPI, 
+	lockRuleAPI, 
 	updateRuleAPI, 
 	updateRuleStatusAPI, 
 	updateTagsAPI } from "./api/management";
@@ -118,6 +119,13 @@ export default class DecisionRules {
 		findDependencies: async (ruleId: string, version?: string) => {
 			try {
 				return await findDependenciesAPI(this.options, ruleId, version);
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		lockRule: async (ruleId: string, version?: string) => {
+			try {
+				return await lockRuleAPI(this.options, ruleId, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
