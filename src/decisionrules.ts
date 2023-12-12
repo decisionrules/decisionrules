@@ -123,9 +123,9 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		lockRule: async (ruleId: string, version?: string) => {
+		lockRule: async (ruleId: string, data:any, version?: string) => {
 			try {
-				return await lockRuleAPI(this.options, ruleId, version);
+				return await lockRuleAPI(this.options, ruleId, data, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
