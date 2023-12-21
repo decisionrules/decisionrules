@@ -245,7 +245,7 @@ const result = await dr.management.updateTags(ruleId, tags, version);
 | **args** 	| **type** 	| **optional** 	|
 |----------	|----------	|--------------	|
 | ruleId   	| string   	| no           	|
-| tags     	| string[] 	| no           	|
+| tags     	| any     	| no           	|
 | version  	| string   	| yes          	|
 
 **DecisionRules.management.deleteTags**
@@ -291,6 +291,7 @@ const result = await dr.management.importFolder(targetNodeId);
 | **args**     	| **type** 	| **optional** 	|
 |--------------	|----------	|--------------	|
 | targetNodeId 	| string   	| no           	|
+| data        	| any      	| no           	|
 
 **DecisionRules.management.findDuplicates**
 
@@ -334,7 +335,7 @@ const result = await dr.management.lockRule(ruleId, data, version);
 | **args** 	| **type** 	| **optional** 	|
 |----------	|----------	|--------------	|
 | ruleId   	| string   	| no           	|
-| data     	| any   	| no           	|
+| data     	| any   	  | no           	|
 | version  	| string   	| yes          	|
 
 # Business Intelligence API
