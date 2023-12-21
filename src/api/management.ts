@@ -9,7 +9,7 @@ const MODE = SdkMode.API;
 function getCategoryUrl(host: HostEnum | string, category: MngCategoryEnum, apiPath: string[], queryParams?: string[]): URL {
 	try {
 		const baseUrl = getBaseURL(host, MODE);
-		let path: string = `/api/${category}/${apiPath.join("/")}`;
+		let path: string = `/api/${category}/${apiPath.filter(pathParam => pathParam !== "").join("/")}`;
 		if (queryParams) {
 			path += `/?tags=${queryParams.toString().trim()}`
 		}

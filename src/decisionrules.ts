@@ -9,6 +9,7 @@ import {
 	getRuleAPI, 
 	getRulesForSpaceAPI, 
 	getTagsAPI, 
+	importFolderAPI, 
 	lockRuleAPI, 
 	updateRuleAPI, 
 	updateRuleStatusAPI, 
@@ -81,7 +82,7 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		updateTags: async (ruleId: string, tags: string[] ,version?: string) => {
+		updateTags: async (ruleId: string, tags: any, version?: string) => {
 			try {
 				return await updateTagsAPI(this.options, ruleId, tags, version);
 			} catch (e: any) {
@@ -102,9 +103,9 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		importFolder: async (targetNodeid: string) => {
+		importFolder: async (targetNodeid: string, data: any) => {
 			try {
-				return await exportFolderAPI(this.options, targetNodeid);
+				return await importFolderAPI(this.options, targetNodeid, data);
 			} catch (e: any) {
 				throw handleError(e);
 			}

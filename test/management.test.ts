@@ -136,6 +136,12 @@ test("getCategoryUrl", () => {
 	expect(f.href).toBe(expected);
 });
 
+test("getCategoryUrl", () => {
+	const f = testManagementSet.getCategoryUrl(opt.host, MngCategoryEnum.TAGS, ["123", ""]);
+	const expected = "https://api.decisionrules.io/api/tags/123";
+	expect(f.href).toBe(expected);
+});
+
 test("createHeaders", () => {
 	const f = testManagementSet.createHeaders(opt.managementKey);
 	expect(f).toBeInstanceOf(AxiosHeaders);
@@ -145,4 +151,3 @@ test("createHeaders", () => {
 	const f = testManagementSet.createHeaders(opt.managementKey);
 	expect(f.get("Authorization")).toBe("Bearer 456def");
 });
-
