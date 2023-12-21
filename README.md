@@ -15,6 +15,9 @@
 ```
 npm i @decisionrules/decisionrules
 ```
+
+Or download tgz file and install from release page.
+
 <a name="example"></a>
 # Usage and example
 
