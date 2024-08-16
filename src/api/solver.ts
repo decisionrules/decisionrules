@@ -32,7 +32,7 @@ function createBody(input: any, solverOptions: SolverOptions | undefined): any {
 function createUrl(options: DecisionRulesOptions, ruleId: string, version: string | undefined): URL {
 	let url: string = `/rule/solve/${ruleId}/`;
 	if (version) {
-		url += version;	
+		url += version;
 	}
 	try {
 		return new URL(url, getBaseURL(options.host, MODE));
@@ -50,12 +50,16 @@ function createHeaders(options: DecisionRulesOptions, solverOptions: SolverOptio
 		} else {
 			throw Error("Solver key missing.");
 		}
-		headers.set("X-Debug", new String(solverOptions?.debug ?? false).valueOf());
+		if (solverOptions?.debug) {
+		  headers.set("X-Debug", new String(solverOptions?.debug ?? false).valueOf());
+		}
 		if (solverOptions?.corrId) {
 			headers.set("X-Correlation-Id", solverOptions.corrId);
 		}
 		headers.set("X-Strategy", solverOptions?.strategy ?? "STANDARD");
-		headers.set("X-Audit", new String(solverOptions?.audit ?? false).valueOf());
+		if (solverOptions?.audit) {
+		  headers.set("X-Audit", new String(solverOptions?.audit ?? false).valueOf());
+		}
 		if (solverOptions?.auditTtl) {
 			headers.set("X-Audit-Ttl", solverOptions.auditTtl.toString());
 		}
