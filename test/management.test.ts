@@ -7,7 +7,6 @@ import { AxiosHeaders } from "axios";
 const opt: DecisionRulesOptions = {
     solverKey: "123abc",
     managementKey: "456def",
-    businessIntKey: "789ghi",
     host: HostEnum.GLOBAL_CLOUD
 };
 
