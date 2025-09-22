@@ -50,16 +50,16 @@ function createHeaders(options: DecisionRulesOptions, solverOptions: SolverOptio
 		} else {
 			throw Error("Solver key missing.");
 		}
-		if (solverOptions?.debug) {
-		  headers.set("X-Debug", new String(solverOptions?.debug ?? false).valueOf());
-		}
+
+        headers.set("X-Debug", new String(solverOptions?.debug ?? false).valueOf());
+
 		if (solverOptions?.corrId) {
 			headers.set("X-Correlation-Id", solverOptions.corrId);
 		}
 		headers.set("X-Strategy", solverOptions?.strategy ?? "STANDARD");
-		if (solverOptions?.audit) {
-		  headers.set("X-Audit", new String(solverOptions?.audit ?? false).valueOf());
-		}
+
+        headers.set("X-Audit", new String(solverOptions?.audit ?? false).valueOf());
+
 		if (solverOptions?.auditTtl) {
 			headers.set("X-Audit-Ttl", solverOptions.auditTtl.toString());
 		}

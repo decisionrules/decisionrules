@@ -5,9 +5,7 @@ export type DecisionRulesHost = HostEnum | string;
 export type DecisionRulesOptions = {
 	solverKey?: string;
 	managementKey?: string;
-	businessIntKey?: string;
 	host: HostEnum | string;
-	bi_host?: HostEnum | string;
 }
 
 export type SolverOptions = {
@@ -22,17 +20,15 @@ export type SolverOptions = {
 	auditTtl?: string
 }
 
-export type DecisionRulesAuditOpt = {
-	page?: string;
-	page_size?: string;
-	limit?: string;
-	corrIds?: string[];
-	rules?: string[];
-	solver_keys?: string[];
-	tags?: string[];
-	date_gte?: string;
-	date_lte?: string;
-	order?: string;
-	include_debug?: string;
-	status_code?: string;
+export enum RuleStatus {
+	PENDING = "pending",
+	PUBLISHED = "published"
 }
+
+export enum FolderType {
+	ROOT = "ROOT",
+	FOLDER = "FOLDER",
+	RULE = "RULE"
+}
+
+export type FolderExport = any

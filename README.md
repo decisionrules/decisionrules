@@ -31,9 +31,7 @@ import DecisionRules from "@decisionrules/decisionrules"
 const opt = {
   solverKey: "solver_key_string",
   managementKey: "_management_key_string",
-  businessIntKey: "business-intelligence_key_string",
-  host: HostEnum | "domain",
-  bi_host: HostEnum | "bi_domain"
+  host: "domain",
 };
 
 const dr = new DecisionRules(opt);
@@ -44,6 +42,13 @@ const dr = new DecisionRules(opt);
 Calls can be done with solve method on DecisionRules class that returns a Promise.
 
 ```javascript
+
+const inputData = {
+    "tripDetails": {
+        "origin": "ATL",
+        "destination": "DXB",
+    }
+}
 
 const solverOpt = {
   cols: {
@@ -57,7 +62,7 @@ const solverOpt = {
   auditTtl: "14"
 }
 
-const result = await dr.solve(ruleId, version, solverOpt);
+const result = await dr.solve(inputData, ruleId, version, solverOpt);
 ```
 
 **Management API example**
@@ -68,26 +73,57 @@ Management API can be used through management object on DecisionRules class. All
 const rule = await dr.management.getRule(ruleId, version);
 ```
 
-**Business Intelligence API exapmle**
+**Job API example**
+
+Job API can be used to run input data against Integration Flow. All methods return a Promise
 
 ```javascript
-const auditLogsOptions = {
-  page: "10",
-  page_size: "5",
-  limit: "10",
-  corrIds: ["mycorId"],
-  rules: ["myruleId"],
-  solver_keys: ["1234abcd],
-  tags: ["t1",t2],
-  date_gte: "2023-02",
-  date_lte: "2023-02",
-  order: "asc",
-  include_debug: "false,
-  status_code: "200"
+const inputData = {
+    "tripDetails": {
+        "origin": "ATL",
+        "destination": "DXB",
+    }
 }
 
-const logs = await dr.bi.getAuditLogs(auditLogsOptions);
+const rule = await dr.job.start(inputData, ruleId, version);
 ```
+
+
+**Webhook API example**
+
+Webhook API can be used to validate webhook signature.
+
+```javascript
+const WEBHOOK_SECRET = "WEBHOOK_SECRET_FROM_CRAETED_WEBHOOK";
+
+app.post('/webhook', (req, res) => {
+    const signature = req.headers['x-webhook-signature'];
+    
+    try {
+        const isValid = dr.validateWebhookSignature(req.body, signature, WEBHOOK_SECRET);
+        if (!isValid) {
+            return res.status(401).json({ error: 'Invalid signature' });
+        }
+        // Webhook is validated, now handle the event
+        const { eventType, data, metadata } = req.body;
+
+        switch (eventType) {
+            case 'JOB.COMPLETED':
+                console.log('Job completed:', data);
+                // Handle job completion
+                break;
+            case 'JOB.ERROR':
+                console.log('Job failed:', data);
+                // Handle job error
+                break;
+        }
+
+    }catch (e) {
+        res.status(400).json({ error: 'Invalid webhook payload' });
+    }
+})
+```
+
 <a name="api"></a>
 # API
 
@@ -100,16 +136,17 @@ Methods throws DecisionRulesErrorException if something went wrong down on API c
 **DecisionRules.solve**
 
 ```javascript
-const result = await dr.solve(ruleId, version, options);
+const result = await dr.solve(inputData, ruleId, version, options);
 // => Promise<any>
 ```
 Arguments:
 
-| **arg** 	| **type**      	| **optional** 	|
-|---------	|---------------	|--------------	|
-| ruleId  	| string        	| no           	|
-| version 	| string        	| yes          	|
-| options 	| SolverOptions 	| yes          	|
+| **arg** 	    | **type**      	 | **optional** 	|
+|--------------|-----------------|--------------	|
+| inputData  	 | object        	 | no           	|
+| ruleId  	    | string        	 | no           	|
+| version 	    | string        	 | yes          	|
+| options 	    | SolverOptions 	 | yes          	|
 
 **SolverOptions**
 
@@ -136,7 +173,7 @@ If the version is not specified, gets the latest published version.
 
 ```javascript
 
-const result = await dr.management.getRule(ruleId, version);
+const result = await dr.management.getRule(ruleIdOrAlias, version);
 // => Promise<any>
 ```
 
@@ -144,7 +181,7 @@ Arguments:
 
 | **args** 	| **type** 	| **optional** 	|
 |----------	|----------	|--------------	|
-| ruleId   	| string   	| no           	|
+| ruleIdOrAlias   	| string   	| no           	|
 | version  	| string   	| yes          	|
 
 **DecisionRules.management.updateRuleStatus**
@@ -153,12 +190,12 @@ Changes rule status from pending to published and vice versa. If the version is 
 
 ```javascript
 
-const result = await dr.management.updateRuleStatus(ruleId, status, version)
+const result = await dr.management.updateRuleStatus(ruleIdOrAlias, status, version)
 // => Promise<any>
 ```
 | **args** 	| **type** 	| **optional** 	|
 |----------	|----------	|--------------	|
-| ruleId   	| string   	| no           	|
+| ruleIdOrAlias   	| string   	| no           	|
 | status   	| string   	| no           	|
 | version  	| string   	| yes          	|
 
@@ -170,13 +207,13 @@ Note that there are a few attributes of the rule that cannot be updated by the P
 
 ```javascript
 
-const result = await dr.management.updateRule(ruleId, rule, version);
+const result = await dr.management.updateRule(ruleIdOrAlias, rule, version);
 // => Promise<any>
 ```
 
 | **args** 	| **type** 	| **optional** 	|
 |----------	|----------	|--------------	|
-| ruleId   	| string   	| no           	|
+| ruleIdOrAlias   	| string   	| no           	|
 | rule     	| any      	| no           	|
 | version  	| string   	| yes          	|
 
@@ -186,13 +223,31 @@ Creates rule based on the body of the request. The body must be formatted accord
 
 ```javascript
 
-const result = await dr.management.createRule(rule);
+const result = await dr.management.createRule(rule, path);
 // => Promise<any>
 ```
 
 | **args** 	| **type** 	| **optional** 	|
 |----------	|----------	|--------------	|
 | rule     	| any      	| no           	|
+| path     	    | string      	 | yes           	 |
+
+
+**DecisionRules.management.createNewRuleVersion**
+
+Creates new version of a rule and applies changes to new rule based on the body of the request. The body must be formatted according to the example below.
+
+```javascript
+
+const result = await dr.management.createNewRuleVersion(ruleIdOrAlias, rule);
+// => Promise<any>
+```
+
+| **args** 	| **type** 	| **optional** 	|
+|----------	|----------	|--------------	|
+| ruleIdOrAlias     	| any      	| no           	|
+| rule     	| any      	| no           	|
+
 
 **DecisionRules.management.deleteRule**
 
@@ -208,6 +263,54 @@ const result = await dr.management.deleteRule(ruleId, version);
 |----------	|----------	|--------------	|
 | ruleId   	| string   	| no           	|
 | version  	| string   	| yes          	|
+
+**DecisionRules.management.lockRule**
+
+Lock the rule.
+
+```javascript
+
+const result = await dr.management.lockRule(lock, ruleId, version);
+// => Promise<any>
+```
+
+| **args** 	 | **type** 	  | **optional** 	|
+|------------|-------------|--------------	|
+| lock     	 | boolean   	 | no           	|
+| ruleId   	 | string   	  | no           	|
+| version  	 | string   	  | yes          	|
+
+
+**DecisionRules.management.findDuplicates**
+
+Look for decision table by id and optionally version. If the decision table is found, it is returned together with an array of duplicates.
+
+```javascript
+
+const result = await dr.management.findDuplicates(ruleId, version);
+// => Promise<any>
+```
+
+| **args** 	| **type** 	| **optional** 	|
+|----------	|----------	|--------------	|
+| ruleId   	| string   	| no           	|
+| version  	| string   	| yes          	|
+
+**DecisionRules.management.findDependencies**
+
+Look for dependencies by id or alias and optionally version. If the rule is found, it is returned together with an array of dependencies.
+
+```javascript
+
+const result = await dr.management.findDependencies(ruleId, version);
+// => Promise<any>
+```
+
+| **args** 	| **type** 	| **optional** 	|
+|----------	|----------	|--------------	|
+| ruleId   	| string   	| no           	|
+| version  	| string   	| yes          	|
+
 
 **DecisionRules.management.getRulesForSpace**
 
@@ -296,97 +399,230 @@ const result = await dr.management.importFolder(targetNodeId);
 | targetNodeId 	| string   	| no           	|
 | data        	| any      	| no           	|
 
-**DecisionRules.management.findDuplicates**
 
-Look for decision table by id and optionally version. If the decision table is found, it is returned together with an array of duplicates.
+**DecisionRules.management.exportRuleFlow**
 
-```javascript
-
-const result = await dr.management.findDuplicates(ruleId, version);
-// => Promise<any>
-```
-
-| **args** 	| **type** 	| **optional** 	|
-|----------	|----------	|--------------	|
-| ruleId   	| string   	| no           	|
-| version  	| string   	| yes          	|
-
-**DecisionRules.management.findDependencies**
-
-Look for dependencies by id or alias and optionally version. If the rule is found, it is returned together with an array of dependencies.
+Export Rule Flow with all rules. If the version is not specified, export Rule Flow with the latest version.
 
 ```javascript
 
-const result = await dr.management.findDependencies(ruleId, version);
+const result = await dr.management.exportRuleFlow(ruleIdOrAlias, version);
 // => Promise<any>
 ```
 
-| **args** 	| **type** 	| **optional** 	|
-|----------	|----------	|--------------	|
-| ruleId   	| string   	| no           	|
-| version  	| string   	| yes          	|
+| **args**     	           | **type** 	| **optional** 	  |
+|--------------------------|----------	|-----------------|
+| ruleIdOrAlias, version 	 | string   	| no           	  |
+| version        	         | string      	| yes           	 |
 
-**DecisionRules.management.lockRule**
+**DecisionRules.management.importRuleFlow**
 
-Locks rule for editation. For input data refer to our docs.
-
-```javascript
-const result = await dr.management.lockRule(ruleId, data, version);
-// => Promise<any>
-```
-
-| **args** 	| **type** 	| **optional** 	|
-|----------	|----------	|--------------	|
-| ruleId   	| string   	| no           	|
-| data     	| any   	  | no           	|
-| version  	| string   	| yes          	|
-
-# Business Intelligence API
-
-**DecisionRules.bi.getAuditLogs**
-
-This function allows you to fetch audit logs from your rule solver, including metadata of the solver run as well as the input and output data.
-
+Import Rule Flow with all rules. If no query parameters are set, a new Rule Flow will be created. If the new-version and version query parameter are set, a new version of the targeted Rule Flow will be created. If the overwrite and version query parameters are set, a specific version of the target rule flow will be overwritten.
 ```javascript
 
-const result = await dr.bi.getAuditLogs(auditLogsOpt);
+const result = await dr.management.importRuleFlow(ruleFlow, options);
 // => Promise<any>
 ```
 
-| **args**     	| **type**              	| **optional** 	|
-|--------------	|-----------------------	|--------------	|
-| auditLogsOpt 	| DecisionRulesAuditOpt 	| no           	|
+| **args**     	   | **type** 	 | **optional** 	  |
+|------------------|------------|-----------------|
+| ruleFlow 	       | any   	    | no           	  |
+| options        	 | any      	 | yes           	 |
 
-**DecisionRules.bi.deleteAuditLogs**
 
-This function allows you to delete audit logs from the database when you no longer need them.
+| **options**     	 | **type** 	    | **optional** 	  |
+|-------------------|---------------|-----------------|
+| newVersion 	      | string   	    | yes           	 |
+| overwrite        	  | string      	 | yes           	 |
+| version        	  | string      	 | yes           	 |
 
-Not all atributes from DecisionRulesAuditOpt are valid for deleting audit logs. Please refer to our docs for more info.
+
+**DecisionRules.management.createFolder**
+
+Creates folders under a specified target, moves rules into the new structure by baseId or ruleAlias. Define which folder's structure to update by either inputting it's id as a parameter. Appends the Folder Structure specified in the request body as a child of the target node.
+```javascript
+
+const result = await dr.management.createFolder(targetNodeId, data);
+// => Promise<any>
+```
+
+| **args**     	 | **type** 	 | **optional** 	  |
+|----------------|------------|-----------------|
+| targetNodeId 	 | string   	 | yes           	 |
+| data        	  | any      	 | yes           	 |
+
+
+| **data**     	    | **type** 	      | **optional** 	  |
+|-------------------|-----------------|-----------------|
+| type 	            | string   	      | yes           	 |
+| name        	     | string      	   | yes           	 |
+| id        	       | string      	   | yes           	 |
+| baseId 	          | string   	      | yes           	 |
+| version        	  | string      	   | yes           	 |
+| children        	 | object[]      	 | yes           	 |
+
+**DecisionRules.management.updateNodeFolderStructure**
+
+Creates folders under a specified target, moves rules into the new structure by baseId or ruleAlias. Define which folder's structure to update by either inputting it's id as a parameter. Appends the Folder Structure specified in the request body as a child of the target node.
+```javascript
+
+const result = await dr.management.updateNodeFolderStructure(targetNodeId, data);
+// => Promise<any>
+```
+
+| **args**     	 | **type** 	 | **optional** 	 |
+|----------------|------------|----------------|
+| targetNodeId 	 | string   	 | no           	 |
+| data        	  | any      	 | no           	 |
+
+
+| **data**     	    | **type** 	      | **optional** 	  |
+|-------------------|-----------------|-----------------|
+| type 	            | string   	      | yes           	 |
+| name        	     | string      	   | yes           	 |
+| id        	       | string      	   | yes           	 |
+| baseId 	          | string   	      | yes           	 |
+| version        	  | string      	   | yes           	 |
+| children        	 | object[]      	 | yes           	 |
+
+**DecisionRules.management.getNodeFolderStructure**
+
+Retrieve folder structure by node ID. Returns a JSON with a tree like structure containing the descendant folders and rules of the target node.
+```javascript
+
+const result = await dr.management.getNodeFolderStructure(targetNodeId);
+// => Promise<any>
+```
+
+| **args**     	 | **type** 	 | **optional** 	 |
+|----------------|------------|----------------|
+| targetNodeId 	 | string   	 | no           	 |
+
+**DecisionRules.management.deleteFolder**
+
+Delete a folder (Including it's rules) by node ID. If you want to delete the contents of the entire space target the 'root' by Id and include the optional parameter deleteAll=true.
+```javascript
+
+const result = await dr.management.deleteFolder(targetNodeId, deleteAll);
+// => Promise<any>
+```
+
+| **args**     	 | **type** 	  | **optional** 	  |
+|----------------|-------------|-----------------|
+| targetNodeId 	 | string   	  | no           	   |
+| deleteAll 	    | boolean   	 | yes           	 |
+
+**DecisionRules.management.renameFolder**
+
+Delete a folder (Including it's rules) by node ID. If you want to delete the contents of the entire space target the 'root' by Id and include the optional parameter deleteAll=true.
+```javascript
+
+const result = await dr.management.renameFolder(targetNodeId);
+// => Promise<any>
+```
+
+| **args**     	 | **type** 	 | **optional** 	  |
+|----------------|------------|-----------------|
+| targetNodeId 	 | string   	 | no           	   |
+| name 	         | string   	 | yes           	 |
+
+**DecisionRules.management.moveFolder**
+
+Moves folders (including descendants) and/or rules under the parent specified by targetId or targetPath attribute in the request body.
+```javascript
+
+const result = await dr.management.moveFolder(targetNodeId, data);
+// => Promise<any>
+```
+
+| **args**     	 | **type** 	 | **optional** 	 |
+|----------------|------------|----------------|
+| targetNodeId 	 | string   	 | no           	 |
+| data 	         | string   	 | no           	 |
+
+| **data**     	 | **type** 	   | **optional** 	  |
+|----------------|--------------|-----------------|
+| targetId 	 | string   	   | yes           	 |
+| targetPath 	         | string   	   | yes           	 |
+| nodes 	         | object[]   	 | yes           	 |
+
+**DecisionRules.management.findFolderOrRuleByAttribute**
+
+Finds Folders and Rules which satisfy all of the criteria from the request body. Use any of the attributes listed below or their combination to find folders and rules.
+```javascript
+
+const result = await dr.management.findFolderOrRuleByAttribute(data);
+// => Promise<any>
+```
+
+| **args**     	 | **type** 	 | **optional** 	 |
+|----------------|------------|----------------|
+| data 	         | string   	 | no           	 |
+
+| **data**     	 | **type** 	   | **optional** 	  |
+|----------------|--------------|-----------------|
+| name 	 | string   	   | yes           	 | 
+| id 	         | string   	   | yes           	 |
+| baseId 	         | string   	 | yes           	 |
+| ruleAlias 	         | string   	 | yes           	 |
+| ruleType 	         | string   	 | yes           	 |
+| tags 	         | string[]   	 | yes           	 |
+| ruleState 	         | string   	 | yes           	 |
+| type 	         | string   	 | yes           	 |
+| version 	         | number   	 | yes           	 |
+
+**DecisionRules.job.start**
+
+Starts a new asynchronous job for a specific Integration Flow. The identifier is the unique ID of the Integration Flow, and version is its specific version. This endpoint only accepts rules of type IntegrationFlow.
+```javascript
+
+const result = await dr.job.start(targetNodeId, data);
+// => Promise<any>
+```
+
+| **args**     	 | **type** 	 | **optional** 	 |
+|----------------|------------|----------------|
+| inputData 	 | object   	 | no           	 |
+| ruleId 	 | string   	 | no           	 |
+| version 	         | string   	 | no           	 |
+
+**DecisionRules.job.cancel**
+
+Attempts to cancel a specific job by its ID. The job must belong to the requesting space.
+```javascript
+
+const result = await dr.job.cancel(jobId);
+// => Promise<any>
+```
+
+| **args**     	 | **type** 	 | **optional** 	 |
+|----------------|------------|----------------|
+| jobId 	 | string   	 | no           	 |
+
+**DecisionRules.job.info**
+
+Retrieves detailed information about a specific job, including its status and output. The job must belong to the requesting space.
 
 ```javascript
-const result = await dr.bi.deleteAuditLogs(auditLogsOpt);
+
+const result = await dr.job.info(jobId);
 // => Promise<any>
 ```
 
-| **args**     	| **type**              	| **optional** 	|
-|--------------	|-----------------------	|--------------	|
-| auditLogsOpt 	| DecisionRulesAuditOpt 	| no           	|
+| **args**     	 | **type** 	 | **optional** 	 |
+|----------------|------------|----------------|
+| jobId 	 | string   	 | no           	 |
 
-**DecisionRulesAuditOpt**
+**DecisionRules.validateWebhookSignature**
 
-Object that defined business intelligence query behavior.
+Validates webhook signature.
 
-| **args**      	| **type** 	| **optional** 	|
-|---------------	|----------	|--------------	|
-| page          	| string   	| yes          	|
-| page_size     	| string   	| yes          	|
-| limit         	| string   	| yes          	|
-| corrIds       	| string[] 	| yes          	|
-| rules         	| string[] 	| yes          	|
-| solver_keys   	| string[] 	| yes          	|
-| tags          	| string[] 	| yes          	|
-| date_gte      	| string   	| yes          	|
-| date_lte      	| string   	| yes          	|
-| order         	| string   	| yes          	|
-| include_debug 	| string   	| yes          	|
-| status_code   	| string   	| yes          	|
+```javascript
+
+const result = dr.validateWebhookSignature(payload, signature, secret);
+// => boolean
+```
+
+| **args**     	 | **type** 	 | **optional** 	 |
+|----------------|------------|----------------|
+| jobId 	 | string   	 | no           	 |
