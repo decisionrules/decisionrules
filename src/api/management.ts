@@ -150,7 +150,7 @@ export async function getRulesByTagsAPI(options: DecisionRulesOptions, tags: str
 	}
 }
 
-export async function updateTagsAPI(options: DecisionRulesOptions, ruleId: string, tags: any, version?: string): Promise<any> {
+export async function addTagsAPI(options: DecisionRulesOptions, ruleId: string, tags: any, version?: string): Promise<any> {
 	try {
 		const headers = createHeaders(options.managementKey);
 		const url = getCategoryUrl(options.host, MngCategoryEnum.TAGS, [ruleId, version ?? ""]);

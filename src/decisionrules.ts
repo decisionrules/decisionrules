@@ -1,5 +1,5 @@
 import { cancelJobAPI, jobInfoAPI, startJobAPI } from "./api/job";
-import { createFolderAPI, createNewRuleVersionAPI, createRuleAPI, deleteFolderAPI, deleteRuleAPI, deleteTagsAPI, exportFolderAPI, exportRuleFlowAPI, findDependenciesAPI, findDuplicatesAPI, findFolderOrRuleByAttributeAPI, getNodeFolderStructureAPI, getRuleAPI, getRulesForSpaceAPI, getRulesByTagsAPI, importFolderAPI, importRuleFlowAPI, lockRuleAPI, moveFolderAPI, renameFolderAPI, updateNodeFolderStructureAPI, updateRuleAPI, updateRuleStatusAPI, updateTagsAPI } from "./api/management";
+import { createFolderAPI, createNewRuleVersionAPI, createRuleAPI, deleteFolderAPI, deleteRuleAPI, deleteTagsAPI, exportFolderAPI, exportRuleFlowAPI, findDependenciesAPI, findDuplicatesAPI, findFolderOrRuleByAttributeAPI, getNodeFolderStructureAPI, getRuleAPI, getRulesForSpaceAPI, getRulesByTagsAPI, importFolderAPI, importRuleFlowAPI, lockRuleAPI, moveFolderAPI, renameFolderAPI, updateNodeFolderStructureAPI, updateRuleAPI, updateRuleStatusAPI, addTagsAPI } from "./api/management";
 import { solveRule } from "./api/solver";
 import { DecisionRulesOptions, FolderExport, FolderStructure, FolderType, Job, Rule, RuleStatus } from "./defs/models";
 import { SolverOptions } from "./defs/models";
@@ -99,7 +99,7 @@ export default class DecisionRules {
 		},
 		updateTags: async (ruleId: string, tags: any, version?: string): Promise<string[]> => {
 			try {
-				return await updateTagsAPI(this.options, ruleId, tags, version);
+				return await addTagsAPI(this.options, ruleId, tags, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
@@ -160,7 +160,7 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		importFolder: async (targetNodeid: string, data: any): Promise<{ folderNode: string }> => {
+		importFolder: async (targetNodeid: string, data: FolderExport): Promise<{ folderNode: string }> => {
 			try {
 				return await importFolderAPI(this.options, targetNodeid, data);
 			} catch (e: any) {
