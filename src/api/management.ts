@@ -1,5 +1,5 @@
 import { HostEnum, MngCategoryEnum, SdkMode } from "../defs/enums";
-import { DecisionRulesOptions, FolderExport, FolderType, RuleStatus } from "../defs/models";
+import { DecisionRulesOptions, FolderExport, FolderType, Rule, RuleStatus } from "../defs/models";
 import { getBaseURL } from "../utils/utils";
 import { doCall } from "../utils/httpClient";
 import { createHeaders } from "../utils/utils";
@@ -139,7 +139,7 @@ export async function getRulesForSpaceAPI(options: DecisionRulesOptions): Promis
 	}
 }
 
-export async function getTagsAPI(options: DecisionRulesOptions, tags: string[]): Promise<any> {
+export async function getRulesByTagsAPI(options: DecisionRulesOptions, tags: string[]): Promise<Rule[]> {
 	try {
 		const headers = createHeaders(options.managementKey);
 		const url = getCategoryUrl(options.host, MngCategoryEnum.TAGS, ["items"], tags);
