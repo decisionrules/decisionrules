@@ -27,12 +27,12 @@ export type SolverOptions = {
  * @property version - Used together with path .
  */
 export type RuleOptions = {
-    path?: string;
-    version?: Version;
+	path?: string;
+	version?: Version;
 }
 
 export type FolderOptions = {
-    path?: string
+	path?: string
 }
 
 export type FolderExport = any
@@ -42,6 +42,7 @@ export type FolderStructure = {
 	name: string,
 	id: string,
 	children: {
+		id: string
 		baseId: string
 		version?: number
 		name: string
@@ -51,7 +52,6 @@ export type FolderStructure = {
 }
 
 export type Rule = {
-	_id: string
 	name: string
 	description: string
 	inputSchema: any
@@ -61,6 +61,7 @@ export type Rule = {
 	createdIn: Date
 	status: string
 	baseId?: string
+	ruleId: string
 	type?: string
 	tags?: string[]
 	auditLog?: string

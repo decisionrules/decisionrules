@@ -246,10 +246,10 @@ export async function importFolderAPI(options: DecisionRulesOptions, targetNodeI
 	}
 }
 
-export async function getNodeFolderStructureAPI(options: DecisionRulesOptions, targetNodeId: string, folderOptions?: FolderOptions): Promise<any> {
+export async function getNodeFolderStructureAPI(options: DecisionRulesOptions, targetNodeId?: string, folderOptions?: FolderOptions): Promise<any> {
 	try {
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, [targetNodeId], folderOptions);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, [targetNodeId??""], folderOptions);
 		const response = await doCall(url, headers, "GET");
 		return response.data;
 	} catch (e: any) {

@@ -7,7 +7,7 @@ import { handleError } from "./utils/utils";
 import crypto from 'crypto';
 import { FolderType, RuleStatus } from './defs/enums'
 
-class DecisionRules {
+export default class DecisionRules {
 	private readonly options: DecisionRulesOptions;
 	constructor(options: DecisionRulesOptions) {
 		this.options = options;
@@ -141,7 +141,7 @@ class DecisionRules {
 			version?: number
 			children?: object[]
 		},
-                             options: FolderOptions): Promise<void> => {
+			options?: FolderOptions): Promise<void> => {
 			try {
 				return await createFolderAPI(this.options, targetNodeid, data, options);
 			} catch (e: any) {
@@ -155,7 +155,7 @@ class DecisionRules {
 			baseId?: string
 			version?: number
 			children?: object[]
-		},options: FolderOptions): Promise<FolderStructure> => {
+		}, options: FolderOptions): Promise<FolderStructure> => {
 			try {
 				return await updateNodeFolderStructureAPI(this.options, targetNodeid, data, options);
 			} catch (e: any) {
@@ -176,7 +176,7 @@ class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		getNodeFolderStructure: async (targetNodeid: string, options?: FolderOptions): Promise<FolderStructure> => {
+		getNodeFolderStructure: async (targetNodeid?: string, options?: FolderOptions): Promise<FolderStructure> => {
 			try {
 				return await getNodeFolderStructureAPI(this.options, targetNodeid, options);
 			} catch (e: any) {
@@ -258,5 +258,3 @@ class DecisionRules {
 		);
 	}
 }
-
-module.exports.default = DecisionRules
