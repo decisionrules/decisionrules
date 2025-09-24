@@ -1,18 +1,18 @@
 import { cancelJobAPI, jobInfoAPI, startJobAPI } from "./api/job";
 import { createFolderAPI, createNewRuleVersionAPI, createRuleAPI, deleteFolderAPI, deleteRuleAPI, deleteTagsAPI, exportFolderAPI, exportRuleFlowAPI, findDependenciesAPI, findDuplicatesAPI, findFolderOrRuleByAttributeAPI, getNodeFolderStructureAPI, getRuleAPI, getRulesForSpaceAPI, getRulesByTagsAPI, importFolderAPI, importRuleFlowAPI, lockRuleAPI, moveFolderAPI, renameFolderAPI, updateNodeFolderStructureAPI, updateRuleAPI, updateRuleStatusAPI, addTagsAPI } from "./api/management";
 import { solveRule } from "./api/solver";
-import { DecisionRulesOptions, FolderExport, FolderStructure, Job, Rule } from "./defs/models";
+import { DecisionRulesOptions, FolderExport, FolderOptions, FolderStructure, Job, Rule, RuleOptions, Version } from './defs/models'
 import { SolverOptions } from "./defs/models";
 import { handleError } from "./utils/utils";
 import crypto from 'crypto';
 import { FolderType, RuleStatus } from './defs/enums'
 
-export default class DecisionRules {
+class DecisionRules {
 	private readonly options: DecisionRulesOptions;
 	constructor(options: DecisionRulesOptions) {
 		this.options = options;
 	}
-	public async solve(ruleId: string, data: any, version?: string, solverOptions?: SolverOptions): Promise<any> {
+	public async solve(ruleId: string, data: any, version?: Version, solverOptions?: SolverOptions): Promise<any> {
 		try {
 			return await solveRule(this.options, ruleId, data, version, solverOptions);
 		} catch (e: any) {
@@ -21,30 +21,30 @@ export default class DecisionRules {
 	}
 
 	public management = {
-		getRule: async (ruleIdOrAlias: string, version?: string): Promise<Rule> => {
+		getRule: async (ruleIdOrAlias: string, version?: Version): Promise<Rule> => {
 			try {
 				return await getRuleAPI(this.options, ruleIdOrAlias, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		updateRuleStatus: async (ruleIdOrAlias: string, status: RuleStatus, version: string): Promise<Rule> => {
+		updateRuleStatus: async (ruleIdOrAlias: string, status: RuleStatus, version: Version): Promise<Rule> => {
 			try {
 				return await updateRuleStatusAPI(this.options, ruleIdOrAlias, status, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		updateRule: async (ruleIdOrAlias: string, rule: any, version?: string): Promise<Rule> => {
+		updateRule: async (ruleIdOrAlias: string, rule: any, version?: Version, options?: RuleOptions): Promise<Rule> => {
 			try {
-				return await updateRuleAPI(this.options, ruleIdOrAlias, rule, version);
+				return await updateRuleAPI(this.options, ruleIdOrAlias, rule, version, options);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		createRule: async (rule: any, path?: string): Promise<Rule> => {
+		createRule: async (rule: any, options?: RuleOptions): Promise<Rule> => {
 			try {
-				return await createRuleAPI(this.options, rule, path);
+				return await createRuleAPI(this.options, rule, options);
 			} catch (e: any) {
 				throw handleError(e);
 			}
@@ -56,28 +56,28 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		deleteRule: async (ruleId: string, version?: string): Promise<void> => {
+		deleteRule: async (ruleId: string, version?: Version, options?: RuleOptions): Promise<void> => {
 			try {
-				return await deleteRuleAPI(this.options, ruleId, version);
+				return await deleteRuleAPI(this.options, ruleId, version, options);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		lockRule: async (ruleId: string, lock: boolean, version?: string): Promise<void> => {
+		lockRule: async (ruleId: string, lock: boolean, version?: Version, options?: RuleOptions): Promise<void> => {
 			try {
-				return await lockRuleAPI(this.options, ruleId, lock, version);
+				return await lockRuleAPI(this.options, ruleId, lock, version, options);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		findDuplicates: async (ruleId: string, version?: string): Promise<{ rule: Rule, duplicates: any[] }> => {
+		findDuplicates: async (ruleId: string, version?: Version): Promise<{ rule: Rule, duplicates: any[] }> => {
 			try {
 				return await findDuplicatesAPI(this.options, ruleId, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		findDependencies: async (ruleId: string, version?: string): Promise<{ rule: Rule, dependencies: any[] }> => {
+		findDependencies: async (ruleId: string, version?: Version): Promise<{ rule: Rule, dependencies: any[] }> => {
 			try {
 				return await findDependenciesAPI(this.options, ruleId, version);
 			} catch (e: any) {
@@ -98,14 +98,14 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		updateTags: async (ruleId: string, tags: any, version?: string): Promise<string[]> => {
+		updateTags: async (ruleId: string, tags: any, version?: Version): Promise<string[]> => {
 			try {
 				return await addTagsAPI(this.options, ruleId, tags, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		deleteTags: async (ruleId: string, tags: string[], version?: string): Promise<void> => {
+		deleteTags: async (ruleId: string, tags: string[], version?: Version): Promise<void> => {
 			try {
 				return await deleteTagsAPI(this.options, ruleId, tags, version);
 			} catch (e: any) {
@@ -119,7 +119,7 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		importRuleFlow: async (rule: any, options: { newVersion?: string, overwrite?: string, version?: string }): Promise<any> => {
+		importRuleFlow: async (rule: any, options: { newVersion?: string, overwrite?: string, version?: Version }): Promise<any> => {
 			try {
 				return await importRuleFlowAPI(this.options, rule, options);
 			} catch (e: any) {
@@ -133,9 +133,10 @@ export default class DecisionRules {
 			baseId?: string
 			version?: number
 			children?: object[]
-		}): Promise<void> => {
+		},
+                             options: FolderOptions): Promise<void> => {
 			try {
-				return await createFolderAPI(this.options, targetNodeid, data);
+				return await createFolderAPI(this.options, targetNodeid, data, options);
 			} catch (e: any) {
 				throw handleError(e);
 			}
@@ -147,44 +148,44 @@ export default class DecisionRules {
 			baseId?: string
 			version?: number
 			children?: object[]
-		}): Promise<FolderStructure> => {
+		},options: FolderOptions): Promise<FolderStructure> => {
 			try {
-				return await updateNodeFolderStructureAPI(this.options, targetNodeid, data);
+				return await updateNodeFolderStructureAPI(this.options, targetNodeid, data, options);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		exportFolder: async (nodeId: string): Promise<FolderExport> => {
+		exportFolder: async (nodeId: string, options?: FolderOptions): Promise<FolderExport> => {
 			try {
 				return await exportFolderAPI(this.options, nodeId);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		importFolder: async (targetNodeid: string, data: FolderExport): Promise<{ folderNode: string }> => {
+		importFolder: async (targetNodeid: string, data: FolderExport, options?: FolderOptions): Promise<{ folderNode: string }> => {
 			try {
 				return await importFolderAPI(this.options, targetNodeid, data);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		getNodeFolderStructure: async (targetNodeid: string): Promise<FolderStructure> => {
+		getNodeFolderStructure: async (targetNodeid: string, options?: FolderOptions): Promise<FolderStructure> => {
 			try {
-				return await getNodeFolderStructureAPI(this.options, targetNodeid);
+				return await getNodeFolderStructureAPI(this.options, targetNodeid, options);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		deleteFolder: async (targetNodeid: string, deleteAll?: boolean): Promise<void> => {
+		deleteFolder: async (targetNodeid: string, deleteAll?: boolean, options?: FolderOptions): Promise<void> => {
 			try {
-				return await deleteFolderAPI(this.options, targetNodeid, deleteAll);
+				return await deleteFolderAPI(this.options, targetNodeid, deleteAll, options);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		renameFolder: async (targetNodeid: string, newName: string): Promise<void> => {
+		renameFolder: async (targetNodeid: string, newName: string, options?: FolderOptions): Promise<void> => {
 			try {
-				return await renameFolderAPI(this.options, targetNodeid, newName);
+				return await renameFolderAPI(this.options, targetNodeid, newName, options);
 			} catch (e: any) {
 				throw handleError(e);
 			}
@@ -216,7 +217,7 @@ export default class DecisionRules {
 	};
 
 	public job = {
-		start: async (ruleId: string, inputData: any, version?: string): Promise<Job> => {
+		start: async (ruleId: string, inputData: any, version?: Version): Promise<Job> => {
 			try {
 				return await startJobAPI(this.options, ruleId, inputData, version);
 			} catch (e: any) {
@@ -251,4 +252,4 @@ export default class DecisionRules {
 	}
 }
 
-
+module.exports = DecisionRules

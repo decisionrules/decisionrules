@@ -20,6 +20,21 @@ export type SolverOptions = {
 	auditTtl?: string
 }
 
+/**
+ * Options for configuring rules.
+ *
+ * @property path - Path used for handling duplicate aliases.
+ * @property version - Used together with path .
+ */
+export type RuleOptions = {
+    path?: string;
+    version?: number;
+}
+
+export type FolderOptions = {
+    path?: string
+}
+
 export type FolderExport = any
 
 export type FolderStructure = {
@@ -81,3 +96,5 @@ export type Job = {
 	createdAt: string;
 	updatedAt: string;
 };
+
+export type Version = "latest" | number;

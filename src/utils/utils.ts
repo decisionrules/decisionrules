@@ -13,10 +13,10 @@ export function getBaseURL(host: DecisionRulesHost): string {
 			baseUrl = "https://eu.api.decisionrules.io";
 			break;
 		case HostEnum.REGION_US:
-			baseUrl = "https://au.api.decisionrules.io";
+			baseUrl = "https://us.api.decisionrules.io";
 			break;
 		case HostEnum.REGION_AU:
-			baseUrl = "https://us.api.decisionrules.io";
+			baseUrl = "https://au.api.decisionrules.io";
 			break;
 		default:
 			baseUrl = host;

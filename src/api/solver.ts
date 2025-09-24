@@ -1,12 +1,13 @@
-import { DecisionRulesOptions } from "../defs/models";
+import { DecisionRulesOptions, Version } from '../defs/models'
 import { SolverOptions } from "../defs/models";
 import { AxiosHeaders } from "axios";
 import { doCall } from "../utils/httpClient";
 import { getBaseURL } from "../utils/utils";
 
-export async function solveRule(options: DecisionRulesOptions, ruleId: string, input: any, version?: string, solverOptions?: SolverOptions): Promise<any> {
+export async function solveRule(options: DecisionRulesOptions, ruleId: string, input: any, version?: Version, solverOptions?: SolverOptions): Promise<any> {
 	try {
-		const url = createUrl(options, ruleId, version);
+        const versionString = version == "latest" ? "" : (version as number).toString()
+		const url = createUrl(options, ruleId, versionString);
 		const body = createBody(input, solverOptions);
 		const headers = createHeaders(options, solverOptions);
 		const response = await doCall(url, headers, "POST", body);

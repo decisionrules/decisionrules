@@ -1,5 +1,5 @@
 import { FolderType, HostEnum, MngCategoryEnum, RuleStatus } from '../defs/enums'
-import { DecisionRulesOptions, FolderExport, Rule } from "../defs/models";
+import { DecisionRulesOptions, FolderExport, FolderOptions, Rule, RuleOptions, Version } from '../defs/models'
 import { getBaseURL } from "../utils/utils";
 import { doCall } from "../utils/httpClient";
 import { createHeaders } from "../utils/utils";
@@ -27,10 +27,11 @@ function getCategoryUrl(host: HostEnum | string, category: MngCategoryEnum, apiP
 	}
 }
 
-export async function getRuleAPI(options: DecisionRulesOptions, ruleId: string, version?: string): Promise<any> {
+export async function getRuleAPI(options: DecisionRulesOptions, ruleId: string, version?: Version, ruleOptions?: RuleOptions): Promise<any> {
 	try {
+		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, [ruleId, version ?? ""]);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, [ruleId, versionString], ruleOptions);
 		const response = await doCall(url, headers, "GET");
 		return response.data;
 	} catch (e: any) {
@@ -38,10 +39,11 @@ export async function getRuleAPI(options: DecisionRulesOptions, ruleId: string, 
 	}
 }
 
-export async function updateRuleStatusAPI(options: DecisionRulesOptions, ruleId: string, status: RuleStatus, version: string): Promise<any> {
+export async function updateRuleStatusAPI(options: DecisionRulesOptions, ruleId: string, status: RuleStatus, version: Version): Promise<any> {
 	try {
+		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, ["status", ruleId, status, version]);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, ["status", ruleId, status, versionString]);
 		const response = await doCall(url, headers, "PUT");
 		return response.data;
 	} catch (e: any) {
@@ -49,10 +51,11 @@ export async function updateRuleStatusAPI(options: DecisionRulesOptions, ruleId:
 	}
 }
 
-export async function updateRuleAPI(options: DecisionRulesOptions, ruleId: string, data: any, version?: string): Promise<any> {
+export async function updateRuleAPI(options: DecisionRulesOptions, ruleId: string, data: any, version?: Version, ruleOptions?: RuleOptions): Promise<any> {
 	try {
+		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, [ruleId, version ?? ""]);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, [ruleId, versionString], options);
 		const response = await doCall(url, headers, "PUT", data);
 		return response.data;
 	} catch (e: any) {
@@ -60,11 +63,11 @@ export async function updateRuleAPI(options: DecisionRulesOptions, ruleId: strin
 	}
 }
 
-export async function createRuleAPI(options: DecisionRulesOptions, data: any, path?: string): Promise<any> {
+export async function createRuleAPI(options: DecisionRulesOptions, data: any, ruleOptions?: RuleOptions): Promise<any> {
 	try {
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, [], path ? { path } : undefined);
-		const response = await doCall(url, headers, "POST", data);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, [], options);
+		const response = await doCall(url, headers, "POST", ruleOptions);
 		return response.data;
 	} catch (e: any) {
 		throw e;
@@ -82,10 +85,11 @@ export async function createNewRuleVersionAPI(options: DecisionRulesOptions, rul
 	}
 }
 
-export async function deleteRuleAPI(options: DecisionRulesOptions, ruleId: string, version?: string): Promise<any> {
+export async function deleteRuleAPI(options: DecisionRulesOptions, ruleId: string, version?: Version, ruleOptions?: RuleOptions): Promise<any> {
 	try {
+		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, [ruleId, version ?? ""]);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, [ruleId, versionString], ruleOptions);
 		const response = await doCall(url, headers, "DELETE");
 		return response.data;
 	} catch (e: any) {
@@ -93,10 +97,11 @@ export async function deleteRuleAPI(options: DecisionRulesOptions, ruleId: strin
 	}
 }
 
-export async function lockRuleAPI(options: DecisionRulesOptions, ruleId: string, locked: boolean, version?: string): Promise<any> {
+export async function lockRuleAPI(options: DecisionRulesOptions, ruleId: string, locked: boolean, version?: Version, ruleOptions?: RuleOptions): Promise<any> {
 	try {
+		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, ["lock", ruleId, version ?? ""]);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, ["lock", ruleId, versionString], ruleOptions);
 		const response = await doCall(url, headers, "PATCH", { locked });
 		return response.data;
 	} catch (e: any) {
@@ -104,10 +109,11 @@ export async function lockRuleAPI(options: DecisionRulesOptions, ruleId: string,
 	}
 }
 
-export async function findDuplicatesAPI(options: DecisionRulesOptions, ruleId: string, version?: string): Promise<any> {
+export async function findDuplicatesAPI(options: DecisionRulesOptions, ruleId: string, version?: Version): Promise<any> {
 	try {
+		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.TOOLS, ["duplicates", ruleId, version ?? ""]);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.TOOLS, ["duplicates", ruleId, versionString]);
 		const response = await doCall(url, headers, "GET");
 		return response.data;
 	} catch (e: any) {
@@ -115,10 +121,11 @@ export async function findDuplicatesAPI(options: DecisionRulesOptions, ruleId: s
 	}
 }
 
-export async function findDependenciesAPI(options: DecisionRulesOptions, ruleId: string, version?: string): Promise<any> {
+export async function findDependenciesAPI(options: DecisionRulesOptions, ruleId: string, version?: Version): Promise<any> {
 	try {
+		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.TOOLS, ["dependencies", ruleId, version ?? ""]);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.TOOLS, ["dependencies", ruleId, versionString]);
 		const response = await doCall(url, headers, "GET");
 		return response.data;
 	} catch (e: any) {
@@ -148,10 +155,11 @@ export async function getRulesByTagsAPI(options: DecisionRulesOptions, tags: str
 	}
 }
 
-export async function addTagsAPI(options: DecisionRulesOptions, ruleId: string, tags: any, version?: string): Promise<any> {
+export async function addTagsAPI(options: DecisionRulesOptions, ruleId: string, tags: any, version?: Version): Promise<any> {
 	try {
+		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.TAGS, [ruleId, version ?? ""]);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.TAGS, [ruleId, versionString]);
 		const response = await doCall(url, headers, "PATCH", tags);
 		return response.data;
 	} catch (e: any) {
@@ -159,10 +167,11 @@ export async function addTagsAPI(options: DecisionRulesOptions, ruleId: string, 
 	}
 }
 
-export async function deleteTagsAPI(options: DecisionRulesOptions, ruleId: string, tags: string[], version?: string): Promise<any> {
+export async function deleteTagsAPI(options: DecisionRulesOptions, ruleId: string, tags: string[], version?: Version): Promise<any> {
 	try {
+		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.TAGS, [ruleId, version ?? ""], tags);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.TAGS, [ruleId, versionString], tags);
 		const response = await doCall(url, headers, "DELETE");
 		return response.data;
 	} catch (e: any) {
@@ -170,7 +179,7 @@ export async function deleteTagsAPI(options: DecisionRulesOptions, ruleId: strin
 	}
 }
 
-export async function importRuleFlowAPI(options: DecisionRulesOptions, rule: any, queryParams: { newVersion?: string, overwrite?: string, version?: string }): Promise<any> {
+export async function importRuleFlowAPI(options: DecisionRulesOptions, rule: any, queryParams: { newVersion?: string, overwrite?: string, version?: Version }): Promise<any> {
 	try {
 		const headers = createHeaders(options.managementKey);
 		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE_FLOW, ["import"], queryParams);
@@ -181,10 +190,11 @@ export async function importRuleFlowAPI(options: DecisionRulesOptions, rule: any
 	}
 }
 
-export async function exportRuleFlowAPI(options: DecisionRulesOptions, ruleId: string, version?: string): Promise<any> {
+export async function exportRuleFlowAPI(options: DecisionRulesOptions, ruleId: string, version?: Version): Promise<any> {
 	try {
+		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE_FLOW, ["export", ruleId, version ?? ""]);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE_FLOW, ["export", ruleId, versionString]);
 		const response = await doCall(url, headers, "GET");
 		return response.data;
 	} catch (e: any) {
@@ -192,10 +202,10 @@ export async function exportRuleFlowAPI(options: DecisionRulesOptions, ruleId: s
 	}
 }
 
-export async function createFolderAPI(options: DecisionRulesOptions, targetNodeId: string, data: any): Promise<any> {
+export async function createFolderAPI(options: DecisionRulesOptions, targetNodeId: string, data: any, folderOptions?: FolderOptions): Promise<any> {
 	try {
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, [targetNodeId]);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, [targetNodeId], folderOptions);
 		const response = await doCall(url, headers, "POST", data);
 		return response.data;
 	} catch (e: any) {
@@ -203,10 +213,10 @@ export async function createFolderAPI(options: DecisionRulesOptions, targetNodeI
 	}
 }
 
-export async function updateNodeFolderStructureAPI(options: DecisionRulesOptions, targetNodeId: string, data: any, path?: string): Promise<any> {
+export async function updateNodeFolderStructureAPI(options: DecisionRulesOptions, targetNodeId: string, data: any, folderOptions?: FolderOptions): Promise<any> {
 	try {
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, [targetNodeId]);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, [targetNodeId], folderOptions);
 		const response = await doCall(url, headers, "PUT", data);
 		return response.data;
 	} catch (e: any) {
@@ -236,10 +246,10 @@ export async function importFolderAPI(options: DecisionRulesOptions, targetNodeI
 	}
 }
 
-export async function getNodeFolderStructureAPI(options: DecisionRulesOptions, targetNodeId: string): Promise<any> {
+export async function getNodeFolderStructureAPI(options: DecisionRulesOptions, targetNodeId: string, folderOptions?: FolderOptions): Promise<any> {
 	try {
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, [targetNodeId]);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, [targetNodeId], folderOptions);
 		const response = await doCall(url, headers, "GET");
 		return response.data;
 	} catch (e: any) {
@@ -247,10 +257,10 @@ export async function getNodeFolderStructureAPI(options: DecisionRulesOptions, t
 	}
 }
 
-export async function deleteFolderAPI(options: DecisionRulesOptions, targetNodeId: string, deleteAll?: boolean): Promise<any> {
+export async function deleteFolderAPI(options: DecisionRulesOptions, targetNodeId: string, deleteAll?: boolean, folderOptions?: FolderOptions): Promise<any> {
 	try {
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, [targetNodeId], { deleteAll });
+		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, [targetNodeId], { deleteAll, ...folderOptions });
 		const response = await doCall(url, headers, "DELETE");
 		return response.data;
 	} catch (e: any) {
@@ -258,10 +268,10 @@ export async function deleteFolderAPI(options: DecisionRulesOptions, targetNodeI
 	}
 }
 
-export async function renameFolderAPI(options: DecisionRulesOptions, targetNodeId: string, name: string): Promise<any> {
+export async function renameFolderAPI(options: DecisionRulesOptions, targetNodeId: string, name: string, folderOptions?: FolderOptions): Promise<any> {
 	try {
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, ["rename", targetNodeId]);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, ["rename", targetNodeId], folderOptions);
 		const response = await doCall(url, headers, "PATCH", { name });
 		return response.data;
 	} catch (e: any) {
