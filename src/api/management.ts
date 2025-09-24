@@ -29,7 +29,7 @@ function getCategoryUrl(host: HostEnum | string, category: MngCategoryEnum, apiP
 
 export async function getRuleAPI(options: DecisionRulesOptions, ruleId: string, version?: Version, ruleOptions?: RuleOptions): Promise<any> {
 	try {
-		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
+		const versionString = getRuleVersion(version, ruleOptions)
 		const headers = createHeaders(options.managementKey);
 		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, [ruleId, versionString], ruleOptions);
 		const response = await doCall(url, headers, "GET");
@@ -41,7 +41,7 @@ export async function getRuleAPI(options: DecisionRulesOptions, ruleId: string, 
 
 export async function updateRuleStatusAPI(options: DecisionRulesOptions, ruleId: string, status: RuleStatus, version: Version): Promise<any> {
 	try {
-		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
+		const versionString = getRuleVersion(version)
 		const headers = createHeaders(options.managementKey);
 		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, ["status", ruleId, status, versionString]);
 		const response = await doCall(url, headers, "PUT");
@@ -53,7 +53,7 @@ export async function updateRuleStatusAPI(options: DecisionRulesOptions, ruleId:
 
 export async function updateRuleAPI(options: DecisionRulesOptions, ruleId: string, data: any, version?: Version, ruleOptions?: RuleOptions): Promise<any> {
 	try {
-		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
+		const versionString = getRuleVersion(version, ruleOptions)
 		const headers = createHeaders(options.managementKey);
 		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, [ruleId, versionString], options);
 		const response = await doCall(url, headers, "PUT", data);
@@ -66,8 +66,8 @@ export async function updateRuleAPI(options: DecisionRulesOptions, ruleId: strin
 export async function createRuleAPI(options: DecisionRulesOptions, data: any, ruleOptions?: RuleOptions): Promise<any> {
 	try {
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, [], options);
-		const response = await doCall(url, headers, "POST", ruleOptions);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, [], ruleOptions);
+		const response = await doCall(url, headers, "POST", data);
 		return response.data;
 	} catch (e: any) {
 		throw e;
@@ -87,7 +87,7 @@ export async function createNewRuleVersionAPI(options: DecisionRulesOptions, rul
 
 export async function deleteRuleAPI(options: DecisionRulesOptions, ruleId: string, version?: Version, ruleOptions?: RuleOptions): Promise<any> {
 	try {
-		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
+		const versionString = getRuleVersion(version, ruleOptions)
 		const headers = createHeaders(options.managementKey);
 		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, [ruleId, versionString], ruleOptions);
 		const response = await doCall(url, headers, "DELETE");
@@ -99,7 +99,7 @@ export async function deleteRuleAPI(options: DecisionRulesOptions, ruleId: strin
 
 export async function lockRuleAPI(options: DecisionRulesOptions, ruleId: string, locked: boolean, version?: Version, ruleOptions?: RuleOptions): Promise<any> {
 	try {
-		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
+		const versionString = getRuleVersion(version, ruleOptions)
 		const headers = createHeaders(options.managementKey);
 		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, ["lock", ruleId, versionString], ruleOptions);
 		const response = await doCall(url, headers, "PATCH", { locked });
@@ -111,7 +111,7 @@ export async function lockRuleAPI(options: DecisionRulesOptions, ruleId: string,
 
 export async function findDuplicatesAPI(options: DecisionRulesOptions, ruleId: string, version?: Version): Promise<any> {
 	try {
-		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
+		const versionString = getRuleVersion(version)
 		const headers = createHeaders(options.managementKey);
 		const url = getCategoryUrl(options.host, MngCategoryEnum.TOOLS, ["duplicates", ruleId, versionString]);
 		const response = await doCall(url, headers, "GET");
@@ -123,7 +123,7 @@ export async function findDuplicatesAPI(options: DecisionRulesOptions, ruleId: s
 
 export async function findDependenciesAPI(options: DecisionRulesOptions, ruleId: string, version?: Version): Promise<any> {
 	try {
-		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
+		const versionString = getRuleVersion(version)
 		const headers = createHeaders(options.managementKey);
 		const url = getCategoryUrl(options.host, MngCategoryEnum.TOOLS, ["dependencies", ruleId, versionString]);
 		const response = await doCall(url, headers, "GET");
@@ -157,7 +157,7 @@ export async function getRulesByTagsAPI(options: DecisionRulesOptions, tags: str
 
 export async function addTagsAPI(options: DecisionRulesOptions, ruleId: string, tags: any, version?: Version): Promise<any> {
 	try {
-		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
+		const versionString = getRuleVersion(version)
 		const headers = createHeaders(options.managementKey);
 		const url = getCategoryUrl(options.host, MngCategoryEnum.TAGS, [ruleId, versionString]);
 		const response = await doCall(url, headers, "PATCH", tags);
@@ -169,7 +169,7 @@ export async function addTagsAPI(options: DecisionRulesOptions, ruleId: string, 
 
 export async function deleteTagsAPI(options: DecisionRulesOptions, ruleId: string, tags: string[], version?: Version): Promise<any> {
 	try {
-		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
+		const versionString = getRuleVersion(version)
 		const headers = createHeaders(options.managementKey);
 		const url = getCategoryUrl(options.host, MngCategoryEnum.TAGS, [ruleId, versionString], tags);
 		const response = await doCall(url, headers, "DELETE");
@@ -192,7 +192,7 @@ export async function importRuleFlowAPI(options: DecisionRulesOptions, rule: any
 
 export async function exportRuleFlowAPI(options: DecisionRulesOptions, ruleId: string, version?: Version): Promise<any> {
 	try {
-		const versionString = version == "latest" ? "" : (version as number ?? "").toString()
+		const versionString = getRuleVersion(version)
 		const headers = createHeaders(options.managementKey);
 		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE_FLOW, ["export", ruleId, versionString]);
 		const response = await doCall(url, headers, "GET");
@@ -311,6 +311,12 @@ export async function findFolderOrRuleByAttributeAPI(options: DecisionRulesOptio
 	}
 }
 
+export function getRuleVersion(version?: Version, ruleOptions?: RuleOptions){
+    if (ruleOptions && ruleOptions.version){
+        return ""
+    }
+    return version == "latest" ? "" : (version as number ?? "").toString()
+}
 
 export const testManagementSet = {
 	getCategoryUrl,

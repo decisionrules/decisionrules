@@ -28,7 +28,7 @@ export type SolverOptions = {
  */
 export type RuleOptions = {
     path?: string;
-    version?: number;
+    version?: Version;
 }
 
 export type FolderOptions = {
@@ -97,4 +97,4 @@ export type Job = {
 	updatedAt: string;
 };
 
-export type Version = "latest" | number;
+export type Version = "latest" | number | string;

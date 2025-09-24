@@ -2,6 +2,7 @@ import { HostEnum } from "../defs/enums";
 import { DecisionRulesOptions, Version } from '../defs/models'
 import { doCall } from "../utils/httpClient";
 import { createHeaders, getBaseURL } from "../utils/utils";
+import { getRuleVersion } from './management'
 
 
 function getCategoryUrl(host: HostEnum | string, apiPath: string[]): URL {
@@ -16,7 +17,7 @@ function getCategoryUrl(host: HostEnum | string, apiPath: string[]): URL {
 
 export async function startJobAPI(options: DecisionRulesOptions, ruleId: string, inputData: any, version?: Version): Promise<any> {
     try {
-        const versionString = version == "latest" ? "" : (version as number).toString()
+        const versionString = getRuleVersion(version)
         const headers = createHeaders(options.solverKey);
         const url = getCategoryUrl(options.host, ["start", ruleId, versionString]);
         const response = await doCall(url, headers, "POST", inputData);

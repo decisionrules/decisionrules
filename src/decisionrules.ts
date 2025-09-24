@@ -28,6 +28,13 @@ class DecisionRules {
 				throw handleError(e);
 			}
 		},
+		getRuleByPath: async (path: string, version?: number): Promise<Rule> => {
+			try {
+				return await getRuleAPI(this.options, "", "latest", { path, version });
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
 		updateRuleStatus: async (ruleIdOrAlias: string, status: RuleStatus, version: Version): Promise<Rule> => {
 			try {
 				return await updateRuleStatusAPI(this.options, ruleIdOrAlias, status, version);
@@ -252,4 +259,4 @@ class DecisionRules {
 	}
 }
 
-module.exports = DecisionRules
+module.exports.default = DecisionRules
