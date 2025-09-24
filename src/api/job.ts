@@ -1,13 +1,12 @@
-import { HostEnum, SdkMode } from "../defs/enums";
+import { HostEnum } from "../defs/enums";
 import { DecisionRulesOptions } from "../defs/models";
 import { doCall } from "../utils/httpClient";
 import { createHeaders, getBaseURL } from "../utils/utils";
 
-const MODE = SdkMode.API;
 
 function getCategoryUrl(host: HostEnum | string, apiPath: string[]): URL {
     try {
-        const baseUrl = getBaseURL(host, MODE);
+        const baseUrl = getBaseURL(host);
         let path: string = `/job/${apiPath.filter(pathParam => pathParam !== "").join("/")}`;
         return new URL(path, baseUrl);
     } catch (e) {

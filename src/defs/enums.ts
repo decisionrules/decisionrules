@@ -13,3 +13,15 @@ export enum MngCategoryEnum {
 	TOOLS = "tools",
 	RULE_FLOW = "rule-flow"
 }
+
+
+export enum RuleStatus {
+    PENDING = "pending",
+    PUBLISHED = "published"
+}
+
+export enum FolderType {
+    ROOT = "ROOT",
+    FOLDER = "FOLDER",
+    RULE = "RULE"
+}

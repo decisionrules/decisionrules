@@ -1,10 +1,11 @@
 import { cancelJobAPI, jobInfoAPI, startJobAPI } from "./api/job";
 import { createFolderAPI, createNewRuleVersionAPI, createRuleAPI, deleteFolderAPI, deleteRuleAPI, deleteTagsAPI, exportFolderAPI, exportRuleFlowAPI, findDependenciesAPI, findDuplicatesAPI, findFolderOrRuleByAttributeAPI, getNodeFolderStructureAPI, getRuleAPI, getRulesForSpaceAPI, getRulesByTagsAPI, importFolderAPI, importRuleFlowAPI, lockRuleAPI, moveFolderAPI, renameFolderAPI, updateNodeFolderStructureAPI, updateRuleAPI, updateRuleStatusAPI, addTagsAPI } from "./api/management";
 import { solveRule } from "./api/solver";
-import { DecisionRulesOptions, FolderExport, FolderStructure, FolderType, Job, Rule, RuleStatus } from "./defs/models";
+import { DecisionRulesOptions, FolderExport, FolderStructure, Job, Rule } from "./defs/models";
 import { SolverOptions } from "./defs/models";
 import { handleError } from "./utils/utils";
-import crypto, { KeyExportOptions } from 'crypto';
+import crypto from 'crypto';
+import { FolderType, RuleStatus } from './defs/enums'
 
 export default class DecisionRules {
 	private readonly options: DecisionRulesOptions;

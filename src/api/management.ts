@@ -1,5 +1,5 @@
-import { HostEnum, MngCategoryEnum } from "../defs/enums";
-import { DecisionRulesOptions, FolderExport, FolderType, Rule, RuleStatus } from "../defs/models";
+import { FolderType, HostEnum, MngCategoryEnum, RuleStatus } from '../defs/enums'
+import { DecisionRulesOptions, FolderExport, Rule } from "../defs/models";
 import { getBaseURL } from "../utils/utils";
 import { doCall } from "../utils/httpClient";
 import { createHeaders } from "../utils/utils";
@@ -38,10 +38,10 @@ export async function getRuleAPI(options: DecisionRulesOptions, ruleId: string, 
 	}
 }
 
-export async function updateRuleStatusAPI(options: DecisionRulesOptions, ruleId: string, status: RuleStatus, version?: string): Promise<any> {
+export async function updateRuleStatusAPI(options: DecisionRulesOptions, ruleId: string, status: RuleStatus, version: string): Promise<any> {
 	try {
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, ["status", ruleId, status, version ?? ""]);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, ["status", ruleId, status, version]);
 		const response = await doCall(url, headers, "PUT");
 		return response.data;
 	} catch (e: any) {

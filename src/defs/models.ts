@@ -20,17 +20,6 @@ export type SolverOptions = {
 	auditTtl?: string
 }
 
-export enum RuleStatus {
-	PENDING = "pending",
-	PUBLISHED = "published"
-}
-
-export enum FolderType {
-	ROOT = "ROOT",
-	FOLDER = "FOLDER",
-	RULE = "RULE"
-}
-
 export type FolderExport = any
 
 export type FolderStructure = {
