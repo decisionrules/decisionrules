@@ -1,24 +1,22 @@
-import { HostEnum, SdkMode } from "../defs/enums";
-import { apiMap, biMap } from "./maps";
+import { HostEnum } from "../defs/enums";
 import { DecisionRulesHost } from "../defs/models";
 import { AxiosHeaders } from "axios";
 import { DecisionRulesErrorException } from "../exceptions/DecisionRulesException";
 
-export function getBaseURL(host: DecisionRulesHost, mode: SdkMode): string {
+export function getBaseURL(host: DecisionRulesHost): string {
 	let baseUrl: string | undefined = "";
-	const urlMap: Map<HostEnum, string> = getMap(mode);
-	switch(host) {
+	switch (host) {
 		case HostEnum.GLOBAL_CLOUD:
-			baseUrl = urlMap.get(host);
+			baseUrl = "https://api.decisionrules.io";
 			break;
 		case HostEnum.REGION_EU:
-			baseUrl = urlMap.get(host);
+			baseUrl = "https://eu.api.decisionrules.io";
 			break;
 		case HostEnum.REGION_US:
-			baseUrl = urlMap.get(host);
+			baseUrl = "https://au.api.decisionrules.io";
 			break;
 		case HostEnum.REGION_AU:
-			baseUrl = urlMap.get(host);
+			baseUrl = "https://us.api.decisionrules.io";
 			break;
 		default:
 			baseUrl = host;
@@ -29,19 +27,6 @@ export function getBaseURL(host: DecisionRulesHost, mode: SdkMode): string {
 		throw Error("Failed to get base URL");
 	}
 	return baseUrl;
-}
-
-export function getMap(mode: SdkMode): Map<HostEnum, string> {
-	let urlMap: Map<HostEnum, string>;
-	switch (mode) {
-		case SdkMode.API:
-			urlMap = apiMap;
-			break;
-		case SdkMode.AUDIT:
-			urlMap = biMap;
-			break;
-	}
-	return urlMap;
 }
 
 export function createHeaders(key: string | undefined): AxiosHeaders {

@@ -3,9 +3,6 @@ import { SolverOptions } from "../defs/models";
 import { AxiosHeaders } from "axios";
 import { doCall } from "../utils/httpClient";
 import { getBaseURL } from "../utils/utils";
-import { SdkMode } from "../defs/enums";
-
-const MODE = SdkMode.API;
 
 export async function solveRule(options: DecisionRulesOptions, ruleId: string, input: any, version?: string, solverOptions?: SolverOptions): Promise<any> {
 	try {
@@ -14,13 +11,13 @@ export async function solveRule(options: DecisionRulesOptions, ruleId: string, i
 		const headers = createHeaders(options, solverOptions);
 		const response = await doCall(url, headers, "POST", body);
 		return response.data;
-	} catch (e:any) {
+	} catch (e: any) {
 		throw e;
 	}
 }
 
 function createBody(input: any, solverOptions: SolverOptions | undefined): any {
-	const body: {data: any, options?: {[key:string]: string[]}} = {
+	const body: { data: any, options?: { [key: string]: string[] } } = {
 		data: input
 	}
 	if (solverOptions?.cols) {
@@ -35,7 +32,7 @@ function createUrl(options: DecisionRulesOptions, ruleId: string, version: strin
 		url += version;
 	}
 	try {
-		return new URL(url, getBaseURL(options.host, MODE));
+		return new URL(url, getBaseURL(options.host));
 	} catch (e) {
 		throw e;
 	}
@@ -51,20 +48,20 @@ function createHeaders(options: DecisionRulesOptions, solverOptions: SolverOptio
 			throw Error("Solver key missing.");
 		}
 
-        headers.set("X-Debug", new String(solverOptions?.debug ?? false).valueOf());
+		headers.set("X-Debug", new String(solverOptions?.debug ?? false).valueOf());
 
 		if (solverOptions?.corrId) {
 			headers.set("X-Correlation-Id", solverOptions.corrId);
 		}
 		headers.set("X-Strategy", solverOptions?.strategy ?? "STANDARD");
 
-        headers.set("X-Audit", new String(solverOptions?.audit ?? false).valueOf());
+		headers.set("X-Audit", new String(solverOptions?.audit ?? false).valueOf());
 
 		if (solverOptions?.auditTtl) {
 			headers.set("X-Audit-Ttl", solverOptions.auditTtl.toString());
 		}
 		return headers;
-	}catch (e) {
+	} catch (e) {
 		throw e;
 	}
 }

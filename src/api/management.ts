@@ -1,15 +1,13 @@
-import { HostEnum, MngCategoryEnum, SdkMode } from "../defs/enums";
+import { HostEnum, MngCategoryEnum } from "../defs/enums";
 import { DecisionRulesOptions, FolderExport, FolderType, Rule, RuleStatus } from "../defs/models";
 import { getBaseURL } from "../utils/utils";
 import { doCall } from "../utils/httpClient";
 import { createHeaders } from "../utils/utils";
-import { version } from "os";
 
-const MODE = SdkMode.API;
 
 function getCategoryUrl(host: HostEnum | string, category: MngCategoryEnum, apiPath: string[], queryParams?: any): URL {
 	try {
-		const baseUrl = getBaseURL(host, MODE);
+		const baseUrl = getBaseURL(host);
 		let path: string = `/api/${category}/${apiPath.filter(pathParam => pathParam !== "").join("/")}`;
 		if (queryParams) {
 			switch (category) {
@@ -40,7 +38,7 @@ export async function getRuleAPI(options: DecisionRulesOptions, ruleId: string, 
 	}
 }
 
-export async function updateRuleStatusAPI(options: DecisionRulesOptions, ruleId: string, status: RuleStatus, version: string): Promise<any> {
+export async function updateRuleStatusAPI(options: DecisionRulesOptions, ruleId: string, status: RuleStatus, version?: string): Promise<any> {
 	try {
 		const headers = createHeaders(options.managementKey);
 		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, ["status", ruleId, status, version ?? ""]);
