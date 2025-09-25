@@ -4,7 +4,6 @@ import { DecisionRulesOptions, FolderExport, Rule } from '../../src/defs/models'
 import { FolderType, RuleStatus } from '../../src/defs/enums'
 import * as results from './itest-utils/expectedResults.itest'
 import * as rules from './itest-utils/rules.itest'
-import { getFolderStructureResult2 } from './itest-utils/expectedResults.itest'
 
 beforeAll(() => {
     dotenv.config({ path: './env/.env' });
@@ -13,7 +12,7 @@ beforeAll(() => {
 let dr: DecisionRules
 let rule: Rule
 let folder
-let folder2 = results.getFolderStructureResult1.children.find(item => item.name == 'Folder Name')
+let folder2
 let folderExport: FolderExport
 
 test("env loaded", async () => {
@@ -124,18 +123,19 @@ test("importFolder", async () => {
 test("getFolderStructure", async () => {
     const result = await dr.management.getFolderStructure()
     expect(result).toMatchObject(results.getFolderStructureResult2)
+    folder2 = result.children.find(item => item.name == 'Folder Name')
 })
-// test("getFolderStructure", async () => {
-//     const result = await dr.management.getFolderStructure(folder2!.id)
-//     expect(result).toEqual(results.getFolderStructureResult3)
-// })
-// test("moveFolder", async () => {
-//     const result = await dr.management.moveFolder(folder!.id, [{ type: FolderType.FOLDER, id: folder2!.id }], "/New Name")
-//     expect(result).toEqual(results.moveFolderResult)
-// })
+test("getFolderStructure", async () => {
+    const result = await dr.management.getFolderStructure(folder2!.id)
+    expect(result).toMatchObject(results.getFolderStructureResult3)
+})
+test("moveFolder", async () => {
+    const result = await dr.management.moveFolder(folder!.id, [{ type: FolderType.FOLDER, id: folder2!.id }], "/New Name")
+    expect(result).toEqual(results.moveFolderResult)
+})
 test("findFolderOrRuleByAttribute", async () => {
     const result = await dr.management.findFolderOrRuleByAttribute({ type: "RULE" })
-    expect(result).toEqual(results.findFolderOrRuleByAttributeResult)
+    expect(result).toMatchObject(results.findFolderOrRuleByAttributeResult)
 })
 test("deleteFolderByPath", async () => {
     const result = await dr.management.deleteFolderByPath("/New Name", true)

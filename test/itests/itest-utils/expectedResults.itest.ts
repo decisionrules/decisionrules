@@ -1177,7 +1177,7 @@ export const deleteRuleResult = ''
 export const deleteRuleResult1 = ''
 export const getRulesForSpaceResult = []
 export const renameFolderResult = ''
-export const importFolderResult = "folderNode"
+export const importFolderResult = 'folderNode'
 export const getFolderStructureResult2 = {
     type: 'ROOT',
     name: 'Home',
@@ -1191,7 +1191,17 @@ export const getFolderStructureResult2 = {
         {
             name: 'Folder Name',
             type: 'FOLDER',
-            children: []
+            children: [
+                {
+                    'name': 'Updated Integration Flow v2',
+                    'type': 'RULE',
+                    'version': 1,
+                },
+                {
+                    'name': 'Updated Integration Flow v2',
+                    'type': 'RULE',
+                    'version': 2,
+                }]
         }
     ]
 }
@@ -1217,22 +1227,17 @@ export const folder2Result = {
     ]
 }
 export const getFolderStructureResult3 = {
-    id: 'e337728c-58ee-1a39-4574-f244461ef7a2',
     name: 'Folder Name',
     type: 'FOLDER',
     children: [
         {
-            baseId: '79a8e268-9da6-30db-3fc6-c5fdb34f8315',
             version: 1,
             name: 'Updated Integration Flow v2',
-            ruleAlias: 'agreeable-pigeon',
             type: 'RULE'
         },
         {
-            baseId: '79a8e268-9da6-30db-3fc6-c5fdb34f8315',
             version: 2,
             name: 'Updated Integration Flow v2',
-            ruleAlias: 'agreeable-pigeon',
             type: 'RULE'
         }
     ]
@@ -1241,28 +1246,22 @@ export const moveFolderResult = ''
 export const findFolderOrRuleByAttributeResult = [
     {
         name: 'Updated Integration Flow v2',
-        baseId: '79a8e268-9da6-30db-3fc6-c5fdb34f8315',
         version: 2,
-        ruleAlias: 'agreeable-pigeon',
         ruleType: 'integration-flow',
         ruleStatus: 'pending',
         type: 'RULE',
         tags: [],
         description: '',
-        parentId: 'e337728c-58ee-1a39-4574-f244461ef7a2',
         path: '/New Name/Folder Name/Updated Integration Flow v2'
     },
     {
         name: 'Updated Integration Flow v2',
-        baseId: '79a8e268-9da6-30db-3fc6-c5fdb34f8315',
         version: 1,
-        ruleAlias: 'agreeable-pigeon',
         ruleType: 'integration-flow',
         ruleStatus: 'pending',
         type: 'RULE',
         tags: [],
         description: '',
-        parentId: 'e337728c-58ee-1a39-4574-f244461ef7a2',
         path: '/New Name/Folder Name/Updated Integration Flow v2'
     }
 ]
