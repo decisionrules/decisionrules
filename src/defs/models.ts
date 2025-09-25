@@ -23,12 +23,19 @@ export type SolverOptions = {
 /**
  * Options for configuring rules.
  *
- * @property path - Path used for handling duplicate aliases.
- * @property version - Used together with path .
+ * @property version - Used only together with path.
  */
-export type RuleOptions = {
-	path?: string;
-	version?: Version;
+export interface RuleOptions extends CreateRuleOptions {
+	version?: Version
+}
+
+/**
+ * Options for configuring create rule.
+ *
+ * @property path - Path used to find rule.
+ */
+export type CreateRuleOptions = {
+	path?: string
 }
 
 export type FolderOptions = {

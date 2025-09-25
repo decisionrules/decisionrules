@@ -10,8 +10,10 @@ function getCategoryUrl(host: HostEnum | string, category: MngCategoryEnum, apiP
 		const baseUrl = getBaseURL(host);
 		let path: string = `/api/${category}/${apiPath.filter(pathParam => pathParam !== "").join("/")}`;
 		if (queryParams) {
-			switch (category) {
-				case MngCategoryEnum.RULE || MngCategoryEnum.RULE_FLOW:
+			switch (category){
+                case MngCategoryEnum.FOLDER:
+                case MngCategoryEnum.RULE:
+                case MngCategoryEnum.RULE_FLOW:
 					const entries = Object.entries(queryParams)
 						.filter(([_, value]) => value !== undefined && value !== null);
 					path += "?" + entries.map(([key, value]) => `${key}=${value as string}`).join("&");
@@ -179,29 +181,6 @@ export async function deleteTagsAPI(options: DecisionRulesOptions, ruleId: strin
 	}
 }
 
-export async function importRuleFlowAPI(options: DecisionRulesOptions, rule: any, queryParams: { newVersion?: string, overwrite?: string, version?: Version }): Promise<any> {
-	try {
-		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE_FLOW, ["import"], queryParams);
-		const response = await doCall(url, headers, "POST", rule);
-		return response.data;
-	} catch (e: any) {
-		throw e;
-	}
-}
-
-export async function exportRuleFlowAPI(options: DecisionRulesOptions, ruleId: string, version?: Version): Promise<any> {
-	try {
-		const versionString = getRuleVersion(version)
-		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE_FLOW, ["export", ruleId, versionString]);
-		const response = await doCall(url, headers, "GET");
-		return response.data;
-	} catch (e: any) {
-		throw e;
-	}
-}
-
 export async function createFolderAPI(options: DecisionRulesOptions, targetNodeId: string, data: any, folderOptions?: FolderOptions): Promise<any> {
 	try {
 		const headers = createHeaders(options.managementKey);
@@ -224,10 +203,10 @@ export async function updateNodeFolderStructureAPI(options: DecisionRulesOptions
 	}
 }
 
-export async function exportFolderAPI(options: DecisionRulesOptions, nodeId: string): Promise<FolderExport> {
+export async function exportFolderAPI(options: DecisionRulesOptions, nodeId: string, folderOptions?: FolderOptions): Promise<FolderExport> {
 	try {
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, ["export", nodeId]);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, ["export", nodeId], folderOptions);
 		const response = await doCall(url, headers, "GET");
 		return response.data;
 	} catch (e: any) {
@@ -235,10 +214,10 @@ export async function exportFolderAPI(options: DecisionRulesOptions, nodeId: str
 	}
 }
 
-export async function importFolderAPI(options: DecisionRulesOptions, targetNodeId: string, data: FolderExport): Promise<any> {
+export async function importFolderAPI(options: DecisionRulesOptions, targetNodeId: string, data: FolderExport, folderOptions?: FolderOptions): Promise<any> {
 	try {
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, ["import", targetNodeId]);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, ["import", targetNodeId], folderOptions);
 		const response = await doCall(url, headers, "POST", data);
 		return response.data;
 	} catch (e: any) {
@@ -249,7 +228,7 @@ export async function importFolderAPI(options: DecisionRulesOptions, targetNodeI
 export async function getNodeFolderStructureAPI(options: DecisionRulesOptions, targetNodeId?: string, folderOptions?: FolderOptions): Promise<any> {
 	try {
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, [targetNodeId??""], folderOptions);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.FOLDER, [targetNodeId ?? ""], folderOptions);
 		const response = await doCall(url, headers, "GET");
 		return response.data;
 	} catch (e: any) {
@@ -311,11 +290,11 @@ export async function findFolderOrRuleByAttributeAPI(options: DecisionRulesOptio
 	}
 }
 
-export function getRuleVersion(version?: Version, ruleOptions?: RuleOptions){
-    if (ruleOptions && ruleOptions.version){
-        return ""
-    }
-    return version == "latest" ? "" : (version as number ?? "").toString()
+export function getRuleVersion(version?: Version, ruleOptions?: RuleOptions) {
+	if (ruleOptions && ruleOptions.version) {
+		return ""
+	}
+	return version == "latest" ? "" : (version as number ?? "").toString()
 }
 
 export const testManagementSet = {

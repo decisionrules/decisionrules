@@ -1,4 +1,4 @@
-import { DecisionRulesOptions } from "../src/defs/models";
+import { DecisionRulesOptions, FolderOptions } from '../src/defs/models'
 import { HostEnum } from "../src/defs/enums";
 import { testManagementSet } from "../src/api/management"
 import { MngCategoryEnum } from "../src/defs/enums";
@@ -160,10 +160,17 @@ test("getCategoryUrl", () => {
     expect(f.href).toBe(expected);
 });
 
-
 test("getCategoryUrl", () => {
     const f = testManagementSet.getCategoryUrl(opt.host, MngCategoryEnum.FOLDER, ["123"]);
     const expected = "https://api.decisionrules.io/api/folder/123";
+    expect(f.href).toBe(expected);
+});
+
+test("getCategoryUrl", () => {
+    const deleteAll = undefined
+    const folderOptions: FolderOptions = { path: "/New Name"}
+    const f = testManagementSet.getCategoryUrl(opt.host, MngCategoryEnum.FOLDER, [""], { deleteAll, ...folderOptions });
+    const expected = "https://api.decisionrules.io/api/folder/?path=/New%20Name";
     expect(f.href).toBe(expected);
 });
 
