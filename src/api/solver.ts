@@ -6,7 +6,7 @@ import { getBaseURL } from "../utils/utils";
 
 export async function solveRule(options: DecisionRulesOptions, ruleId: string, input: any, version?: Version, solverOptions?: SolverOptions): Promise<any> {
 	try {
-        const versionString = version == "latest" ? "" : (version as number).toString()
+        const versionString = version == "latest" ? "" : (version as number ?? "").toString()
 		const url = createUrl(options, ruleId, versionString);
 		const body = createBody(input, solverOptions);
 		const headers = createHeaders(options, solverOptions);

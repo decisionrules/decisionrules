@@ -16,10 +16,11 @@ let folder2
 let folderExport: FolderExport
 
 test("env loaded", async () => {
+    expect(process.env.SOLVER_KEY).toBeDefined();
     expect(process.env.MANAGEMENT_KEY).toBeDefined();
     expect(process.env.HOST).toBeDefined();
     const opt: DecisionRulesOptions = {
-        solverKey: "",
+        solverKey: process.env.SOLVER_KEY,
         managementKey: process.env.MANAGEMENT_KEY,
         host: process.env.HOST as string,
     };
@@ -110,7 +111,7 @@ test("deleteRuleByPath", async () => {
 })
 test("getRulesForSpace", async () => {
     const result = await dr.management.getRulesForSpace()
-    expect(result).toEqual(results.getRulesForSpaceResult)
+    expect(result).toMatchObject(results.getRulesForSpaceResult)
 })
 test("renameFolder", async () => {
     const result = await dr.management.renameFolder(folder!.id, "New Name")

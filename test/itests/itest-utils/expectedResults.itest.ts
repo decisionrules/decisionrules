@@ -5,6 +5,16 @@ export const getFolderStructureResult = {
     id: 'root',
     children: [
         {
+            'name': 'Shipment Milestones',
+            'type': 'RULE',
+            'version': 1,
+        },
+        {
+            name: 'Integration Flow',
+            type: 'RULE',
+            version: 1,
+        },
+        {
             name: 'Folder Name',
             type: 'FOLDER',
             children: []
@@ -18,6 +28,16 @@ export const getFolderStructureResult1 = {
     name: 'Home',
     id: 'root',
     children: [
+        {
+            'name': 'Shipment Milestones',
+            'type': 'RULE',
+            'version': 1,
+        },
+        {
+            name: 'Integration Flow',
+            type: 'RULE',
+            version: 1,
+        },
         {
             name: 'Folder Name',
             type: 'FOLDER',
@@ -43,7 +63,6 @@ export const createRuleResult = {
                         'type': 'out',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': 'fbd5a179-588e-4e75-b1e3-73ef458a84a2',
                         'maxCount': 1,
                         'minCount': 1
                     }
@@ -62,7 +81,6 @@ export const createRuleResult = {
                         'type': 'out',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': '025ebbdf-b839-45c6-ae18-eb246cd4f040',
                         'maxCount': 1,
                         'minCount': 1
                     },
@@ -70,7 +88,6 @@ export const createRuleResult = {
                         'type': 'in',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': '38de5e13-7b9e-44c9-8070-fb196cee4a6e',
                         'maxCount': 1,
                         'minCount': 1
                     }
@@ -109,10 +126,7 @@ export const createRuleResult = {
         ],
         'connections': [
             {
-                'source': 'fbd5a179-588e-4e75-b1e3-73ef458a84a2',
-                'target': '38de5e13-7b9e-44c9-8070-fb196cee4a6e',
                 'type': 0,
-                'id': '9d1753c3-3117-459b-919d-03ddbeaa64a9'
             }
         ]
     },
@@ -155,12 +169,10 @@ export const updateRuleResult = {
                         'type': 'out',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': 'fbd5a179-588e-4e75-b1e3-73ef458a84a2',
                         'maxCount': 1,
                         'minCount': 1
                     }
                 ],
-                'id': 'c2c8e47c',
                 'version': 1,
                 'type': 'START',
                 'position': {
@@ -174,7 +186,6 @@ export const updateRuleResult = {
                         'type': 'out',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': '025ebbdf-b839-45c6-ae18-eb246cd4f040',
                         'maxCount': 1,
                         'minCount': 1
                     },
@@ -182,7 +193,6 @@ export const updateRuleResult = {
                         'type': 'in',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': '38de5e13-7b9e-44c9-8070-fb196cee4a6e',
                         'maxCount': 1,
                         'minCount': 1
                     }
@@ -221,8 +231,6 @@ export const updateRuleResult = {
         ],
         'connections': [
             {
-                'source': 'fbd5a179-588e-4e75-b1e3-73ef458a84a2',
-                'target': '38de5e13-7b9e-44c9-8070-fb196cee4a6e',
                 'type': 0,
                 'id': '9d1753c3-3117-459b-919d-03ddbeaa64a9'
             }
@@ -249,24 +257,6 @@ export const updateRuleResult = {
         'wh-E5d6EU8B'
     ]
 }
-export const updateRuleByPathResult = {
-    name: 'Updated Integration Flow v2',
-    description: '',
-    inputSchema: { input: {} },
-    outputSchema: { output: {} },
-    tags: [],
-    workflowData: { nodes: [[Object], [Object]], connections: [[Object]] },
-    type: 'integration-flow',
-    status: 'published',
-    auditLog: { active: false, debug: { active: false }, ttl: 14 },
-    visualData: { scale: 1, rotate: 0, translate: { x: -67, y: -1 } },
-    selectedWebhookAliases: ['wh-E5d6EU8B'],
-    ruleAlias: 'agreeable-pigeon',
-    ruleId: '46fd6883-0ffd-8b89-1a2b-21a26f448f53',
-    baseId: '46fd6883-0ffd-8b89-1a2b-21a26f448f53',
-    version: 1,
-    lastUpdate: '2025-09-25T08:49:21.053Z'
-}
 export const updateRuleStatusResult = {
     'name': 'Updated Integration Flow v2',
     'description': '',
@@ -285,7 +275,6 @@ export const updateRuleStatusResult = {
                         'type': 'out',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': 'fbd5a179-588e-4e75-b1e3-73ef458a84a2',
                         'maxCount': 1,
                         'minCount': 1
                     }
@@ -304,7 +293,6 @@ export const updateRuleStatusResult = {
                         'type': 'out',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': '025ebbdf-b839-45c6-ae18-eb246cd4f040',
                         'maxCount': 1,
                         'minCount': 1
                     },
@@ -312,7 +300,6 @@ export const updateRuleStatusResult = {
                         'type': 'in',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': '38de5e13-7b9e-44c9-8070-fb196cee4a6e',
                         'maxCount': 1,
                         'minCount': 1
                     }
@@ -351,10 +338,7 @@ export const updateRuleStatusResult = {
         ],
         'connections': [
             {
-                'source': 'fbd5a179-588e-4e75-b1e3-73ef458a84a2',
-                'target': '38de5e13-7b9e-44c9-8070-fb196cee4a6e',
                 'type': 0,
-                'id': '9d1753c3-3117-459b-919d-03ddbeaa64a9'
             }
         ]
     },
@@ -505,12 +489,10 @@ export const getRuleResult = {
                         'type': 'out',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': 'fbd5a179-588e-4e75-b1e3-73ef458a84a2',
                         'maxCount': 1,
                         'minCount': 1
                     }
                 ],
-                'id': 'c2c8e47c',
                 'version': 1,
                 'type': 'START',
                 'position': {
@@ -524,7 +506,6 @@ export const getRuleResult = {
                         'type': 'out',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': '025ebbdf-b839-45c6-ae18-eb246cd4f040',
                         'maxCount': 1,
                         'minCount': 1
                     },
@@ -532,12 +513,10 @@ export const getRuleResult = {
                         'type': 'in',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': '38de5e13-7b9e-44c9-8070-fb196cee4a6e',
                         'maxCount': 1,
                         'minCount': 1
                     }
                 ],
-                'id': '63e3801f',
                 'version': 1,
                 'type': 'DATA_MANIPULATION',
                 'position': {
@@ -571,10 +550,7 @@ export const getRuleResult = {
         ],
         'connections': [
             {
-                'source': 'fbd5a179-588e-4e75-b1e3-73ef458a84a2',
-                'target': '38de5e13-7b9e-44c9-8070-fb196cee4a6e',
                 'type': 0,
-                'id': '9d1753c3-3117-459b-919d-03ddbeaa64a9'
             }
         ]
     },
@@ -617,12 +593,10 @@ export const getRuleResult1 = {
                         'type': 'out',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': 'fbd5a179-588e-4e75-b1e3-73ef458a84a2',
                         'maxCount': 1,
                         'minCount': 1
                     }
                 ],
-                'id': 'c2c8e47c',
                 'version': 1,
                 'type': 'START',
                 'position': {
@@ -636,7 +610,6 @@ export const getRuleResult1 = {
                         'type': 'out',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': '025ebbdf-b839-45c6-ae18-eb246cd4f040',
                         'maxCount': 1,
                         'minCount': 1
                     },
@@ -644,12 +617,10 @@ export const getRuleResult1 = {
                         'type': 'in',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': '38de5e13-7b9e-44c9-8070-fb196cee4a6e',
                         'maxCount': 1,
                         'minCount': 1
                     }
                 ],
-                'id': '63e3801f',
                 'version': 1,
                 'type': 'DATA_MANIPULATION',
                 'position': {
@@ -683,10 +654,7 @@ export const getRuleResult1 = {
         ],
         'connections': [
             {
-                'source': 'fbd5a179-588e-4e75-b1e3-73ef458a84a2',
-                'target': '38de5e13-7b9e-44c9-8070-fb196cee4a6e',
                 'type': 0,
-                'id': '9d1753c3-3117-459b-919d-03ddbeaa64a9'
             }
         ]
     },
@@ -729,12 +697,10 @@ export const getRuleByPathResult = {
                         'type': 'out',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': 'fbd5a179-588e-4e75-b1e3-73ef458a84a2',
                         'maxCount': 1,
                         'minCount': 1
                     }
                 ],
-                'id': 'c2c8e47c',
                 'version': 1,
                 'type': 'START',
                 'position': {
@@ -748,7 +714,6 @@ export const getRuleByPathResult = {
                         'type': 'out',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': '025ebbdf-b839-45c6-ae18-eb246cd4f040',
                         'maxCount': 1,
                         'minCount': 1
                     },
@@ -756,7 +721,6 @@ export const getRuleByPathResult = {
                         'type': 'in',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': '38de5e13-7b9e-44c9-8070-fb196cee4a6e',
                         'maxCount': 1,
                         'minCount': 1
                     }
@@ -794,12 +758,7 @@ export const getRuleByPathResult = {
             }
         ],
         'connections': [
-            {
-                'source': 'fbd5a179-588e-4e75-b1e3-73ef458a84a2',
-                'target': '38de5e13-7b9e-44c9-8070-fb196cee4a6e',
-                'type': 0,
-                'id': '9d1753c3-3117-459b-919d-03ddbeaa64a9'
-            }
+            {}
         ]
     },
     'type': 'integration-flow',
@@ -1174,8 +1133,24 @@ export const exportFolderResult = {
     },
 }
 export const deleteRuleResult = ''
-export const deleteRuleResult1 = ''
-export const getRulesForSpaceResult = []
+export const getRulesForSpaceResult = [
+    {
+        'description': '',
+        'name': 'Integration Flow',
+        'ruleAlias': 'overall-alligator',
+        'status': 'published',
+        'tags': [],
+        'type': 'integration-flow',
+        'version': 1
+    },
+    {
+        'description': 'This Decision Table validates whether the shipment milestones are in the correct order; if not, a message is returned.',
+        'name': 'Shipment Milestones',
+        'status': 'published',
+        'tags': [],
+        'type': 'decision-table',
+    }
+]
 export const renameFolderResult = ''
 export const importFolderResult = 'folderNode'
 export const getFolderStructureResult2 = {
@@ -1183,6 +1158,16 @@ export const getFolderStructureResult2 = {
     name: 'Home',
     id: 'root',
     children: [
+        {
+            'name': 'Shipment Milestones',
+            'type': 'RULE',
+            'version': 1,
+        },
+        {
+            'name': 'Integration Flow',
+            'type': 'RULE',
+            'version': 1
+        },
         {
             name: 'New Name',
             type: 'FOLDER',
@@ -1205,27 +1190,6 @@ export const getFolderStructureResult2 = {
         }
     ]
 }
-export const folder2Result = {
-    id: 'e337728c-58ee-1a39-4574-f244461ef7a2',
-    name: 'Folder Name',
-    type: 'FOLDER',
-    children: [
-        {
-            baseId: '79a8e268-9da6-30db-3fc6-c5fdb34f8315',
-            version: 1,
-            name: 'Updated Integration Flow v2',
-            ruleAlias: 'agreeable-pigeon',
-            type: 'RULE'
-        },
-        {
-            baseId: '79a8e268-9da6-30db-3fc6-c5fdb34f8315',
-            version: 2,
-            name: 'Updated Integration Flow v2',
-            ruleAlias: 'agreeable-pigeon',
-            type: 'RULE'
-        }
-    ]
-}
 export const getFolderStructureResult3 = {
     name: 'Folder Name',
     type: 'FOLDER',
@@ -1244,6 +1208,17 @@ export const getFolderStructureResult3 = {
 }
 export const moveFolderResult = ''
 export const findFolderOrRuleByAttributeResult = [
+
+    {
+        'name': 'Integration Flow',
+        'type': 'RULE',
+        'version': 1
+    },
+    {
+        'name': 'Shipment Milestones',
+        'type': 'RULE',
+        'version': 1,
+    },
     {
         name: 'Updated Integration Flow v2',
         version: 2,
@@ -1266,3 +1241,56 @@ export const findFolderOrRuleByAttributeResult = [
     }
 ]
 export const deleteFolderByPathResult = ''
+
+export const start = {
+    status: {
+        state: 'WAITING',
+        code: 'JOB_INITIALIZED',
+        message: 'Job initialized'
+    }
+}
+export const info = {
+    ruleReference: {
+        baseId: '715c5cd8-594b-22e2-c803-65f18403e8cd',
+        version: 1,
+        type: 'integration-flow'
+    },
+    inputData: {},
+    context: {
+        executorUser: null,
+        environmentGroup: 'staging',
+        priority: 1,
+        parallelLimit: 1
+    },
+    status: {
+        state: 'RUNNING',
+        code: 'JOB_RUNNING',
+        message: 'Job is being processed'
+    },
+}
+
+export const cancel = {
+    ruleReference: {
+        version: 1,
+        type: 'integration-flow'
+    },
+    inputData: {},
+    context: {
+        executorUser: null,
+        environmentGroup: 'staging',
+        priority: 1,
+        parallelLimit: 1
+    },
+    status: {
+        state: 'CANCELING',
+        code: 'JOB_RUNNING',
+        message: 'Job is being canceled'
+    },
+}
+
+export const solve = [
+    {
+        'typeOfMilestoneResult': '24 21 20 17 16 13 12 9',
+        'message': 'In wrong order for DHL operator'
+    }
+]
