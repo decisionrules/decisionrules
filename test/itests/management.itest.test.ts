@@ -4,7 +4,6 @@ import { DecisionRulesOptions, FolderExport, Rule } from '../../src/defs/models'
 import { FolderType, RuleStatus } from '../../src/defs/enums'
 import * as results from './itest-utils/expectedResults.itest'
 import * as rules from './itest-utils/rules.itest'
-import { getRuleByPathResult2 } from './itest-utils/expectedResults.itest'
 
 beforeAll(() => {
     dotenv.config({ path: './env/.env' });
