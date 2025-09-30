@@ -25,3 +25,10 @@ export enum FolderType {
     FOLDER = "FOLDER",
     RULE = "RULE"
 }
+
+export enum StrategyOptions{
+    STANDARD = 'STANDARD',
+    ARRAY = 'ARRAY',
+    FIRST_MATCH = 'FIRST_MATCH',
+    EVALUATE_ALL = 'EVALUATE_ALL',
+}

@@ -1,7 +1,7 @@
-import { AxiosHeaders } from "axios";
-import { testPack } from "../src/api/solver"
-import { HostEnum } from "../src/defs/enums";
-import { DecisionRulesOptions, SolverOptions } from "../src/defs/models";
+import { AxiosHeaders } from 'axios'
+import { testPack } from '../src/api/solver'
+import { HostEnum, StrategyOptions } from '../src/defs/enums'
+import { DecisionRulesOptions, SolverOptions } from '../src/defs/models'
 
 const mockOpts: SolverOptions = {
 	cols: {
@@ -12,7 +12,7 @@ const mockOpts: SolverOptions = {
 	corrId: "1111",
 	audit: false,
 	auditTtl: "1",
-	strategy: "STANDARD"
+	strategy: StrategyOptions.STANDARD
 }
 
 const opt: DecisionRulesOptions = {

@@ -12,9 +12,9 @@ export default class DecisionRules {
 	constructor(options: DecisionRulesOptions) {
 		this.options = options;
 	}
-	public async solve(ruleId: string, data: any, version?: Version, solverOptions?: SolverOptions): Promise<any> {
+	public async solve(ruleIdOrAlias: string, inputObject: object, version?: Version, solverOptions?: SolverOptions): Promise<object[]> {
 		try {
-			return await solveRule(this.options, ruleId, data, version, solverOptions);
+			return await solveRule(this.options, ruleIdOrAlias, inputObject, version, solverOptions);
 		} catch (e: any) {
 			throw handleError(e);
 		}
@@ -28,7 +28,7 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		getRuleByPath: async (path: string, version?: number): Promise<Rule> => {
+		getRuleByPath: async (path: string, version?: Version): Promise<Rule> => {
 			try {
 				return await getRuleAPI(this.options, "", "latest", { path, version });
 			} catch (e: any) {
@@ -63,9 +63,9 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		deleteRule: async (ruleId: string, version?: Version): Promise<void> => {
+		deleteRule: async (ruleIdOrAlias: string, version?: Version): Promise<void> => {
 			try {
-				return await deleteRuleAPI(this.options, ruleId, version);
+				return await deleteRuleAPI(this.options, ruleIdOrAlias, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
@@ -77,30 +77,30 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		lockRule: async (ruleId: string, lock: boolean, version?: Version): Promise<void> => {
+		lockRule: async (ruleIdOrAlias: string, lock: boolean, version?: Version): Promise<void> => {
 			try {
-				return await lockRuleAPI(this.options, ruleId, lock, version);
+				return await lockRuleAPI(this.options, ruleIdOrAlias, lock, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		lockRuleByPath: async (path: string, lock: boolean, version?: number): Promise<void> => {
+		lockRuleByPath: async (path: string, lock: boolean, version?: Version): Promise<void> => {
 			try {
 				return await lockRuleAPI(this.options, "", lock, "latest", { path, version });
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		findDuplicates: async (ruleId: string, version?: Version): Promise<{ rule: Rule, duplicates: any[] }> => {
+		findDuplicates: async (ruleIdOrAlias: string, version?: Version): Promise<{ rule: Rule, duplicates: any[] }> => {
 			try {
-				return await findDuplicatesAPI(this.options, ruleId, version);
+				return await findDuplicatesAPI(this.options, ruleIdOrAlias, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		findDependencies: async (ruleId: string, version?: Version): Promise<{ rule: Rule, dependencies: any[] }> => {
+		findDependencies: async (ruleIdOrAlias: string, version?: Version): Promise<{ rule: Rule, dependencies: any[] }> => {
 			try {
-				return await findDependenciesAPI(this.options, ruleId, version);
+				return await findDependenciesAPI(this.options, ruleIdOrAlias, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
@@ -119,16 +119,16 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		updateTags: async (ruleId: string, tags: any, version?: Version): Promise<string[]> => {
+		updateTags: async (ruleIdOrAlias: string, tags: any, version?: Version): Promise<string[]> => {
 			try {
-				return await addTagsAPI(this.options, ruleId, tags, version);
+				return await addTagsAPI(this.options, ruleIdOrAlias, tags, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		deleteTags: async (ruleId: string, tags: string[], version?: Version): Promise<void> => {
+		deleteTags: async (ruleIdOrAlias: string, tags: string[], version?: Version): Promise<void> => {
 			try {
-				return await deleteTagsAPI(this.options, ruleId, tags, version);
+				return await deleteTagsAPI(this.options, ruleIdOrAlias, tags, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
@@ -168,7 +168,7 @@ export default class DecisionRules {
 			baseId?: string
 			version?: number
 			children?: object[]
-		}): Promise<void> => {
+		}): Promise<FolderStructure> => {
 			try {
 				return await updateNodeFolderStructureAPI(this.options, targetNodeid, data);
 			} catch (e: any) {
@@ -182,7 +182,7 @@ export default class DecisionRules {
 			baseId?: string
 			version?: number
 			children?: object[]
-		}): Promise<void> => {
+		}): Promise<FolderStructure> => {
 			try {
 				return await updateNodeFolderStructureAPI(this.options, "", data, { path });
 			} catch (e: any) {
@@ -286,9 +286,9 @@ export default class DecisionRules {
 	};
 
 	public job = {
-		start: async (ruleId: string, inputData: any, version?: Version): Promise<Job> => {
+		start: async (ruleIdOrAlias: string, inputData: any, version?: Version): Promise<Job> => {
 			try {
-				return await startJobAPI(this.options, ruleId, inputData, version);
+				return await startJobAPI(this.options, ruleIdOrAlias, inputData, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}

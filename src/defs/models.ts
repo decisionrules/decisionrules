@@ -1,6 +1,8 @@
-import { HostEnum } from "./enums";
+import { HostEnum, StrategyOptions } from './enums'
 
 export type DecisionRulesHost = HostEnum | string;
+
+
 
 export type DecisionRulesOptions = {
 	solverKey?: string;
@@ -8,6 +10,20 @@ export type DecisionRulesOptions = {
 	host: HostEnum | string;
 }
 
+/**
+ * Options for configuring solver.
+ *
+ * @property cols - Used only together with path. Allows specifying which condition
+ *                  columns to include or exclude during evaluation.
+ *                  - includedConditionCols: List of condition columns to explicitly include.
+ *                  - excludedConditionCols: List of condition columns to explicitly exclude.
+ * @property debug - Enables debug mode for additional logging and troubleshooting.
+ * @property corrId - Correlation ID for tracing requests across systems.
+ * @property audit - Enables auditing of solver operations.
+ * @property auditTtl - Time-to-live (TTL) for stored audit records.
+ * @property aliasConflictPath - Path used to resolve alias conflicts, if any.
+ * @property strategy - Strategy options that control solver behavior.
+ */
 export type SolverOptions = {
 	cols?: {
 		includedConditionCols?: string[],
@@ -15,11 +31,11 @@ export type SolverOptions = {
 	},
 	debug?: boolean,
 	corrId?: string,
-	strategy?: string,
 	audit?: boolean,
-	auditTtl?: string
+	auditTtl?: string,
+	aliasConflictPath?: string,
+	strategy?: StrategyOptions,
 }
-
 /**
  * Options for configuring rules.
  *
@@ -105,4 +121,4 @@ export type Job = {
 	updatedAt: string;
 };
 
-export type Version = "latest" | number | string;
+export type Version = "latest" | number;

@@ -4,6 +4,7 @@ import { DecisionRulesOptions, FolderExport, Rule } from '../../src/defs/models'
 import { FolderType, RuleStatus } from '../../src/defs/enums'
 import * as results from './itest-utils/expectedResults.itest'
 import * as rules from './itest-utils/rules.itest'
+import { getRuleByPathResult2 } from './itest-utils/expectedResults.itest'
 
 beforeAll(() => {
     dotenv.config({ path: './env/.env' });
@@ -53,6 +54,10 @@ test("createRule", async () => {
     rule = await dr.management.createRule(rules.rule, "/Folder Name")
     expect(rule).toMatchObject(results.createRuleResult)
 })
+test("getRuleByPath", async () => {
+    const result = await dr.management.getRuleByPath("/Folder Name/" + rule.name, "latest")
+    expect(result).toMatchObject(results.getRuleByPathResult2)
+})
 test("updateRule", async () => {
     rule = await dr.management.updateRule(rule.ruleId, rules.updateRule)
     expect(rule).toMatchObject(results.updateRuleResult)
@@ -60,6 +65,10 @@ test("updateRule", async () => {
 test("updateRuleStatus", async () => {
     rule = await dr.management.updateRuleStatus(rule.ruleId, RuleStatus.PENDING, 1)
     expect(rule).toMatchObject(results.updateRuleStatusResult)
+})
+test("updateRuleStatus", async () => {
+    rule = await dr.management.updateRuleStatus(rule.ruleId, RuleStatus.PUBLISHED, 1)
+    expect(rule).toMatchObject(results.updateRuleStatusResult1)
 })
 test("lockRule", async () => {
     const result = await dr.management.lockRule(rule.ruleId, true)
@@ -82,11 +91,11 @@ test("createNewRuleVersion", async () => {
     expect(rule).toMatchObject(results.createNewRuleVersionResult)
 })
 test("getRule", async () => {
-    const result = await dr.management.getRule(rule.ruleId, "1")
+    const result = await dr.management.getRule(rule.ruleId, 1)
     expect(result).toMatchObject(results.getRuleResult)
 })
 test("getRule", async () => {
-    const result = await dr.management.getRule(rule.ruleId, "2")
+    const result = await dr.management.getRule(rule.ruleId, 2)
     expect(result).toMatchObject(results.getRuleResult1)
 })
 test("getRuleByPath", async () => {
@@ -104,6 +113,10 @@ test("exportFolder", async () => {
 test("deleteRule", async () => {
     const result = await dr.management.deleteRule(rule.ruleId, 1)
     expect(result).toEqual(results.deleteRuleResult)
+})
+test("getRule", async () => {
+    const result = await dr.management.getRule(rule.ruleId, "latest")
+    expect(result).toMatchObject(results.getRuleResult1)
 })
 test("deleteRuleByPath", async () => {
     const result = await dr.management.deleteRuleByPath("/Folder Name/" + rule.name, 2)
