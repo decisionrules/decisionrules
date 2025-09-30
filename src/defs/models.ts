@@ -1,8 +1,6 @@
-import { HostEnum, StrategyOptions } from './enums'
+import { FolderType, HostEnum, StrategyOptions } from './enums'
 
 export type DecisionRulesHost = HostEnum | string;
-
-
 
 export type DecisionRulesOptions = {
 	solverKey?: string;
@@ -122,3 +120,26 @@ export type Job = {
 };
 
 export type Version = "latest" | number;
+
+export type Node = { type: FolderType, id: string }
+
+export type FolderData = {
+	type?: FolderType
+	name?: string
+	id?: string
+	baseId?: string
+	version?: number
+	children?: object[]
+}
+
+export type NodeProperties = {
+	name?: string
+	id?: string
+	baseId?: string
+	ruleAlias?: string
+	ruleType?: string
+	tags?: string[]
+	ruleState?: string
+	type?: string
+	version?: number
+}

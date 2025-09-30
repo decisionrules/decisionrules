@@ -1,11 +1,11 @@
 import { cancelJobAPI, jobInfoAPI, startJobAPI } from "./api/job";
 import { createFolderAPI, createNewRuleVersionAPI, createRuleAPI, deleteFolderAPI, deleteRuleAPI, deleteTagsAPI, exportFolderAPI, findDependenciesAPI, findDuplicatesAPI, findFolderOrRuleByAttributeAPI, getNodeFolderStructureAPI as getFolderStructureAPI, getRuleAPI, getRulesForSpaceAPI, getRulesByTagsAPI, importFolderAPI, lockRuleAPI, moveFolderAPI, renameFolderAPI, updateNodeFolderStructureAPI, updateRuleAPI, updateRuleStatusAPI, addTagsAPI } from "./api/management";
 import { solveRule } from "./api/solver";
-import { DecisionRulesOptions, FolderExport, FolderStructure, Job, Rule, Version } from './defs/models'
-import { SolverOptions } from "./defs/models";
+import { DecisionRulesOptions, FolderData, FolderExport, FolderStructure, Job, NodeProperties, Rule, Version } from './defs/models'
+import { SolverOptions, Node } from "./defs/models";
 import { handleError } from "./utils/utils";
 import crypto from 'crypto';
-import { FolderType, RuleStatus } from './defs/enums'
+import { RuleStatus } from './defs/enums'
 
 export default class DecisionRules {
 	private readonly options: DecisionRulesOptions;
@@ -133,56 +133,28 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		createFolder: async (targetNodeid: string, data: {
-			type?: FolderType
-			name?: string
-			id?: string
-			baseId?: string
-			version?: number
-			children?: object[]
-		}): Promise<void> => {
+		createFolder: async (targetNodeId: string, data: FolderData): Promise<void> => {
 			try {
-				return await createFolderAPI(this.options, targetNodeid, data);
+				return await createFolderAPI(this.options, targetNodeId, data);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		createFolderByPath: async (path: string, data: {
-			type?: FolderType
-			name?: string
-			id?: string
-			baseId?: string
-			version?: number
-			children?: object[]
-		}): Promise<void> => {
+		createFolderByPath: async (path: string, data: FolderData): Promise<void> => {
 			try {
 				return await createFolderAPI(this.options, "", data, { path });
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		updateNodeFolderStructure: async (targetNodeid: string, data: {
-			type?: FolderType
-			name?: string
-			id?: string
-			baseId?: string
-			version?: number
-			children?: object[]
-		}): Promise<FolderStructure> => {
+		updateNodeFolderStructure: async (targetNodeId: string, data: FolderData): Promise<FolderStructure> => {
 			try {
-				return await updateNodeFolderStructureAPI(this.options, targetNodeid, data);
+				return await updateNodeFolderStructureAPI(this.options, targetNodeId, data);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		updateNodeFolderStructureByPath: async (path: string, data: {
-			type?: FolderType
-			name?: string
-			id?: string
-			baseId?: string
-			version?: number
-			children?: object[]
-		}): Promise<FolderStructure> => {
+		updateNodeFolderStructureByPath: async (path: string, data: FolderData): Promise<FolderStructure> => {
 			try {
 				return await updateNodeFolderStructureAPI(this.options, "", data, { path });
 			} catch (e: any) {
@@ -203,9 +175,9 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		importFolder: async (targetNodeid: string, data: FolderExport): Promise<{ folderNode: string }> => {
+		importFolder: async (targetNodeId: string, data: FolderExport): Promise<{ folderNode: string }> => {
 			try {
-				return await importFolderAPI(this.options, targetNodeid, data);
+				return await importFolderAPI(this.options, targetNodeId, data);
 			} catch (e: any) {
 				throw handleError(e);
 			}
@@ -217,9 +189,9 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		getFolderStructure: async (targetNodeid?: string): Promise<FolderStructure> => {
+		getFolderStructure: async (targetNodeId?: string): Promise<FolderStructure> => {
 			try {
-				return await getFolderStructureAPI(this.options, targetNodeid);
+				return await getFolderStructureAPI(this.options, targetNodeId);
 			} catch (e: any) {
 				throw handleError(e);
 			}
@@ -231,9 +203,9 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		deleteFolder: async (targetNodeid: string, deleteAll?: boolean): Promise<void> => {
+		deleteFolder: async (targetNodeId: string, deleteAll?: boolean): Promise<void> => {
 			try {
-				return await deleteFolderAPI(this.options, targetNodeid, deleteAll);
+				return await deleteFolderAPI(this.options, targetNodeId, deleteAll);
 			} catch (e: any) {
 				throw handleError(e);
 			}
@@ -245,9 +217,9 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		renameFolder: async (targetNodeid: string, newName: string): Promise<void> => {
+		renameFolder: async (targetNodeId: string, newName: string): Promise<void> => {
 			try {
-				return await renameFolderAPI(this.options, targetNodeid, newName);
+				return await renameFolderAPI(this.options, targetNodeId, newName);
 			} catch (e: any) {
 				throw handleError(e);
 			}
@@ -259,24 +231,14 @@ export default class DecisionRules {
 				throw handleError(e);
 			}
 		},
-		moveFolder: async (targetId: string, nodes: { type: FolderType, id: string }[], targetPath?: string): Promise<void> => {
+		moveFolder: async (targetId: string, nodes: Node[], targetPath?: string): Promise<void> => {
 			try {
 				return await moveFolderAPI(this.options, targetId, nodes, targetPath);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		findFolderOrRuleByAttribute: async (data: {
-			name?: string
-			id?: string
-			baseId?: string
-			ruleAlias?: string
-			ruleType?: string
-			tags?: string[]
-			ruleState?: string
-			type?: string
-			version?: number
-		}): Promise<Rule> => {
+		findFolderOrRuleByAttribute: async (data: NodeProperties): Promise<Rule | FolderStructure> => {
 			try {
 				return await findFolderOrRuleByAttributeAPI(this.options, data);
 			} catch (e: any) {
