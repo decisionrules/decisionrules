@@ -62,7 +62,7 @@ const solverOpt = {
   auditTtl: "14"
 }
 
-const result = await dr.solve(inputData, ruleId, version, solverOpt);
+const result = await dr.solve(ruleIdOrAlias, inputData, version, solverOpt);
 ```
 
 **Management API example**
@@ -70,7 +70,7 @@ const result = await dr.solve(inputData, ruleId, version, solverOpt);
 Management API can be used through management object on DecisionRules class. All methods return a Promise
 
 ```javascript
-const rule = await dr.management.getRule(ruleId, version);
+const rule = await dr.management.getRule(ruleIdOrAlias, version);
 ```
 
 **Job API example**
@@ -85,7 +85,7 @@ const inputData = {
     }
 }
 
-const rule = await dr.job.start(inputData, ruleId, version);
+const rule = await dr.job.start(ruleIdOrAlias, inputData, version);
 ```
 
 
@@ -136,17 +136,17 @@ Methods throws DecisionRulesErrorException if something went wrong down on API c
 **DecisionRules.solve**
 
 ```javascript
-const result = await dr.solve(inputData, ruleId, version, options);
-// => Promise<any>
+const result = await dr.solve(ruleIdOrAlias, inputData, version, solverOptions);
+// => Promise<object[]>
 ```
 Arguments:
 
 | **arg** 	    | **type**      	 | **optional** 	|
 |--------------|-----------------|--------------	|
+| ruleIdOrAlias  	    | string        	 | no           	|
 | inputData  	 | object        	 | no           	|
-| ruleId  	    | string        	 | no           	|
-| version 	    | string        	 | yes          	|
-| options 	    | SolverOptions 	 | yes          	|
+| version 	    | "latest" / number        	 | yes          	|
+| solverOptions 	    | SolverOptions 	 | yes          	|
 
 **SolverOptions**
 
@@ -154,18 +154,21 @@ Object that defines solver behavior if needed.
 
 | **args**                   	| **type** 	| **optional** 	|
 |----------------------------	|----------	|--------------	|
-| debug                      	| boolean  	| yes          	|
-| corrId                     	| string   	| yes          	|
-| strategy                   	| string   	| yes          	|
-| audit                      	| string   	| yes          	|
-| auditTtl                   	| string   	| yes          	|
 | cols                       	| object   	| yes          	|
 | cols.includedConditionCols 	| string[] 	| yes          	|
 | cols.excludedConditionCols 	| string[] 	| yes          	|
+| debug                      	| boolean  	| yes          	|
+| corrId                     	| string   	| yes          	|
+| audit                      	| string   	| yes          	|
+| auditTtl                   	| string   	| yes          	|
+| aliasConflictPath                   	| string   	| yes          	|
+| strategy                   	| StrategyOptions   	| yes          	|
 
 ## Management API
 
 **DecisionRules.management.getRule**
+
+**DecisionRules.management.getRuleByPath**
 
 Gets all of the infromation stored about the rule, including its content, version or input and output schemas. 
 If the version is specified, gets the version irrespective of the rule status.
@@ -173,16 +176,20 @@ If the version is not specified, gets the latest published version.
 
 ```javascript
 
-const result = await dr.management.getRule(ruleIdOrAlias, version);
-// => Promise<any>
+const result = await dr.management.getRule(ruleIdOrAliasOrAlias, version);
+// => Promise<Rule>
+
+const result = await dr.management.getRuleByPath(path, version);
+// => Promise<Rule>
 ```
 
 Arguments:
 
 | **args** 	| **type** 	| **optional** 	|
 |----------	|----------	|--------------	|
-| ruleIdOrAlias   	| string   	| no           	|
-| version  	| string   	| yes          	|
+| ruleIdOrAliasOrAlias/path   	| string   	| no           	|
+| version  	| "latest" / number   	| yes          	|
+
 
 **DecisionRules.management.updateRuleStatus**
 
@@ -190,14 +197,14 @@ Changes rule status from pending to published and vice versa. If the version is 
 
 ```javascript
 
-const result = await dr.management.updateRuleStatus(ruleIdOrAlias, status, version)
-// => Promise<any>
+const result = await dr.management.updateRuleStatus(ruleIdOrAliasOrAlias, status, version)
+// => Promise<Rule>
 ```
 | **args** 	| **type** 	| **optional** 	|
 |----------	|----------	|--------------	|
-| ruleIdOrAlias   	| string   	| no           	|
+| ruleIdOrAliasOrAlias   	| string   	| no           	|
 | status   	| string   	| no           	|
-| version  	| string   	| yes          	|
+| version  	| "latest" / number   	| yes          	|
 
 **DecisionRules.management.updateRule**
 
@@ -207,15 +214,15 @@ Note that there are a few attributes of the rule that cannot be updated by the P
 
 ```javascript
 
-const result = await dr.management.updateRule(ruleIdOrAlias, rule, version);
-// => Promise<any>
+const result = await dr.management.updateRule(ruleIdOrAliasOrAlias, rule, version);
+// => Promise<Rule>
 ```
 
 | **args** 	| **type** 	| **optional** 	|
 |----------	|----------	|--------------	|
-| ruleIdOrAlias   	| string   	| no           	|
+| ruleIdOrAliasOrAlias   	| string   	| no           	|
 | rule     	| any      	| no           	|
-| version  	| string   	| yes          	|
+| version  	| "latest" / number   	| yes          	|
 
 **DecisionRules.management.createRule**
 
@@ -224,7 +231,7 @@ Creates rule based on the body of the request. The body must be formatted accord
 ```javascript
 
 const result = await dr.management.createRule(rule, path);
-// => Promise<any>
+// => Promise<Rule>
 ```
 
 | **args** 	| **type** 	| **optional** 	|
@@ -239,46 +246,59 @@ Creates new version of a rule and applies changes to new rule based on the body 
 
 ```javascript
 
-const result = await dr.management.createNewRuleVersion(ruleIdOrAlias, rule);
-// => Promise<any>
+const result = await dr.management.createNewRuleVersion(ruleIdOrAliasOrAlias, rule);
+// => Promise<Rule>
 ```
 
 | **args** 	| **type** 	| **optional** 	|
 |----------	|----------	|--------------	|
-| ruleIdOrAlias     	| any      	| no           	|
+| ruleIdOrAliasOrAlias     	| any      	| no           	|
 | rule     	| any      	| no           	|
 
 
 **DecisionRules.management.deleteRule**
 
+**DecisionRules.management.deleteRuleByPath**
+
 Deletes the rule.
 
 ```javascript
 
-const result = await dr.management.deleteRule(ruleId, version);
-// => Promise<any>
+const result = await dr.management.deleteRule(ruleIdOrAlias, version);
+// => Promise<void>
+
+const result = await dr.management.deleteRuleByPath(path, version);
+// => Promise<void>
 ```
+
+Arguments:
 
 | **args** 	| **type** 	| **optional** 	|
 |----------	|----------	|--------------	|
-| ruleId   	| string   	| no           	|
-| version  	| string   	| yes          	|
+| ruleIdOrAlias/path   	| string   	| no           	|
+| version  	| "latest" / number   	| yes          	|
 
 **DecisionRules.management.lockRule**
 
-Lock the rule.
+**DecisionRules.management.lockRuleByPath**
+
+Locks and unlocks the rule, depending on lock value.
 
 ```javascript
 
-const result = await dr.management.lockRule(lock, ruleId, version);
-// => Promise<any>
+const result = await dr.management.lockRule(ruleIdOrAlias, lock, version);
+// => Promise<void>
+
+const result = await dr.management.lockRuleByPath(ruleIdOrAlias, lock, version);
+// => Promise<void>
 ```
 
 | **args** 	 | **type** 	  | **optional** 	|
 |------------|-------------|--------------	|
+| ruleIdOrAlias/path   	 | string   	  | no           	|
 | lock     	 | boolean   	 | no           	|
-| ruleId   	 | string   	  | no           	|
-| version  	 | string   	  | yes          	|
+| version  	 | "latest" / number   	  | yes          	|
+
 
 
 **DecisionRules.management.findDuplicates**
@@ -287,14 +307,14 @@ Look for decision table by id and optionally version. If the decision table is f
 
 ```javascript
 
-const result = await dr.management.findDuplicates(ruleId, version);
-// => Promise<any>
+const result = await dr.management.findDuplicates(ruleIdOrAlias, version);
+// => Promise<{ rule: Rule, duplicates: any[] }>
 ```
 
 | **args** 	| **type** 	| **optional** 	|
 |----------	|----------	|--------------	|
-| ruleId   	| string   	| no           	|
-| version  	| string   	| yes          	|
+| ruleIdOrAlias   	| string   	| no           	|
+| version  	| "latest" / number   	| yes          	|
 
 **DecisionRules.management.findDependencies**
 
@@ -302,14 +322,14 @@ Look for dependencies by id or alias and optionally version. If the rule is foun
 
 ```javascript
 
-const result = await dr.management.findDependencies(ruleId, version);
-// => Promise<any>
+const result = await dr.management.findDependencies(ruleIdOrAlias, version);
+// => Promise<{ rule: Rule, dependencies: any[] }>
 ```
 
 | **args** 	| **type** 	| **optional** 	|
 |----------	|----------	|--------------	|
-| ruleId   	| string   	| no           	|
-| version  	| string   	| yes          	|
+| ruleIdOrAlias   	| string   	| no           	|
+| version  	| "latest" / number   	| yes          	|
 
 
 **DecisionRules.management.getRulesForSpace**
@@ -321,7 +341,7 @@ The desired space is determined by Management API Key. This endpoint also gets s
 ```javascript
 
 const result = await dr.management.getRulesForSpace();
-// => Promise<any>
+// => Promise<Rule[]>
 ```
 
 **DecisionRules.management.getTags**
@@ -331,7 +351,7 @@ This method allows you to get all rules/rule flows with certain tags. Desired sp
 ```javascript
 
 const result = await dr.management.getTags(tags);
-// => Promise<any>
+// => Promise<Rule[]>
 ```
 
 | **args** 	| **type** 	| **optional** 	|
@@ -344,15 +364,15 @@ If you specify the version, the tag/tags will be added to the specified version.
 
 ```javascript
 
-const result = await dr.management.updateTags(ruleId, tags, version);
-// => Promise<any>
+const result = await dr.management.updateTags(ruleIdOrAlias, tags, version);
+// => Promise<string[]>
 ```
 
 | **args** 	| **type** 	| **optional** 	|
 |----------	|----------	|--------------	|
-| ruleId   	| string   	| no           	|
+| ruleIdOrAlias   	| string   	| no           	|
 | tags     	| any     	| no           	|
-| version  	| string   	| yes          	|
+| version  	| "latest" / number   	| yes          	|
 
 **DecisionRules.management.deleteTags**
 
@@ -360,170 +380,150 @@ If you specify the version, the tag/tags will be deleted from the specified vers
 
 ```javascript
 
-const result = await dr.management.deleteTags(ruleId, tags, version);
-// => Promise<any>
+const result = await dr.management.deleteTags(ruleIdOrAlias, tags, version);
+// => Promise<void>
 ```
 
 | **args** 	| **type** 	| **optional** 	|
 |----------	|----------	|--------------	|
-| ruleId   	| string   	| no           	|
+| ruleIdOrAlias   	| string   	| no           	|
 | tags     	| string[] 	| no           	|
-| version  	| string   	| yes          	|
+| version  	| "latest" / number   	| yes          	|
 
 **DecisionRules.management.exportFolder**
+
+**DecisionRules.management.exportFolderByPath**
 
 Export folder with all rules. If no nodeId is set, then will be exported root directory.
 
 ```javascript
 
 const result = await dr.management.exportFolder(nodeId);
-// => Promise<any>
+// => Promise<FolderExport>
+
+const result = await dr.management.exportFolderByPath(path);
+// => Promise<FolderExport>
 ```
 
 | **args** 	| **type** 	| **optional** 	|
 |----------	|----------	|--------------	|
-| nodeId   	| string   	| no           	|
+| nodeId/path   	| string   	| no           	|
 
 **DecisionRules.management.importFolder**
+
+**DecisionRules.management.importFolderByPath**
 
 Import folder with all rules into specific folder. If no targetNodeId is set, then will be imported into root directory.
 
 ```javascript
 
-const result = await dr.management.importFolder(targetNodeId);
-// => Promise<any>
+const result = await dr.management.importFolder(targetNodeId, data);
+// => Promise<{ folderNode: string }>
+
+const result = await dr.management.importFolderByPath(path, data);
+// => Promise<{ folderNode: string }>
 ```
 
 | **args**     	| **type** 	| **optional** 	|
 |--------------	|----------	|--------------	|
-| targetNodeId 	| string   	| no           	|
-| data        	| any      	| no           	|
-
-
-**DecisionRules.management.exportRuleFlow**
-
-Export Rule Flow with all rules. If the version is not specified, export Rule Flow with the latest version.
-
-```javascript
-
-const result = await dr.management.exportRuleFlow(ruleIdOrAlias, version);
-// => Promise<any>
-```
-
-| **args**     	           | **type** 	| **optional** 	  |
-|--------------------------|----------	|-----------------|
-| ruleIdOrAlias, version 	 | string   	| no           	  |
-| version        	         | string      	| yes           	 |
-
-**DecisionRules.management.importRuleFlow**
-
-Import Rule Flow with all rules. If no query parameters are set, a new Rule Flow will be created. If the new-version and version query parameter are set, a new version of the targeted Rule Flow will be created. If the overwrite and version query parameters are set, a specific version of the target rule flow will be overwritten.
-```javascript
-
-const result = await dr.management.importRuleFlow(ruleFlow, options);
-// => Promise<any>
-```
-
-| **args**     	   | **type** 	 | **optional** 	  |
-|------------------|------------|-----------------|
-| ruleFlow 	       | any   	    | no           	  |
-| options        	 | any      	 | yes           	 |
-
-
-| **options**     	 | **type** 	    | **optional** 	  |
-|-------------------|---------------|-----------------|
-| newVersion 	      | string   	    | yes           	 |
-| overwrite        	  | string      	 | yes           	 |
-| version        	  | string      	 | yes           	 |
+| targetNodeId/path 	| string   	| no           	|
+| data        	| FolderExport      	| no           	|
 
 
 **DecisionRules.management.createFolder**
+
+**DecisionRules.management.createFolderByPath**
 
 Creates folders under a specified target, moves rules into the new structure by baseId or ruleAlias. Define which folder's structure to update by either inputting it's id as a parameter. Appends the Folder Structure specified in the request body as a child of the target node.
 ```javascript
 
 const result = await dr.management.createFolder(targetNodeId, data);
-// => Promise<any>
+// => Promise<void>
+
+const result = await dr.management.createFolderByPath(path, data);
+// => Promise<void>
 ```
 
 | **args**     	 | **type** 	 | **optional** 	  |
 |----------------|------------|-----------------|
-| targetNodeId 	 | string   	 | yes           	 |
-| data        	  | any      	 | yes           	 |
+| targetNodeId/path 	 | string   	 | yes           	 |
+| data        	  | FolderData      	 | yes           	 |
 
-
-| **data**     	    | **type** 	      | **optional** 	  |
-|-------------------|-----------------|-----------------|
-| type 	            | string   	      | yes           	 |
-| name        	     | string      	   | yes           	 |
-| id        	       | string      	   | yes           	 |
-| baseId 	          | string   	      | yes           	 |
-| version        	  | string      	   | yes           	 |
-| children        	 | object[]      	 | yes           	 |
 
 **DecisionRules.management.updateNodeFolderStructure**
+
+**DecisionRules.management.updateNodeFolderStructureByPath**
 
 Creates folders under a specified target, moves rules into the new structure by baseId or ruleAlias. Define which folder's structure to update by either inputting it's id as a parameter. Appends the Folder Structure specified in the request body as a child of the target node.
 ```javascript
 
 const result = await dr.management.updateNodeFolderStructure(targetNodeId, data);
-// => Promise<any>
+// => Promise<FolderStructure>
+
+const result = await dr.management.updateNodeFolderStructureByPath(path, data);
+// => Promise<FolderStructure>
 ```
 
 | **args**     	 | **type** 	 | **optional** 	 |
 |----------------|------------|----------------|
-| targetNodeId 	 | string   	 | no           	 |
-| data        	  | any      	 | no           	 |
+| targetNodeId/path 	 | string   	 | no           	 |
+| data        	  | FolderData      	 | no           	 |
 
 
-| **data**     	    | **type** 	      | **optional** 	  |
-|-------------------|-----------------|-----------------|
-| type 	            | string   	      | yes           	 |
-| name        	     | string      	   | yes           	 |
-| id        	       | string      	   | yes           	 |
-| baseId 	          | string   	      | yes           	 |
-| version        	  | string      	   | yes           	 |
-| children        	 | object[]      	 | yes           	 |
+**DecisionRules.management.getFolderStructure**
 
-**DecisionRules.management.getNodeFolderStructure**
+**DecisionRules.management.getFolderStructureByPath**
 
 Retrieve folder structure by node ID. Returns a JSON with a tree like structure containing the descendant folders and rules of the target node.
 ```javascript
 
-const result = await dr.management.getNodeFolderStructure(targetNodeId);
-// => Promise<any>
+const result = await dr.management.getFolderStructure(targetNodeId);
+// => Promise<FolderStructure>
+
+const result = await dr.management.getFolderStructureByPath(path);
+// => Promise<FolderStructure>
 ```
 
 | **args**     	 | **type** 	 | **optional** 	 |
 |----------------|------------|----------------|
-| targetNodeId 	 | string   	 | no           	 |
+| targetNodeId/path 	 | string   	 | no           	 |
 
 **DecisionRules.management.deleteFolder**
+
+**DecisionRules.management.deleteFolderByPath**
 
 Delete a folder (Including it's rules) by node ID. If you want to delete the contents of the entire space target the 'root' by Id and include the optional parameter deleteAll=true.
 ```javascript
 
 const result = await dr.management.deleteFolder(targetNodeId, deleteAll);
-// => Promise<any>
+// => Promise<void>
+
+const result = await dr.management.deleteFolderByPath(path, deleteAll);
+// => Promise<void>
 ```
 
 | **args**     	 | **type** 	  | **optional** 	  |
 |----------------|-------------|-----------------|
-| targetNodeId 	 | string   	  | no           	   |
+| targetNodeId/path 	 | string   	  | no           	   |
 | deleteAll 	    | boolean   	 | yes           	 |
 
 **DecisionRules.management.renameFolder**
+
+**DecisionRules.management.renameFolderByPath**
 
 Delete a folder (Including it's rules) by node ID. If you want to delete the contents of the entire space target the 'root' by Id and include the optional parameter deleteAll=true.
 ```javascript
 
 const result = await dr.management.renameFolder(targetNodeId);
-// => Promise<any>
+// => Promise<void>
+
+const result = await dr.management.renameFolderByPath(path);
+// => Promise<void>
 ```
 
 | **args**     	 | **type** 	 | **optional** 	  |
 |----------------|------------|-----------------|
-| targetNodeId 	 | string   	 | no           	   |
+| targetNodeId/path 	 | string   	 | no           	   |
 | name 	         | string   	 | yes           	 |
 
 **DecisionRules.management.moveFolder**
@@ -532,19 +532,14 @@ Moves folders (including descendants) and/or rules under the parent specified by
 ```javascript
 
 const result = await dr.management.moveFolder(targetNodeId, data);
-// => Promise<any>
+// => Promise<void>
 ```
 
 | **args**     	 | **type** 	 | **optional** 	 |
 |----------------|------------|----------------|
 | targetNodeId 	 | string   	 | no           	 |
-| data 	         | string   	 | no           	 |
-
-| **data**     	 | **type** 	   | **optional** 	  |
-|----------------|--------------|-----------------|
-| targetId 	 | string   	   | yes           	 |
-| targetPath 	         | string   	   | yes           	 |
 | nodes 	         | object[]   	 | yes           	 |
+| targetPath 	         | string   	   | yes           	 |
 
 **DecisionRules.management.findFolderOrRuleByAttribute**
 
@@ -552,14 +547,15 @@ Finds Folders and Rules which satisfy all of the criteria from the request body.
 ```javascript
 
 const result = await dr.management.findFolderOrRuleByAttribute(data);
-// => Promise<any>
+// => Promise<Rule | FolderStructure>
 ```
 
 | **args**     	 | **type** 	 | **optional** 	 |
 |----------------|------------|----------------|
-| data 	         | string   	 | no           	 |
+| data 	         | NodeProperties   	 | no           	 |
 
-| **data**     	 | **type** 	   | **optional** 	  |
+NodeProperties
+| **args**     	 | **type** 	   | **optional** 	  |
 |----------------|--------------|-----------------|
 | name 	 | string   	   | yes           	 | 
 | id 	         | string   	   | yes           	 |
@@ -569,7 +565,7 @@ const result = await dr.management.findFolderOrRuleByAttribute(data);
 | tags 	         | string[]   	 | yes           	 |
 | ruleState 	         | string   	 | yes           	 |
 | type 	         | string   	 | yes           	 |
-| version 	         | number   	 | yes           	 |
+| version 	         | "latest" / number   	 | yes           	 |
 
 **DecisionRules.job.start**
 
@@ -577,14 +573,14 @@ Starts a new asynchronous job for a specific Integration Flow. The identifier is
 ```javascript
 
 const result = await dr.job.start(targetNodeId, data);
-// => Promise<any>
+// => Promise<Job>
 ```
 
 | **args**     	 | **type** 	 | **optional** 	 |
 |----------------|------------|----------------|
 | inputData 	 | object   	 | no           	 |
-| ruleId 	 | string   	 | no           	 |
-| version 	         | string   	 | no           	 |
+| ruleIdOrAlias 	 | string   	 | no           	 |
+| version 	         | "latest" / number   	 | no           	 |
 
 **DecisionRules.job.cancel**
 
@@ -592,7 +588,7 @@ Attempts to cancel a specific job by its ID. The job must belong to the requesti
 ```javascript
 
 const result = await dr.job.cancel(jobId);
-// => Promise<any>
+// => Promise<Job>
 ```
 
 | **args**     	 | **type** 	 | **optional** 	 |
@@ -606,7 +602,7 @@ Retrieves detailed information about a specific job, including its status and ou
 ```javascript
 
 const result = await dr.job.info(jobId);
-// => Promise<any>
+// => Promise<Job>
 ```
 
 | **args**     	 | **type** 	 | **optional** 	 |
@@ -625,4 +621,6 @@ const result = dr.validateWebhookSignature(payload, signature, secret);
 
 | **args**     	 | **type** 	 | **optional** 	 |
 |----------------|------------|----------------|
-| jobId 	 | string   	 | no           	 |
+| payload 	 | string   	 | no           	 |
+| signature 	 | string   	 | no           	 |
+| secret 	 | string   	 | no           	 |
