@@ -5,6 +5,10 @@ on: [pull_request, workflow_dispatch]
 jobs:
   test:
     runs-on: ubuntu-latest
+    env: 
+      HOST: ${{ secrets.HOST }}
+      MANAGEMENT_KEY: ${{ secrets.MANAGEMENT_KEY }}
+      SOLVER_KEY: ${{ secrets.SOLVER_KEY }}
     steps:
       - uses: actions/checkout@v2
       - name: Test using Node.js

@@ -1,28 +1,27 @@
-import { AxiosHeaders } from "axios";
-import {testPack} from "../src/api/solver"
-import { HostEnum, SdkMode } from "../src/defs/enums";
-import { DecisionRulesOptions, SolverOptions } from "../src/defs/models";
+import { AxiosHeaders } from 'axios'
+import { testPack } from '../src/api/solver'
+import { HostEnum, StrategyOptions } from '../src/defs/enums'
+import { DecisionRulesOptions, SolverOptions } from '../src/defs/models'
 
 const mockOpts: SolverOptions = {
 	cols: {
-		includedConditionCols: ["foo","bar"],
-		excludedConditionCols: ["bar","foo"]
+		includedConditionCols: ["foo", "bar"],
+		excludedConditionCols: ["bar", "foo"]
 	},
 	debug: true,
 	corrId: "1111",
 	audit: false,
 	auditTtl: "1",
-	strategy: "STANDARD"
+	strategy: StrategyOptions.STANDARD
 }
 
 const opt: DecisionRulesOptions = {
 	solverKey: "123abc",
 	managementKey: "456def",
-	businessIntKey: "789ghi",
 	host: HostEnum.GLOBAL_CLOUD
 };
 
-const mockInput = {input: 1}
+const mockInput = { input: 1 }
 
 test("create url", () => {
 	const f = testPack.createUrl(opt, "123", undefined);
@@ -42,49 +41,49 @@ test("create url", () => {
 
 test("getbaseurl", () => {
 	const opt: DecisionRulesOptions = {
-		host: "localhost" 
+		host: "localhost"
 	}
 	expect(() => testPack.createUrl(opt, "123", "1")).toThrow("Invalid URL");
 });
 
 test("create body", () => {
 	const f = testPack.createBody(mockInput, undefined);
-	const expected = {data: mockInput}
+	const expected = { data: mockInput }
 	expect(f).toEqual(expected);
 });
 
 test("create body", () => {
 	const f = testPack.createBody(mockInput, mockOpts);
-	const expected = {data: mockInput, options: mockOpts.cols};
+	const expected = { data: mockInput, options: mockOpts.cols };
 	expect(f).toEqual(expected);
 });
 
 test("getBaseUrl", () => {
-	const f = testPack.getBaseURL(HostEnum.GLOBAL_CLOUD, SdkMode.API);
+	const f = testPack.getBaseURL(HostEnum.GLOBAL_CLOUD);
 	const expected = "https://api.decisionrules.io";
 	expect(f).toBe(expected);
 });
 
 test("getbaseurl", () => {
-	const f = testPack.getBaseURL(HostEnum.REGION_EU, SdkMode.API);
+	const f = testPack.getBaseURL(HostEnum.REGION_EU);
 	const expected = "https://eu.api.decisionrules.io";
 	expect(f).toBe(expected);
 });
 
 test("getbaseurl", () => {
-	const f = testPack.getBaseURL(HostEnum.REGION_AU, SdkMode.API);
+	const f = testPack.getBaseURL(HostEnum.REGION_AU);
 	const expected = "https://au.api.decisionrules.io";
 	expect(f).toBe(expected);
 });
 
 test("getbaseurl", () => {
-	const f = testPack.getBaseURL(HostEnum.REGION_US, SdkMode.API);
+	const f = testPack.getBaseURL(HostEnum.REGION_US);
 	const expected = "https://us.api.decisionrules.io";
 	expect(f).toBe(expected);
 });
 
 test("getbaseurl", () => {
-	const f = testPack.getBaseURL("http://localhost", SdkMode.API);
+	const f = testPack.getBaseURL("http://localhost");
 	const expected = "http://localhost";
 	expect(f).toBe(expected);
 });
@@ -97,22 +96,22 @@ test("createHeaders", () => {
 test("createHeaders", () => {
 	const f = testPack.createHeaders(opt, mockOpts);
 	const expected = JSON.stringify({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer 123abc',
-      'X-Debug': 'true',
-      'X-Correlation-Id': '1111',
-      'X-Strategy': 'STANDARD',
-      'X-Audit': 'false',
-      'X-Audit-Ttl': '1'
-    });
+		'Content-Type': 'application/json',
+		'Authorization': 'Bearer 123abc',
+		'X-Debug': 'true',
+		'X-Correlation-Id': '1111',
+		'X-Strategy': 'STANDARD',
+		'X-Audit': 'false',
+		'X-Audit-Ttl': '1'
+	});
 	expect(JSON.stringify(f.toJSON())).toBe(expected);
 });
 
 test("createHeaders", () => {
 	const mockOpts: SolverOptions = {
 		cols: {
-			includedConditionCols: ["foo","bar"],
-			excludedConditionCols: ["bar","foo"]
+			includedConditionCols: ["foo", "bar"],
+			excludedConditionCols: ["bar", "foo"]
 		},
 		debug: true,
 		corrId: "1111",
@@ -135,8 +134,8 @@ test("createHeaders", () => {
 test("createHeaders", () => {
 	const mockOpts: SolverOptions = {
 		cols: {
-			includedConditionCols: ["foo","bar"],
-			excludedConditionCols: ["bar","foo"]
+			includedConditionCols: ["foo", "bar"],
+			excludedConditionCols: ["bar", "foo"]
 		},
 	};
 	const f = testPack.createHeaders(opt, mockOpts);

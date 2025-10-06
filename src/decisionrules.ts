@@ -1,154 +1,284 @@
-import { deleteAuditLogsAPI, getAuditLogsAPI } from "./api/businessIntelligence";
-import { 
-	createRuleAPI, 
-	deleteRuleAPI, 
-	deleteTagsAPI, 
-	exportFolderAPI, 
-	findDependenciesAPI, 
-	findDuplicatesAPI, 
-	getRuleAPI, 
-	getRulesForSpaceAPI, 
-	getTagsAPI, 
-	importFolderAPI, 
-	lockRuleAPI, 
-	updateRuleAPI, 
-	updateRuleStatusAPI, 
-	updateTagsAPI } from "./api/management";
+import { cancelJobAPI, jobInfoAPI, startJobAPI } from "./api/job";
+import { createFolderAPI, createNewRuleVersionAPI, createRuleAPI, deleteFolderAPI, deleteRuleAPI, deleteTagsAPI, exportFolderAPI, findDependenciesAPI, findDuplicatesAPI, findFolderOrRuleByAttributeAPI, getNodeFolderStructureAPI as getFolderStructureAPI, getRuleAPI, getRulesForSpaceAPI, getRulesByTagsAPI, importFolderAPI, lockRuleAPI, moveFolderAPI, renameFolderAPI, updateNodeFolderStructureAPI, updateRuleAPI, updateRuleStatusAPI, addTagsAPI } from "./api/management";
 import { solveRule } from "./api/solver";
-import { DecisionRulesAuditOpt, DecisionRulesOptions } from "./defs/models";
-import { SolverOptions } from "./defs/models";
+import { DecisionRulesOptions, FolderData, FolderExport, FolderStructure, Job, NodeProperties, Rule, Version } from './defs/models'
+import { SolverOptions, Node } from "./defs/models";
 import { handleError } from "./utils/utils";
+import crypto from 'crypto';
+import { RuleStatus } from './defs/enums'
 
 export default class DecisionRules {
 	private readonly options: DecisionRulesOptions;
 	constructor(options: DecisionRulesOptions) {
 		this.options = options;
 	}
-	public async solve(ruleId: string, data: any, version?: string, solverOptions?: SolverOptions): Promise<any> {
+	public async solve(ruleIdOrAlias: string, inputObject: object, version?: Version, solverOptions?: SolverOptions): Promise<object[]> {
 		try {
-			return await solveRule(this.options, ruleId, data, version, solverOptions);
+			return await solveRule(this.options, ruleIdOrAlias, inputObject, version, solverOptions);
 		} catch (e: any) {
 			throw handleError(e);
 		}
 	}
 
 	public management = {
-		getRule: async (ruleId: string, version?: string) => {
+		getRule: async (ruleIdOrAlias: string, version?: Version): Promise<Rule> => {
 			try {
-				return await getRuleAPI(this.options, ruleId, version);
+				return await getRuleAPI(this.options, ruleIdOrAlias, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		updateRuleStatus: async (ruleId: string, status: string, version?: string) => {
+		getRuleByPath: async (path: string, version?: Version): Promise<Rule> => {
 			try {
-				return await updateRuleStatusAPI(this.options, ruleId, status, version);
+				return await getRuleAPI(this.options, "", "latest", { path, version });
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		updateRule: async (ruleId: string, rule: any, version?: string) => {
+		updateRuleStatus: async (ruleIdOrAlias: string, status: RuleStatus, version: number): Promise<Rule> => {
 			try {
-				return await updateRuleAPI(this.options, ruleId, rule, version);
+				return await updateRuleStatusAPI(this.options, ruleIdOrAlias, status, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		createRule: async (rule: any) => {
+		updateRule: async (ruleIdOrAlias: string, rule: any, version?: Version): Promise<Rule> => {
 			try {
-				return await createRuleAPI(this.options, rule);
+				return await updateRuleAPI(this.options, ruleIdOrAlias, rule, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		deleteRule: async (ruleId: string, version?: string) => {
+		createRule: async (rule: any, path?: string): Promise<Rule> => {
 			try {
-				return await deleteRuleAPI(this.options, ruleId, version);
+				return await createRuleAPI(this.options, rule, { path });
 			} catch (e: any) {
-				throw handleError(e);	
+				throw handleError(e);
 			}
 		},
-		getRulesForSpace: async () => {
+		createNewRuleVersion: async (ruleIdOrAlias: string, rule: any): Promise<Rule> => {
+			try {
+				return await createNewRuleVersionAPI(this.options, ruleIdOrAlias, rule);
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		deleteRule: async (ruleIdOrAlias: string, version?: Version): Promise<void> => {
+			try {
+				return await deleteRuleAPI(this.options, ruleIdOrAlias, version);
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		deleteRuleByPath: async (path: string, version?: number): Promise<void> => {
+			try {
+				return await deleteRuleAPI(this.options, "", "latest", { path, version });
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		lockRule: async (ruleIdOrAlias: string, lock: boolean, version?: Version): Promise<void> => {
+			try {
+				return await lockRuleAPI(this.options, ruleIdOrAlias, lock, version);
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		lockRuleByPath: async (path: string, lock: boolean, version?: Version): Promise<void> => {
+			try {
+				return await lockRuleAPI(this.options, "", lock, "latest", { path, version });
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		findDuplicates: async (ruleIdOrAlias: string, version?: Version): Promise<{ rule: Rule, duplicates: any[] }> => {
+			try {
+				return await findDuplicatesAPI(this.options, ruleIdOrAlias, version);
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		findDependencies: async (ruleIdOrAlias: string, version?: Version): Promise<{ rule: Rule, dependencies: any[] }> => {
+			try {
+				return await findDependenciesAPI(this.options, ruleIdOrAlias, version);
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		getRulesForSpace: async (): Promise<Rule[]> => {
 			try {
 				return await getRulesForSpaceAPI(this.options);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		getTags: async (tags: string[]) => {
+		getTags: async (tags: string[]): Promise<Rule[]> => {
 			try {
-				return await getTagsAPI(this.options, tags);
+				return await getRulesByTagsAPI(this.options, tags);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		updateTags: async (ruleId: string, tags: any, version?: string) => {
+		updateTags: async (ruleIdOrAlias: string, tags: any, version?: Version): Promise<string[]> => {
 			try {
-				return await updateTagsAPI(this.options, ruleId, tags, version);
+				return await addTagsAPI(this.options, ruleIdOrAlias, tags, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		deleteTags: async (ruleId: string, tags: string[], version?: string) => {
+		deleteTags: async (ruleIdOrAlias: string, tags: string[], version?: Version): Promise<void> => {
 			try {
-				return await deleteTagsAPI(this.options, ruleId, tags, version);
+				return await deleteTagsAPI(this.options, ruleIdOrAlias, tags, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		exportFolder: async (nodeId: string) => {
+		createFolder: async (targetNodeId: string, data: FolderData): Promise<void> => {
+			try {
+				return await createFolderAPI(this.options, targetNodeId, data);
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		createFolderByPath: async (path: string, data: FolderData): Promise<void> => {
+			try {
+				return await createFolderAPI(this.options, "", data, { path });
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		updateNodeFolderStructure: async (targetNodeId: string, data: FolderData): Promise<FolderStructure> => {
+			try {
+				return await updateNodeFolderStructureAPI(this.options, targetNodeId, data);
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		updateNodeFolderStructureByPath: async (path: string, data: FolderData): Promise<FolderStructure> => {
+			try {
+				return await updateNodeFolderStructureAPI(this.options, "", data, { path });
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		exportFolder: async (nodeId: string): Promise<FolderExport> => {
 			try {
 				return await exportFolderAPI(this.options, nodeId);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		importFolder: async (targetNodeid: string, data: any) => {
+		exportFolderByPath: async (path: string): Promise<FolderExport> => {
 			try {
-				return await importFolderAPI(this.options, targetNodeid, data);
+				return await exportFolderAPI(this.options, "", { path });
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		findDuplicates: async (ruleId: string, version?: string) => {
+		importFolder: async (targetNodeId: string, data: FolderExport): Promise<{ folderNode: string }> => {
 			try {
-				return await findDuplicatesAPI(this.options, ruleId, version);
+				return await importFolderAPI(this.options, targetNodeId, data);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		findDependencies: async (ruleId: string, version?: string) => {
+		importFolderToPath: async (path: string, data: FolderExport): Promise<{ folderNode: string }> => {
 			try {
-				return await findDependenciesAPI(this.options, ruleId, version);
+				return await importFolderAPI(this.options, "", data, { path });
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		lockRule: async (ruleId: string, data:any, version?: string) => {
+		getFolderStructure: async (targetNodeId?: string): Promise<FolderStructure> => {
 			try {
-				return await lockRuleAPI(this.options, ruleId, data, version);
+				return await getFolderStructureAPI(this.options, targetNodeId);
 			} catch (e: any) {
 				throw handleError(e);
 			}
-		}
+		},
+		getFolderStructureByPath: async (path: string): Promise<FolderStructure> => {
+			try {
+				return await getFolderStructureAPI(this.options, "", { path });
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		deleteFolder: async (targetNodeId: string, deleteAll?: boolean): Promise<void> => {
+			try {
+				return await deleteFolderAPI(this.options, targetNodeId, deleteAll);
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		deleteFolderByPath: async (path: string, deleteAll?: boolean): Promise<void> => {
+			try {
+				return await deleteFolderAPI(this.options, "", deleteAll, { path });
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		renameFolder: async (targetNodeId: string, newName: string): Promise<void> => {
+			try {
+				return await renameFolderAPI(this.options, targetNodeId, newName);
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		renameFolderByPath: async (path: string, newName: string): Promise<void> => {
+			try {
+				return await renameFolderAPI(this.options, "", newName, { path });
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		moveFolder: async (targetId: string, nodes: Node[], targetPath?: string): Promise<void> => {
+			try {
+				return await moveFolderAPI(this.options, targetId, nodes, targetPath);
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+		findFolderOrRuleByAttribute: async (data: NodeProperties): Promise<Rule | FolderStructure> => {
+			try {
+				return await findFolderOrRuleByAttributeAPI(this.options, data);
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
 	};
 
-	public bi = {
-		getAuditLogs: async (auditLogsOpts: DecisionRulesAuditOpt) => {
+	public job = {
+		start: async (ruleIdOrAlias: string, inputData: any, version?: Version): Promise<Job> => {
 			try {
-				return await getAuditLogsAPI(this.options, auditLogsOpts);
+				return await startJobAPI(this.options, ruleIdOrAlias, inputData, version);
 			} catch (e: any) {
 				throw handleError(e);
 			}
 		},
-		deleteAuditLogs: async (auditLogsOpts: DecisionRulesAuditOpt) => {
+		cancel: async (jobId: string): Promise<Job> => {
 			try {
-				return await deleteAuditLogsAPI(this.options, auditLogsOpts);
+				return await cancelJobAPI(this.options, jobId);
 			} catch (e: any) {
-				throw handleError(e);	
+				throw handleError(e);
 			}
-		}
-	};
+		},
+		info: async (jobId: string): Promise<Job> => {
+			try {
+				return await jobInfoAPI(this.options, jobId);
+			} catch (e: any) {
+				throw handleError(e);
+			}
+		},
+	}
+
+	public validateWebhookSignature(payload: string, signature: string, secret: string): boolean {
+		const hmac = crypto.createHmac('sha256', secret);
+		hmac.update(JSON.stringify(payload));
+		const expectedSignature = hmac.digest('hex');
+
+		return crypto.timingSafeEqual(
+			Buffer.from(signature),
+			Buffer.from(expectedSignature)
+		);
+	}
 }
-
-

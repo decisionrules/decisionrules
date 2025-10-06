@@ -14,7 +14,21 @@ export enum MngCategoryEnum {
 	RULE_FLOW = "rule-flow"
 }
 
-export enum SdkMode {
-	API = "API",
-	AUDIT = "AUDIT"
+
+export enum RuleStatus {
+    PENDING = "pending",
+    PUBLISHED = "published"
+}
+
+export enum FolderType {
+    ROOT = "ROOT",
+    FOLDER = "FOLDER",
+    RULE = "RULE"
+}
+
+export enum StrategyOptions{
+    STANDARD = 'STANDARD',
+    ARRAY = 'ARRAY',
+    FIRST_MATCH = 'FIRST_MATCH',
+    EVALUATE_ALL = 'EVALUATE_ALL',
 }
