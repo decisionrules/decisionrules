@@ -53,11 +53,11 @@ export async function updateRuleStatusAPI(options: DecisionRulesOptions, ruleIdO
 	}
 }
 
-export async function updateRuleAPI(options: DecisionRulesOptions, ruleIdOrAlias: string, data: any, version?: Version, ruleOptions?: RuleOptions): Promise<Rule> {
+export async function updateRuleAPI(options: DecisionRulesOptions, ruleIdOrAlias: string, data: any, version?: Version): Promise<Rule> {
 	try {
-		const versionString = getRuleVersion(version, ruleOptions)
+		const versionString = getRuleVersion(version)
 		const headers = createHeaders(options.managementKey);
-		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, [ruleIdOrAlias, versionString], options);
+		const url = getCategoryUrl(options.host, MngCategoryEnum.RULE, [ruleIdOrAlias, versionString]);
 		const response = await doCall(url, headers, "PUT", data);
 		return response.data;
 	} catch (e: any) {
