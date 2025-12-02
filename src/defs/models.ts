@@ -1,4 +1,4 @@
-import { FolderType, HostEnum, StrategyOptions } from './enums'
+import { FolderType, HostEnum, LookupMethod, StrategyOptions } from './enums'
 
 export type DecisionRulesHost = HostEnum | string;
 
@@ -33,6 +33,7 @@ export type SolverOptions = {
 	auditTtl?: string,
 	aliasConflictPath?: string,
 	strategy?: StrategyOptions,
+	lookupMethod?: LookupMethod
 }
 /**
  * Options for configuring rules.

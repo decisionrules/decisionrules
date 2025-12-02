@@ -43,6 +43,7 @@ function createHeaders(options: DecisionRulesOptions, solverOptions: SolverOptio
 	const headers = new AxiosHeaders();
 	try {
 		headers.set("Content-Type", "application/json");
+		
 		if (options?.solverKey) {
 			headers.set("Authorization", `Bearer ${options.solverKey}`);
 		} else {
@@ -54,12 +55,17 @@ function createHeaders(options: DecisionRulesOptions, solverOptions: SolverOptio
 		if (solverOptions?.corrId) {
 			headers.set("X-Correlation-Id", solverOptions.corrId);
 		}
+		
 		headers.set("X-Strategy", solverOptions?.strategy ?? "STANDARD");
 
 		headers.set("X-Audit", new String(solverOptions?.audit ?? false).valueOf());
 
 		if (solverOptions?.auditTtl) {
 			headers.set("X-Audit-Ttl", solverOptions.auditTtl.toString());
+		}
+
+		if(solverOptions?.lookupMethod){
+			headers.set("X-Lookup-Method", solverOptions?.lookupMethod.toString());
 		}
 		return headers;
 	} catch (e) {
