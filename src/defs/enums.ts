@@ -32,3 +32,8 @@ export enum StrategyOptions{
     FIRST_MATCH = 'FIRST_MATCH',
     EVALUATE_ALL = 'EVALUATE_ALL',
 }
+
+export enum LookupMethodOptions{
+    LOOKUP_VALUE = 'LOOKUP_VALUE',
+    LOOKUP_EXISTS = 'LOOKUP_EXISTS',
+}

@@ -2,6 +2,8 @@ import dotenv from 'dotenv'
 import { DecisionRulesOptions } from '../../src/defs/models'
 import DecisionRules from '../../src/decisionrules'
 import * as results from './itest-utils/expectedResults.itest'
+import { LookupMethodOptions } from '../../src/defs/enums'
+import { lookupTable } from './itest-utils/rules.itest'
 
 beforeAll(() => {
     dotenv.config({ path: './env/.env' })
@@ -21,10 +23,21 @@ test('env loaded', async () => {
     dr = new DecisionRules(opt)
 })
 
-test('createFolder', async () => {
-    const result = await dr.solve('38125870-bfa9-b8a3-76d5-e474ee3f9a56', {
-        'typeOfMilestone': '24 21 20 17 16 13 12 9',
-        'deliveryOperator': 'DHL'
-    })
+test('Solve Lookup Table', async () => {
+    const rule = await dr.management.createRule(lookupTable)
+    
+    const requestBody = {
+        "primaryKey": "Door hinge",
+        "outputColumn": {},
+        "method": {}
+    }
+
+    const result = await dr.solve(
+        rule.ruleId,
+        requestBody,
+        1,
+        { lookupMethod: LookupMethodOptions.LOOKUP_EXISTS }
+    )
     expect(result).toEqual(results.solve)
+    await dr.management.deleteRule(rule.ruleId)
 })

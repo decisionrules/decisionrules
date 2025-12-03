@@ -1,4 +1,5 @@
 export const rule = {
+    "templateMetadata": {},
     "name": "Integration Flow v2",
     "description": "",
     "inputSchema": {
@@ -35,7 +36,7 @@ export const rule = {
                         "type": "out",
                         "maxConnections": -1,
                         "subType": "none",
-                        "id": "025ebbdf-b839-45c6-ae18-eb246cd4f040",
+                        "id": "29610edc-df5b-4467-a502-5394a66f8f2d",
                         "maxCount": 1,
                         "minCount": 1
                     },
@@ -43,17 +44,17 @@ export const rule = {
                         "type": "in",
                         "maxConnections": -1,
                         "subType": "none",
-                        "id": "38de5e13-7b9e-44c9-8070-fb196cee4a6e",
+                        "id": "f518b2c4-6579-48d0-adc7-b631216dd610",
                         "maxCount": 1,
                         "minCount": 1
                     }
                 ],
-                "id": "63e3801f",
+                "id": "7e85e5e6",
                 "version": 1,
                 "type": "DATA_MANIPULATION",
                 "position": {
-                    "x": 535,
-                    "y": 285
+                    "x": 500,
+                    "y": 315
                 },
                 "name": "assign",
                 "data": {
@@ -78,14 +79,62 @@ export const rule = {
                         "showAll": false
                     }
                 }
+            },
+            {
+                "connectors": [
+                    {
+                        "type": "in",
+                        "maxConnections": -1,
+                        "subType": "none",
+                        "id": "caf5ad87-ff5d-4893-89f6-ecd839a2542f",
+                        "maxCount": 1,
+                        "minCount": 1
+                    },
+                    {
+                        "type": "out",
+                        "maxConnections": -1,
+                        "subType": "none",
+                        "id": "78883421-0045-4353-a901-3ead927470eb",
+                        "maxCount": 1,
+                        "minCount": 1
+                    }
+                ],
+                "id": "cbfe3058",
+                "version": 1,
+                "type": "HTTP_CLIENT",
+                "position": {
+                    "x": 316,
+                    "y": 154
+                },
+                "data": {
+                    "url": "https://postman-echo.com/delay/3",
+                    "method": "GET",
+                    "requestName": "",
+                    "body": "",
+                    "bodyFormat": "json",
+                    "headers": [
+                        {
+                            "header": "",
+                            "value": ""
+                        }
+                    ],
+                    "connectionReference": null
+                },
+                "name": "api"
             }
         ],
         "connections": [
             {
                 "source": "fbd5a179-588e-4e75-b1e3-73ef458a84a2",
-                "target": "38de5e13-7b9e-44c9-8070-fb196cee4a6e",
+                "target": "caf5ad87-ff5d-4893-89f6-ecd839a2542f",
                 "type": 0,
-                "id": "9d1753c3-3117-459b-919d-03ddbeaa64a9"
+                "id": "1e4ed9eb-122b-4bba-9e42-06b29c2feac9"
+            },
+            {
+                "source": "78883421-0045-4353-a901-3ead927470eb",
+                "target": "f518b2c4-6579-48d0-adc7-b631216dd610",
+                "type": 0,
+                "id": "057ba96b-c95c-4001-8d14-95153d0026c0"
             }
         ]
     },
@@ -98,21 +147,22 @@ export const rule = {
         },
         "ttl": 14
     },
+    "ruleAlias": "inland-wolf",
+    "createdIn": "2025-12-03T11:40:52.619Z",
+    "lastUpdate": "2025-12-03T11:42:13.646Z",
     "visualData": {
         "scale": 1,
         "rotate": 0,
         "translate": {
-            "x": -67,
-            "y": -1
+            "x": -66,
+            "y": -21
         }
-    },
-    "selectedWebhookAliases": [
-        "wh-E5d6EU8B"
-    ]
+    }
 }
 
 export const updateRule = {
-    "name": "Updated Integration Flow v2",
+    "templateMetadata": {},
+    "name": "Integration Flow",
     "description": "",
     "inputSchema": {
         "input": {}
@@ -148,7 +198,7 @@ export const updateRule = {
                         "type": "out",
                         "maxConnections": -1,
                         "subType": "none",
-                        "id": "025ebbdf-b839-45c6-ae18-eb246cd4f040",
+                        "id": "29610edc-df5b-4467-a502-5394a66f8f2d",
                         "maxCount": 1,
                         "minCount": 1
                     },
@@ -156,17 +206,17 @@ export const updateRule = {
                         "type": "in",
                         "maxConnections": -1,
                         "subType": "none",
-                        "id": "38de5e13-7b9e-44c9-8070-fb196cee4a6e",
+                        "id": "f518b2c4-6579-48d0-adc7-b631216dd610",
                         "maxCount": 1,
                         "minCount": 1
                     }
                 ],
-                "id": "63e3801f",
+                "id": "7e85e5e6",
                 "version": 1,
                 "type": "DATA_MANIPULATION",
                 "position": {
-                    "x": 535,
-                    "y": 285
+                    "x": 500,
+                    "y": 315
                 },
                 "name": "assign",
                 "data": {
@@ -177,8 +227,8 @@ export const updateRule = {
                                     "type": 1,
                                     "outputScalarValue": {
                                         "type": "function",
-                                        "value": "Job will be run",
-                                        "stringValue": "Job will be run"
+                                        "value": "Hello world!",
+                                        "stringValue": "Hello world!"
                                     }
                                 }
                             },
@@ -191,14 +241,62 @@ export const updateRule = {
                         "showAll": false
                     }
                 }
+            },
+            {
+                "connectors": [
+                    {
+                        "type": "in",
+                        "maxConnections": -1,
+                        "subType": "none",
+                        "id": "caf5ad87-ff5d-4893-89f6-ecd839a2542f",
+                        "maxCount": 1,
+                        "minCount": 1
+                    },
+                    {
+                        "type": "out",
+                        "maxConnections": -1,
+                        "subType": "none",
+                        "id": "78883421-0045-4353-a901-3ead927470eb",
+                        "maxCount": 1,
+                        "minCount": 1
+                    }
+                ],
+                "id": "cbfe3058",
+                "version": 1,
+                "type": "HTTP_CLIENT",
+                "position": {
+                    "x": 316,
+                    "y": 154
+                },
+                "data": {
+                    "url": "https://postman-echo.com/delay/3",
+                    "method": "GET",
+                    "requestName": "",
+                    "body": "",
+                    "bodyFormat": "json",
+                    "headers": [
+                        {
+                            "header": "",
+                            "value": ""
+                        }
+                    ],
+                    "connectionReference": null
+                },
+                "name": "api"
             }
         ],
         "connections": [
             {
                 "source": "fbd5a179-588e-4e75-b1e3-73ef458a84a2",
-                "target": "38de5e13-7b9e-44c9-8070-fb196cee4a6e",
+                "target": "caf5ad87-ff5d-4893-89f6-ecd839a2542f",
                 "type": 0,
-                "id": "9d1753c3-3117-459b-919d-03ddbeaa64a9"
+                "id": "1e4ed9eb-122b-4bba-9e42-06b29c2feac9"
+            },
+            {
+                "source": "78883421-0045-4353-a901-3ead927470eb",
+                "target": "f518b2c4-6579-48d0-adc7-b631216dd610",
+                "type": 0,
+                "id": "057ba96b-c95c-4001-8d14-95153d0026c0"
             }
         ]
     },
@@ -211,21 +309,22 @@ export const updateRule = {
         },
         "ttl": 14
     },
+    "ruleAlias": "inland-wolf",
+    "createdIn": "2025-12-03T11:40:52.619Z",
+    "lastUpdate": "2025-12-03T11:42:13.646Z",
     "visualData": {
         "scale": 1,
         "rotate": 0,
         "translate": {
-            "x": -67,
-            "y": -1
+            "x": -66,
+            "y": -21
         }
-    },
-    "selectedWebhookAliases": [
-        "wh-E5d6EU8B"
-    ]
+    }
 }
 
 export const updateRule2 = {
-    "name": "Updated Updated Integration Flow v2",
+    "templateMetadata": {},
+    "name": "Integration Flow",
     "description": "",
     "inputSchema": {
         "input": {}
@@ -261,7 +360,7 @@ export const updateRule2 = {
                         "type": "out",
                         "maxConnections": -1,
                         "subType": "none",
-                        "id": "025ebbdf-b839-45c6-ae18-eb246cd4f040",
+                        "id": "29610edc-df5b-4467-a502-5394a66f8f2d",
                         "maxCount": 1,
                         "minCount": 1
                     },
@@ -269,17 +368,17 @@ export const updateRule2 = {
                         "type": "in",
                         "maxConnections": -1,
                         "subType": "none",
-                        "id": "38de5e13-7b9e-44c9-8070-fb196cee4a6e",
+                        "id": "f518b2c4-6579-48d0-adc7-b631216dd610",
                         "maxCount": 1,
                         "minCount": 1
                     }
                 ],
-                "id": "63e3801f",
+                "id": "7e85e5e6",
                 "version": 1,
                 "type": "DATA_MANIPULATION",
                 "position": {
-                    "x": 535,
-                    "y": 285
+                    "x": 500,
+                    "y": 315
                 },
                 "name": "assign",
                 "data": {
@@ -290,8 +389,8 @@ export const updateRule2 = {
                                     "type": 1,
                                     "outputScalarValue": {
                                         "type": "function",
-                                        "value": "Job will be run",
-                                        "stringValue": "Job will be run"
+                                        "value": "Hello world!",
+                                        "stringValue": "Hello world!"
                                     }
                                 }
                             },
@@ -304,14 +403,62 @@ export const updateRule2 = {
                         "showAll": false
                     }
                 }
+            },
+            {
+                "connectors": [
+                    {
+                        "type": "in",
+                        "maxConnections": -1,
+                        "subType": "none",
+                        "id": "caf5ad87-ff5d-4893-89f6-ecd839a2542f",
+                        "maxCount": 1,
+                        "minCount": 1
+                    },
+                    {
+                        "type": "out",
+                        "maxConnections": -1,
+                        "subType": "none",
+                        "id": "78883421-0045-4353-a901-3ead927470eb",
+                        "maxCount": 1,
+                        "minCount": 1
+                    }
+                ],
+                "id": "cbfe3058",
+                "version": 1,
+                "type": "HTTP_CLIENT",
+                "position": {
+                    "x": 316,
+                    "y": 154
+                },
+                "data": {
+                    "url": "https://postman-echo.com/delay/3",
+                    "method": "GET",
+                    "requestName": "",
+                    "body": "",
+                    "bodyFormat": "json",
+                    "headers": [
+                        {
+                            "header": "",
+                            "value": ""
+                        }
+                    ],
+                    "connectionReference": null
+                },
+                "name": "api"
             }
         ],
         "connections": [
             {
                 "source": "fbd5a179-588e-4e75-b1e3-73ef458a84a2",
-                "target": "38de5e13-7b9e-44c9-8070-fb196cee4a6e",
+                "target": "caf5ad87-ff5d-4893-89f6-ecd839a2542f",
                 "type": 0,
-                "id": "9d1753c3-3117-459b-919d-03ddbeaa64a9"
+                "id": "1e4ed9eb-122b-4bba-9e42-06b29c2feac9"
+            },
+            {
+                "source": "78883421-0045-4353-a901-3ead927470eb",
+                "target": "f518b2c4-6579-48d0-adc7-b631216dd610",
+                "type": 0,
+                "id": "057ba96b-c95c-4001-8d14-95153d0026c0"
             }
         ]
     },
@@ -324,15 +471,119 @@ export const updateRule2 = {
         },
         "ttl": 14
     },
+    "ruleAlias": "inland-wolf",
+    "createdIn": "2025-12-03T11:40:52.619Z",
+    "lastUpdate": "2025-12-03T11:42:13.646Z",
     "visualData": {
         "scale": 1,
         "rotate": 0,
         "translate": {
-            "x": -67,
-            "y": -1
+            "x": -66,
+            "y": -21
+        }
+    }
+}
+
+export const lookupTable = {
+    "name": "Testing table 2",
+    "description": "",
+    "type": "lookup-table",
+    "columns": [
+        {
+            "name": "Primary Key",
+            "alias": "pk",
+            "order": 0,
+            "isPrimaryKey": true
+        },
+        {
+            "name": "id",
+            "alias": "03EOXNMB"
+        }
+    ],
+    "primaryKeyColumn": "pk",
+    "data": {
+        "Orange": {
+            "pk": "Orange",
+            "03EOXNMB": "1",
+            "_position": 0
+        },
+        "Door hinge": {
+            "pk": "Door hinge",
+            "03EOXNMB": "2",
+            "_position": 1
+        },
+        "Porridge": {
+            "pk": "Porridge",
+            "03EOXNMB": "3",
+            "_position": 2
+        },
+        "Four inch": {
+            "pk": "Four inch",
+            "03EOXNMB": "4",
+            "_position": 3
+        },
+        "Forage": {
+            "pk": "Forage",
+            "03EOXNMB": "5",
+            "_position": 4
+        },
+        "Storage": {
+            "pk": "Storage",
+            "03EOXNMB": "6",
+            "_position": 5
         }
     },
-    "selectedWebhookAliases": [
-        "wh-E5d6EU8B"
-    ]
+    "inputSchema": {
+        "primaryKey": {},
+        "outputColumn": {},
+        "method": {}
+    },
+    "outputSchema": {
+        "output": {}
+    },
+    "tags": [],
+    "status": "published",
+    "auditLog": {
+        "active": false,
+        "debug": {
+            "active": false
+        },
+        "ttl": 14
+    },
+    "sourceData": [
+        {
+            "pk": "Orange",
+            "03EOXNMB": "1",
+            "_position": 0
+        },
+        {
+            "pk": "Door hinge",
+            "03EOXNMB": "2",
+            "_position": 1
+        },
+        {
+            "pk": "Porridge",
+            "03EOXNMB": "3",
+            "_position": 2
+        },
+        {
+            "pk": "Four inch",
+            "03EOXNMB": "4",
+            "_position": 3
+        },
+        {
+            "pk": "Forage",
+            "03EOXNMB": "5",
+            "_position": 4
+        },
+        {
+            "pk": "Storage",
+            "03EOXNMB": "6",
+            "_position": 5
+        }
+    ],
+    "ruleAliasInfo": {
+        "usedOn": [],
+        "unique": true
+    }
 }
