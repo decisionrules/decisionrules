@@ -5,16 +5,6 @@ export const getFolderStructureResult = {
     id: 'root',
     children: [
         {
-            'name': 'Shipment Milestones',
-            'type': 'RULE',
-            'version': 1,
-        },
-        {
-            name: 'Integration Flow',
-            type: 'RULE',
-            version: 1,
-        },
-        {
             name: 'Folder Name',
             type: 'FOLDER',
             children: []
@@ -28,16 +18,6 @@ export const getFolderStructureResult1 = {
     name: 'Home',
     id: 'root',
     children: [
-        {
-            'name': 'Shipment Milestones',
-            'type': 'RULE',
-            'version': 1,
-        },
-        {
-            name: 'Integration Flow',
-            type: 'RULE',
-            version: 1,
-        },
         {
             name: 'Folder Name',
             type: 'FOLDER',
@@ -67,13 +47,8 @@ export const createRuleResult = {
                         'minCount': 1
                     }
                 ],
-                'id': 'c2c8e47c',
                 'version': 1,
                 'type': 'START',
-                'position': {
-                    'x': 167,
-                    'y': 325
-                }
             },
             {
                 'connectors': [
@@ -92,13 +67,8 @@ export const createRuleResult = {
                         'minCount': 1
                     }
                 ],
-                'id': '63e3801f',
                 'version': 1,
                 'type': 'DATA_MANIPULATION',
-                'position': {
-                    'x': 535,
-                    'y': 285
-                },
                 'name': 'assign',
                 'data': {
                     'mapping': [
@@ -142,14 +112,7 @@ export const createRuleResult = {
     'visualData': {
         'scale': 1,
         'rotate': 0,
-        'translate': {
-            'x': -67,
-            'y': -1
-        }
     },
-    'selectedWebhookAliases': [
-        'wh-E5d6EU8B'
-    ]
 }
 export const updateRuleResult = {
     'name': 'Updated Integration Flow v2',
@@ -175,10 +138,6 @@ export const updateRuleResult = {
                 ],
                 'version': 1,
                 'type': 'START',
-                'position': {
-                    'x': 167,
-                    'y': 325
-                }
             },
             {
                 'connectors': [
@@ -197,13 +156,8 @@ export const updateRuleResult = {
                         'minCount': 1
                     }
                 ],
-                'id': '63e3801f',
                 'version': 1,
                 'type': 'DATA_MANIPULATION',
-                'position': {
-                    'x': 535,
-                    'y': 285
-                },
                 'name': 'assign',
                 'data': {
                     'mapping': [
@@ -232,7 +186,6 @@ export const updateRuleResult = {
         'connections': [
             {
                 'type': 0,
-                'id': '9d1753c3-3117-459b-919d-03ddbeaa64a9'
             }
         ]
     },
@@ -248,14 +201,7 @@ export const updateRuleResult = {
     'visualData': {
         'scale': 1,
         'rotate': 0,
-        'translate': {
-            'x': -67,
-            'y': -1
-        }
     },
-    'selectedWebhookAliases': [
-        'wh-E5d6EU8B'
-    ]
 }
 export const updateRuleStatusResult = {
     'name': 'Updated Integration Flow v2',
@@ -279,13 +225,8 @@ export const updateRuleStatusResult = {
                         'minCount': 1
                     }
                 ],
-                'id': 'c2c8e47c',
                 'version': 1,
                 'type': 'START',
-                'position': {
-                    'x': 167,
-                    'y': 325
-                }
             },
             {
                 'connectors': [
@@ -304,13 +245,8 @@ export const updateRuleStatusResult = {
                         'minCount': 1
                     }
                 ],
-                'id': '63e3801f',
                 'version': 1,
                 'type': 'DATA_MANIPULATION',
-                'position': {
-                    'x': 535,
-                    'y': 285
-                },
                 'name': 'assign',
                 'data': {
                     'mapping': [
@@ -354,14 +290,7 @@ export const updateRuleStatusResult = {
     'visualData': {
         'scale': 1,
         'rotate': 0,
-        'translate': {
-            'x': -67,
-            'y': -1
-        }
     },
-    'selectedWebhookAliases': [
-        'wh-E5d6EU8B'
-    ]
 }
 export const updateRuleStatusResult1 = {
     'name': 'Updated Integration Flow v2',
@@ -385,13 +314,8 @@ export const updateRuleStatusResult1 = {
                         'minCount': 1
                     }
                 ],
-                'id': 'c2c8e47c',
                 'version': 1,
                 'type': 'START',
-                'position': {
-                    'x': 167,
-                    'y': 325
-                }
             },
             {
                 'connectors': [
@@ -410,13 +334,8 @@ export const updateRuleStatusResult1 = {
                         'minCount': 1
                     }
                 ],
-                'id': '63e3801f',
                 'version': 1,
                 'type': 'DATA_MANIPULATION',
-                'position': {
-                    'x': 535,
-                    'y': 285
-                },
                 'name': 'assign',
                 'data': {
                     'mapping': [
@@ -460,14 +379,7 @@ export const updateRuleStatusResult1 = {
     'visualData': {
         'scale': 1,
         'rotate': 0,
-        'translate': {
-            'x': -67,
-            'y': -1
-        }
     },
-    'selectedWebhookAliases': [
-        'wh-E5d6EU8B'
-    ]
 }
 export const lockRuleResult = ''
 export const lockRuleResult1 = ''
@@ -497,10 +409,6 @@ export const createNewRuleVersionResult = {
                 ],
                 'version': 1,
                 'type': 'START',
-                'position': {
-                    'x': 167,
-                    'y': 325
-                }
             },
             {
                 'connectors': [
@@ -521,10 +429,6 @@ export const createNewRuleVersionResult = {
                 ],
                 'version': 1,
                 'type': 'DATA_MANIPULATION',
-                'position': {
-                    'x': 535,
-                    'y': 285
-                },
                 'name': 'assign',
                 'data': {
                     'mapping': [
@@ -568,14 +472,7 @@ export const createNewRuleVersionResult = {
     'visualData': {
         'scale': 1,
         'rotate': 0,
-        'translate': {
-            'x': -67,
-            'y': -1
-        }
     },
-    'selectedWebhookAliases': [
-        'wh-E5d6EU8B'
-    ]
 }
 export const getRuleResult = {
     'name': 'Updated Integration Flow v2',
@@ -601,10 +498,6 @@ export const getRuleResult = {
                 ],
                 'version': 1,
                 'type': 'START',
-                'position': {
-                    'x': 167,
-                    'y': 325
-                }
             },
             {
                 'connectors': [
@@ -625,10 +518,6 @@ export const getRuleResult = {
                 ],
                 'version': 1,
                 'type': 'DATA_MANIPULATION',
-                'position': {
-                    'x': 535,
-                    'y': 285
-                },
                 'name': 'assign',
                 'data': {
                     'mapping': [
@@ -672,14 +561,7 @@ export const getRuleResult = {
     'visualData': {
         'scale': 1,
         'rotate': 0,
-        'translate': {
-            'x': -67,
-            'y': -1
-        }
     },
-    'selectedWebhookAliases': [
-        'wh-E5d6EU8B'
-    ]
 }
 export const getRuleResult1 = {
     'name': 'Updated Integration Flow v2',
@@ -705,10 +587,6 @@ export const getRuleResult1 = {
                 ],
                 'version': 1,
                 'type': 'START',
-                'position': {
-                    'x': 167,
-                    'y': 325
-                }
             },
             {
                 'connectors': [
@@ -729,10 +607,6 @@ export const getRuleResult1 = {
                 ],
                 'version': 1,
                 'type': 'DATA_MANIPULATION',
-                'position': {
-                    'x': 535,
-                    'y': 285
-                },
                 'name': 'assign',
                 'data': {
                     'mapping': [
@@ -776,14 +650,7 @@ export const getRuleResult1 = {
     'visualData': {
         'scale': 1,
         'rotate': 0,
-        'translate': {
-            'x': -67,
-            'y': -1
-        }
     },
-    'selectedWebhookAliases': [
-        'wh-E5d6EU8B'
-    ]
 }
 export const getRuleByPathResult = {
     'name': 'Updated Integration Flow v2',
@@ -809,10 +676,6 @@ export const getRuleByPathResult = {
                 ],
                 'version': 1,
                 'type': 'START',
-                'position': {
-                    'x': 167,
-                    'y': 325
-                }
             },
             {
                 'connectors': [
@@ -831,13 +694,8 @@ export const getRuleByPathResult = {
                         'minCount': 1
                     }
                 ],
-                'id': '63e3801f',
                 'version': 1,
                 'type': 'DATA_MANIPULATION',
-                'position': {
-                    'x': 535,
-                    'y': 285
-                },
                 'name': 'assign',
                 'data': {
                     'mapping': [
@@ -879,14 +737,7 @@ export const getRuleByPathResult = {
     'visualData': {
         'scale': 1,
         'rotate': 0,
-        'translate': {
-            'x': -67,
-            'y': -1
-        }
     },
-    'selectedWebhookAliases': [
-        'wh-E5d6EU8B'
-    ]
 }
 export const getRuleByPathResult1 = {
     'name': 'Updated Integration Flow v2',
@@ -906,18 +757,12 @@ export const getRuleByPathResult1 = {
                         'type': 'out',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': 'fbd5a179-588e-4e75-b1e3-73ef458a84a2',
                         'maxCount': 1,
                         'minCount': 1
                     }
                 ],
-                'id': 'c2c8e47c',
                 'version': 1,
                 'type': 'START',
-                'position': {
-                    'x': 167,
-                    'y': 325
-                }
             },
             {
                 'connectors': [
@@ -925,7 +770,6 @@ export const getRuleByPathResult1 = {
                         'type': 'out',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': '025ebbdf-b839-45c6-ae18-eb246cd4f040',
                         'maxCount': 1,
                         'minCount': 1
                     },
@@ -933,18 +777,12 @@ export const getRuleByPathResult1 = {
                         'type': 'in',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': '38de5e13-7b9e-44c9-8070-fb196cee4a6e',
                         'maxCount': 1,
                         'minCount': 1
                     }
                 ],
-                'id': '63e3801f',
                 'version': 1,
                 'type': 'DATA_MANIPULATION',
-                'position': {
-                    'x': 535,
-                    'y': 285
-                },
                 'name': 'assign',
                 'data': {
                     'mapping': [
@@ -973,9 +811,7 @@ export const getRuleByPathResult1 = {
         'connections': [
             {
                 'source': 'fbd5a179-588e-4e75-b1e3-73ef458a84a2',
-                'target': '38de5e13-7b9e-44c9-8070-fb196cee4a6e',
                 'type': 0,
-                'id': '9d1753c3-3117-459b-919d-03ddbeaa64a9'
             }
         ]
     },
@@ -991,14 +827,7 @@ export const getRuleByPathResult1 = {
     'visualData': {
         'scale': 1,
         'rotate': 0,
-        'translate': {
-            'x': -67,
-            'y': -1
-        }
     },
-    'selectedWebhookAliases': [
-        'wh-E5d6EU8B'
-    ]
 }
 export const getRuleByPathResult2 = {
     'name': 'Integration Flow v2',
@@ -1018,18 +847,12 @@ export const getRuleByPathResult2 = {
                         'type': 'out',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': 'fbd5a179-588e-4e75-b1e3-73ef458a84a2',
                         'maxCount': 1,
                         'minCount': 1
                     }
                 ],
-                'id': 'c2c8e47c',
                 'version': 1,
                 'type': 'START',
-                'position': {
-                    'x': 167,
-                    'y': 325
-                }
             },
             {
                 'connectors': [
@@ -1037,7 +860,6 @@ export const getRuleByPathResult2 = {
                         'type': 'out',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': '025ebbdf-b839-45c6-ae18-eb246cd4f040',
                         'maxCount': 1,
                         'minCount': 1
                     },
@@ -1045,18 +867,12 @@ export const getRuleByPathResult2 = {
                         'type': 'in',
                         'maxConnections': -1,
                         'subType': 'none',
-                        'id': '38de5e13-7b9e-44c9-8070-fb196cee4a6e',
                         'maxCount': 1,
                         'minCount': 1
                     }
                 ],
-                'id': '63e3801f',
                 'version': 1,
                 'type': 'DATA_MANIPULATION',
-                'position': {
-                    'x': 535,
-                    'y': 285
-                },
                 'name': 'assign',
                 'data': {
                     'mapping': [
@@ -1085,9 +901,7 @@ export const getRuleByPathResult2 = {
         'connections': [
             {
                 'source': 'fbd5a179-588e-4e75-b1e3-73ef458a84a2',
-                'target': '38de5e13-7b9e-44c9-8070-fb196cee4a6e',
                 'type': 0,
-                'id': '9d1753c3-3117-459b-919d-03ddbeaa64a9'
             }
         ]
     },
@@ -1103,14 +917,7 @@ export const getRuleByPathResult2 = {
     'visualData': {
         'scale': 1,
         'rotate': 0,
-        'translate': {
-            'x': -67,
-            'y': -1
-        }
     },
-    'selectedWebhookAliases': [
-        'wh-E5d6EU8B'
-    ]
 }
 export const exportFolderResult = {
     'export': {
@@ -1142,10 +949,6 @@ export const exportFolderResult = {
                     'visualData': {
                         'rotate': 0,
                         'scale': 1,
-                        'translate': {
-                            'x': -67,
-                            'y': -1,
-                        },
                     },
                     'workflowData': {
                         'connections': [
@@ -1164,11 +967,6 @@ export const exportFolderResult = {
                                         'type': 'out',
                                     },
                                 ],
-                                'id': 'c2c8e47c',
-                                'position': {
-                                    'x': 167,
-                                    'y': 325,
-                                },
                                 'type': 'START',
                                 'version': 1,
                             },
@@ -1212,10 +1010,6 @@ export const exportFolderResult = {
                                     ],
                                 },
                                 'name': 'assign',
-                                'position': {
-                                    'x': 535,
-                                    'y': 285,
-                                },
                                 'type': 'DATA_MANIPULATION',
                                 'version': 1,
                             },
@@ -1249,10 +1043,6 @@ export const exportFolderResult = {
                     'visualData': {
                         'rotate': 0,
                         'scale': 1,
-                        'translate': {
-                            'x': -67,
-                            'y': -1,
-                        },
                     },
                     'workflowData': {
                         'connections': [
@@ -1271,10 +1061,6 @@ export const exportFolderResult = {
                                         'type': 'out',
                                     },
                                 ],
-                                'position': {
-                                    'x': 167,
-                                    'y': 325,
-                                },
                                 'type': 'START',
                                 'version': 1,
                             },
@@ -1318,10 +1104,6 @@ export const exportFolderResult = {
                                     ],
                                 },
                                 'name': 'assign',
-                                'position': {
-                                    'x': 535,
-                                    'y': 285,
-                                },
                                 'type': 'DATA_MANIPULATION',
                                 'version': 1,
                             },
@@ -1352,22 +1134,7 @@ export const exportFolderResult = {
 }
 export const deleteRuleResult = ''
 export const getRulesForSpaceResult = [
-    {
-        'description': '',
-        'name': 'Integration Flow',
-        'ruleAlias': 'overall-alligator',
-        'status': 'published',
-        'tags': [],
-        'type': 'integration-flow',
-        'version': 1
-    },
-    {
-        'description': 'This Decision Table validates whether the shipment milestones are in the correct order; if not, a message is returned.',
-        'name': 'Shipment Milestones',
-        'status': 'published',
-        'tags': [],
-        'type': 'decision-table',
-    }
+
 ]
 export const renameFolderResult = ''
 export const importFolderResult = 'folderNode'
@@ -1376,16 +1143,6 @@ export const getFolderStructureResult2 = {
     name: 'Home',
     id: 'root',
     children: [
-        {
-            'name': 'Shipment Milestones',
-            'type': 'RULE',
-            'version': 1,
-        },
-        {
-            'name': 'Integration Flow',
-            'type': 'RULE',
-            'version': 1
-        },
         {
             name: 'New Name',
             type: 'FOLDER',
@@ -1426,17 +1183,6 @@ export const getFolderStructureResult3 = {
 }
 export const moveFolderResult = ''
 export const findFolderOrRuleByAttributeResult = [
-
-    {
-        'name': 'Integration Flow',
-        'type': 'RULE',
-        'version': 1
-    },
-    {
-        'name': 'Shipment Milestones',
-        'type': 'RULE',
-        'version': 1,
-    },
     {
         name: 'Updated Integration Flow v2',
         version: 2,
@@ -1469,7 +1215,6 @@ export const start = {
 }
 export const info = {
     ruleReference: {
-        baseId: '715c5cd8-594b-22e2-c803-65f18403e8cd',
         version: 1,
         type: 'integration-flow'
     },
@@ -1507,8 +1252,5 @@ export const cancel = {
 }
 
 export const solve = [
-    {
-        'typeOfMilestoneResult': '24 21 20 17 16 13 12 9',
-        'message': 'In wrong order for DHL operator'
-    }
+    { output: true }
 ]

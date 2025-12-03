@@ -3,6 +3,7 @@ import { DecisionRulesOptions } from '../../src/defs/models'
 import DecisionRules from '../../src/decisionrules'
 import * as results from './itest-utils/expectedResults.itest'
 import { LookupMethodOptions } from '../../src/defs/enums'
+import { lookupTable } from './itest-utils/rules.itest'
 
 beforeAll(() => {
     dotenv.config({ path: './env/.env' })
@@ -23,6 +24,8 @@ test('env loaded', async () => {
 })
 
 test('Solve Lookup Table', async () => {
+    const rule = await dr.management.createRule(lookupTable)
+    
     const requestBody = {
         "primaryKey": "Door hinge",
         "outputColumn": {},
@@ -30,10 +33,11 @@ test('Solve Lookup Table', async () => {
     }
 
     const result = await dr.solve(
-        "17633151-65b6-f3e7-bee7-6e5a3080f143",
+        rule.ruleId,
         requestBody,
-        11,
+        1,
         { lookupMethod: LookupMethodOptions.LOOKUP_EXISTS }
     )
     expect(result).toEqual(results.solve)
+    await dr.management.deleteRule(rule.ruleId)
 })
