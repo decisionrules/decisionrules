@@ -1,6 +1,6 @@
 {
 	"name": "@decisionrules/decisionrules",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"description": "Simple connector for DecisionRules.io APIU",
 	"main": "dist/decisionrules.js",
 	"files": [
@@ -9,7 +9,7 @@
 		"dist/"
 	],
 	"scripts": {
-		"prepack": "rm -rf dist && npm run build",
+		"prepack": "rmdir /s /q dist && npm run build",
 		"build": "npx tsc",
 		"test": "jest --runInBand test"
 	},

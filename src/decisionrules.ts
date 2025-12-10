@@ -271,7 +271,7 @@ export default class DecisionRules {
 		},
 	}
 
-	public validateWebhookSignature(payload: string, signature: string, secret: string): boolean {
+	public static validateWebhookSignature(payload: string, signature: string, secret: string): boolean {
 		const hmac = crypto.createHmac('sha256', secret);
 		hmac.update(JSON.stringify(payload));
 		const expectedSignature = hmac.digest('hex');
